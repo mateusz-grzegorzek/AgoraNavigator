@@ -7,12 +7,6 @@ namespace AgoraNavigator
     {
         public ListView getListView { get { return listView; } }
 
-        public void ShowMenu()
-        {
-            listView.IsVisible = true;
-            listView.IsEnabled = true;
-        }
-
         ListView listView;
 
         public MasterPage()
@@ -58,16 +52,15 @@ namespace AgoraNavigator
                 }),
                 SeparatorVisibility = SeparatorVisibility.None
             };
-            listView.IsVisible = false;
-            listView.IsEnabled = false;
 
             Icon = "hamburger.png";
-            Title = "Agora Application";
+            Title = "Agora Navigator";
+            BackgroundColor = Color.Orange;
             Padding = new Thickness(0, 40, 0, 0);
-            Content = new StackLayout
-            {
-                Children = { listView }
-            };
+
+            var stack = new StackLayout();
+            stack.Children.Add(listView);
+            Content = stack;
         }
     }
 }

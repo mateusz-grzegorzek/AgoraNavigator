@@ -8,20 +8,16 @@ namespace AgoraNavigator
         public MasterPage getMasterPage { get { return masterPage; } }
 
         MasterPage masterPage;
+        static public TasksPage tasksPage;
 
         public MainPage()
         {
             masterPage = new MasterPage();
             Master = masterPage;
-            Detail = new NavigationPage(new StartingPage(this));
+            tasksPage = new TasksPage();
+            Detail = new NavigationPage(tasksPage);
 
             masterPage.getListView.ItemSelected += OnItemSelected;
-        }
-
-        public void StartNavigator()
-        {
-            masterPage.ShowMenu();
-            Detail = new NavigationPage((Page)Activator.CreateInstance(typeof(MapPage)));       
         }
 
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)

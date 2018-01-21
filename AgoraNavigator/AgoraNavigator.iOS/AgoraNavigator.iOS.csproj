@@ -119,6 +119,9 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Acr.DeviceInfo">
+      <Version>5.0.5</Version>
+    </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>1.2.1</Version>
     </PackageReference>

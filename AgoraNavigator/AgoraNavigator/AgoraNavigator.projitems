@@ -18,5 +18,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)TasksPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TimelinePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WelcomePage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\MasterToolbarBackground.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\StartingPage.png" />
   </ItemGroup>
 </Project>
