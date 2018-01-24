@@ -14,14 +14,27 @@
     <Compile Include="$(MSBuildThisFileDirectory)MapPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MasterPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MasterPageItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schedule\DayListGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItemCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schedule\SchedulePage.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)StartingPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TasksPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TimelinePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WelcomePage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Resources\MasterToolbarBackground.png" />
     <Content Include="$(MSBuildThisFileDirectory)Resources\StartingPage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Schedule\SchedulePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Schedule\View1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>

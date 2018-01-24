@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AgoraNavigator.Schedule;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
@@ -20,9 +21,9 @@ namespace AgoraNavigator
             });
             masterPageItems.Add(new MasterPageItem
             {
-                Title = "Timeline",
+                Title = "Schedule",
                 IconSource = "hamburger.png",
-                TargetType = typeof(TimelinePage)
+                TargetType = typeof(SchedulePage)
             });
             masterPageItems.Add(new MasterPageItem
             {
