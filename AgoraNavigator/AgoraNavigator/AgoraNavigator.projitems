@@ -21,7 +21,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)StartingPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TasksPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tasks\Beacons.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tasks\GamePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tasks\GameTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tasks\TaskDetailView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksMasterPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksMasterView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WelcomePage.cs" />
   </ItemGroup>

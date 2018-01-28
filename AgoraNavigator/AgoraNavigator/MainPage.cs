@@ -1,5 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
+using AgoraNavigator.Schedule;
+using AgoraNavigator.Tasks;
 
 namespace AgoraNavigator
 {
@@ -8,14 +10,19 @@ namespace AgoraNavigator
         public MasterPage getMasterPage { get { return masterPage; } }
 
         MasterPage masterPage;
+        static public MapPage mapPage;
+        static public SchedulePage schedulePage;
         static public TasksPage tasksPage;
 
         public MainPage()
         {
+            Console.WriteLine("MainPage");
             masterPage = new MasterPage();
             Master = masterPage;
+            mapPage = new MapPage();
+            schedulePage = new SchedulePage();
             tasksPage = new TasksPage();
-            Detail = new NavigationPage(tasksPage);
+            Detail = tasksPage;
 
             masterPage.getListView.ItemSelected += OnItemSelected;
         }
@@ -25,7 +32,20 @@ namespace AgoraNavigator
             var item = e.SelectedItem as MasterPageItem;
             if (item != null)
             {
-                Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
+                switch(item.Title)
+                {
+                    case "Map":
+                        Detail = mapPage;
+                        break;
+                    case "Schedule":
+                        Detail = schedulePage;
+                        break;
+                    case "Tasks":
+                        Detail = tasksPage;
+                        break;
+                    default:
+                        break;
+                }
                 masterPage.getListView.SelectedItem = null;
                 IsPresented = false;
             }

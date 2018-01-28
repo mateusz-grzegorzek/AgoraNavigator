@@ -54,7 +54,10 @@ namespace AgoraNavigator.Schedule
 
             _scheduleItemsListView.ItemSelected += OnScheduleItemSelected;
 
-            Content = _scheduleItemsListView;
+            var stack = new StackLayout();
+            stack.Children.Add(_scheduleItemsListView);
+            Content = stack;
+            //Content = _scheduleItemsListView;
         }
 
         private void OnScheduleItemSelected(object sender, SelectedItemChangedEventArgs e)

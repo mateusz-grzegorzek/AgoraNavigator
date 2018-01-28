@@ -1,4 +1,5 @@
 ﻿using AgoraNavigator.Schedule;
+using AgoraNavigator.Tasks;
 using System.Collections.Generic;
 using Xamarin.Forms;
 

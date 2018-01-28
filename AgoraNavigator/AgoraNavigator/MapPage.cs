@@ -1,11 +1,26 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 
 namespace AgoraNavigator
 {
-    public class MapPage : ContentPage
+    public class MapPage : NavigationPage
     {
+        public static GoogleMapPage googleMapPage;
+
         public MapPage()
+        {
+            Console.WriteLine("TasksPage");
+            BarTextColor = Color.Red;
+            BackgroundColor = Color.Azure;
+            googleMapPage = new GoogleMapPage();
+            Navigation.PushAsync(googleMapPage);
+        }
+    }
+
+    public class GoogleMapPage : ContentPage
+    {
+        public GoogleMapPage()
         {
             Map map = new Map()
             {
