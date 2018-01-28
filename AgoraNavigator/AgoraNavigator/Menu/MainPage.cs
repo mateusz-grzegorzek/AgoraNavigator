@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using AgoraNavigator.Schedule;
 using AgoraNavigator.Tasks;
 using Plugin.Permissions.Abstractions;
+using AgoraNavigator.Login;
 
 namespace AgoraNavigator.Menu
 {
@@ -17,6 +18,7 @@ namespace AgoraNavigator.Menu
 
         public MainPage()
         {
+            Users.InitUserData(new User { Id = 2 }); // ToDo: Remove in Release version
             NavigationPage.SetHasNavigationBar(this, false);
             Console.WriteLine("MainPage");
             masterPage = new MasterPage();

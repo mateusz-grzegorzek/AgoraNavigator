@@ -16,7 +16,7 @@ namespace AgoraNavigator.Tasks
         {
             bool result = false;
             var adapter = CrossBluetoothLE.Current.Adapter;
-            adapter.ScanTimeout = 1000;
+            adapter.ScanTimeout = 2000;
             List<IDevice> deviceList = new List<IDevice>();
             adapter.DeviceDiscovered += (s, a) => deviceList.Add(a.Device);
             await adapter.StartScanningForDevicesAsync();

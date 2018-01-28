@@ -85,7 +85,7 @@ namespace AgoraNavigator.Login
             Content = simpleLayout;
         }
 
-        public void OnLoginButtonClicked(object sender, EventArgs e)
+        public async void OnLoginButtonClicked(object sender, EventArgs e)
         {
             Console.WriteLine("OnLoginButtonClicked");
             Console.WriteLine("OnLoginButtonClicked:idEntry=" + idEntry.Text + ", pinEntry=" + pinEntry);
@@ -99,16 +99,20 @@ namespace AgoraNavigator.Login
                     if(pin == user.Pin)
                     {
                         Console.WriteLine("OnLoginButtonClicked:pin=" + pin);
-                        Navigation.PushAsync(mainPage);
+                        await DisplayAlert("Login", "Succes!", "Ok");
+                        Users.InitUserData(user);
+                        await Navigation.PushAsync(mainPage);
                     }
                     else
                     {
                         Console.WriteLine("OnLoginButtonClicked:Wrong pin!");
+                        await DisplayAlert("Login", "Wrong pin number!", "Ok");
                     }
                     return;
                 }
             }
             Console.WriteLine("OnLoginButtonClicked:User with id=" + id + " doesn't exist!");
+            await DisplayAlert("Login", "User with id=" + id + " doesn't exist!", "Ok");
         }
     }
 }

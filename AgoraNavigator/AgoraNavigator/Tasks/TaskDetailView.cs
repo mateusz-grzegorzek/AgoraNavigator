@@ -44,14 +44,14 @@ namespace AgoraNavigator.Tasks
                     //if (actualTask.correctAnswer == answerEntry.Text)
                     //{
                         Console.WriteLine("Yeah! Correct answer!");
-                        TasksMasterPage.closeTask(actualTask);
+                        TasksPage.tasksMasterPage.closeTask(actualTask);
                     //}
                     break;
                 case TaskType.Button:
                     bool result = await ProcessTask(actualTask);
                     if (result)
                     {
-                        TasksMasterPage.closeTask(actualTask);
+                        TasksPage.tasksMasterPage.closeTask(actualTask);
                     }
                     break;
                 default:

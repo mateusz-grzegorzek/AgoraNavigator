@@ -78,6 +78,9 @@
     <PackageReference Include="Acr.DeviceInfo">
       <Version>5.0.5</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>10.0.3</Version>
+    </PackageReference>
     <PackageReference Include="PCLStorage">
       <Version>1.0.2</Version>
     </PackageReference>

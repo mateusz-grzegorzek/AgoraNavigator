@@ -1,4 +1,5 @@
 ﻿using AgoraNavigator.Login;
+using AgoraNavigator.Menu;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
@@ -7,7 +8,7 @@ namespace AgoraNavigator
     {
         public App()
         {
-            MainPage = new StartingPage();
+            MainPage = new MainPage();
         }
     }
 }

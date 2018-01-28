@@ -1,4 +1,5 @@
-﻿using AgoraNavigator.Menu;
+﻿using AgoraNavigator.Login;
+using AgoraNavigator.Menu;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using static AgoraNavigator.Tasks.GameTask;
@@ -12,12 +13,14 @@ namespace AgoraNavigator.Tasks
         static public TasksMasterView closedTasksView;
         static public TasksMasterView openedTasksView;
 
-        public static void closeTask(GameTask task)
+        public async void closeTask(GameTask task)
         {
-            TasksPage.gamePage.addScorePoints(task.scorePoints);
+            await DisplayAlert("Task", "Succes!", "Ok");
+            await Users.addScorePoints(task.scorePoints);
+            GamePage.totalPointsLabel.Text = "Total points: " + Users.loggedUser.TotalPoints.ToString();
             TasksMasterPage.openedTasks.Remove(task);
             closedTasks.Add(task);
-            MainPage.tasksPage.Navigation.PopAsync();
+            await MainPage.tasksPage.Navigation.PopAsync();
         }
 
         public TasksMasterPage()
