@@ -10,17 +10,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MainPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Login\LoginPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Login\Users.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MapPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MasterPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MasterPageItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\MasterPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\MasterPageItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\Permissions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\DayListGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItemCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\SchedulePage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)StartingPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\Beacons.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\GamePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\GameTask.cs" />
@@ -29,7 +31,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksMasterView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WelcomePage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Resources\MasterToolbarBackground.png" />

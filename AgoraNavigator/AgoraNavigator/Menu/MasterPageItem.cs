@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AgoraNavigator
+namespace AgoraNavigator.Menu
 {
     public class MasterPageItem
     {

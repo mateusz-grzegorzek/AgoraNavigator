@@ -2,32 +2,33 @@
 using Xamarin.Forms;
 using AgoraNavigator.Schedule;
 using AgoraNavigator.Tasks;
+using Plugin.Permissions.Abstractions;
 
-namespace AgoraNavigator
+namespace AgoraNavigator.Menu
 {
     public class MainPage : MasterDetailPage
     {
         public MasterPage getMasterPage { get { return masterPage; } }
 
         MasterPage masterPage;
-        static public MapPage mapPage;
-        static public SchedulePage schedulePage;
-        static public TasksPage tasksPage;
+        public static MapPage mapPage;
+        public static SchedulePage schedulePage;
+        public static TasksPage tasksPage;
 
         public MainPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
             Console.WriteLine("MainPage");
             masterPage = new MasterPage();
+            masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
             mapPage = new MapPage();
             schedulePage = new SchedulePage();
             tasksPage = new TasksPage();
             Detail = tasksPage;
-
-            masterPage.getListView.ItemSelected += OnItemSelected;
         }
 
-        void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var item = e.SelectedItem as MasterPageItem;
             if (item != null)
@@ -35,6 +36,7 @@ namespace AgoraNavigator
                 switch(item.Title)
                 {
                     case "Map":
+                        GoogleMapPage.map.IsShowingUser = await Permissions.GetRuntimePermission(Permission.Location);
                         Detail = mapPage;
                         break;
                     case "Schedule":

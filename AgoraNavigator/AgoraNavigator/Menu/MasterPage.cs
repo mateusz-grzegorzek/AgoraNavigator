@@ -3,7 +3,7 @@ using AgoraNavigator.Tasks;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace AgoraNavigator
+namespace AgoraNavigator.Menu
 {
     public class MasterPage : ContentPage
     {

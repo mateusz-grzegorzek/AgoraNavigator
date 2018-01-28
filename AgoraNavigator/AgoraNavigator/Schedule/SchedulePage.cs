@@ -8,13 +8,24 @@ using Xamarin.Forms;
 
 namespace AgoraNavigator.Schedule
 {
-    public class SchedulePage : ContentPage
+    public class SchedulePage : NavigationPage
+    {
+        public static ScheduleMasterPage scheduleMasterPage;
+
+        public SchedulePage()
+        {
+            scheduleMasterPage = new ScheduleMasterPage();
+            Navigation.PushAsync(scheduleMasterPage);
+        }
+    }
+    public class ScheduleMasterPage : ContentPage
     {
         private ObservableCollection<DayListGroup> _scheduleItems { get; set; }
         private ListView _scheduleItemsListView;
 
-        public SchedulePage()
+        public ScheduleMasterPage()
         {
+            Title = "Schedule";
             _scheduleItems = new ObservableCollection<DayListGroup>
             {
                 new DayListGroup(new DateTime(2017, 4, 23))
