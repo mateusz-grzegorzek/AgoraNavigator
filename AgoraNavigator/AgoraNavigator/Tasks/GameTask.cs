@@ -1,4 +1,5 @@
 ﻿using AgoraNavigator.Login;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ namespace AgoraNavigator.Tasks
             Button = 1,
             PreBLE = 2
         }
+
+        public int ownerId { get; set; }
 
         public int id { get; set; }
 
@@ -31,14 +34,25 @@ namespace AgoraNavigator.Tasks
 
         public bool needBluetoothAndLocation { get; set; }
 
-        static public async Task<bool> ProcessTask(GameTask task)
+        public static async Task<bool> ProcessTask(GameTask task)
         {
-            Console.WriteLine("ProcessTask:task.id=" + task.id);
+            Console.WriteLine("GameTask:ProcessTask:task.id=" + task.id);
             bool result = false;
             switch (task.id)
             {
                 case 1:
                     result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
+                    break;
+                case 3:
+                    result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
+                    if(result)
+                    {
+                        task.ownerId = Users.loggedUser.Id;
+                        String msg = JsonConvert.SerializeObject(task);
+                        AgoraTcpClient.ClientSend(msg);
+                        String resp = AgoraTcpClient.ClientReceive();
+                        Console.WriteLine("GameTask:ProcessTask:resp=" + resp);
+                    }
                     break;
             }
             return result;
@@ -51,7 +65,7 @@ namespace AgoraNavigator.Tasks
                 id = 1,
                 title = "Adventurer quest",
                 iconSource = "hamburger.png",
-                description = "Find all beacons at gym",
+                description = "Find beacon at gym",
                 taskType = TaskType.PreBLE,
                 correctAnswer = null,
                 scorePoints = 1,
@@ -69,6 +83,18 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 completed = false,
                 needBluetoothAndLocation = false
+            });
+            Users.loggedUser.openedTasks.Add(new GameTask
+            {
+                id = 3,
+                title = "AEGEE Army",
+                iconSource = "hamburger.png",
+                description = "Gather more than half of your antena members near beacon at gym",
+                taskType = TaskType.PreBLE,
+                correctAnswer = null,
+                scorePoints = 3,
+                completed = false,
+                needBluetoothAndLocation = true
             });
         }
     }

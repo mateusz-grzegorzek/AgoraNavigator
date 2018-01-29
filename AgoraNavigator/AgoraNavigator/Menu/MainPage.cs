@@ -4,6 +4,8 @@ using AgoraNavigator.Schedule;
 using AgoraNavigator.Tasks;
 using Plugin.Permissions.Abstractions;
 using AgoraNavigator.Login;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace AgoraNavigator.Menu
 {
@@ -18,7 +20,9 @@ namespace AgoraNavigator.Menu
 
         public MainPage()
         {
-            Users.InitUserData(new User { Id = 3 }); // ToDo: Remove in Release version
+            Task.Factory.StartNew(AgoraTcpClient.TcpClientThread,
+                CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            Users.InitUserData(new User { Id = 4 }); // ToDo: Remove in Release version
             NavigationPage.SetHasNavigationBar(this, false);
             Console.WriteLine("MainPage");
             masterPage = new MasterPage();

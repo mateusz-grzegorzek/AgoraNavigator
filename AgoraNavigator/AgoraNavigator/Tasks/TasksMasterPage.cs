@@ -8,8 +8,6 @@ namespace AgoraNavigator.Tasks
 {
     public class TasksMasterPage : TabbedPage
     {
-        //static public ObservableCollection<GameTask> openedTasks;
-        //static public ObservableCollection<GameTask> closedTasks;
         static public TasksMasterView closedTasksView;
         static public TasksMasterView openedTasksView;
 

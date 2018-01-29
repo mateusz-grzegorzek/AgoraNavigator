@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace AgoraNavigator.Login
 {
-    class User
+    class Antena
+    {
+        public int Id { get; set; }
+        public List<User> members { get; set; }
+    }
+
+    public class User
     {
         public int Id { get; set; }
         public int Pin { get; set; }
-        public int AntentaId { get; set; }
+        public int AntenaId { get; set; }
         public int TotalPoints { get; set; }
         public ObservableCollection<GameTask> openedTasks;
         public ObservableCollection<GameTask> closedTasks;
@@ -22,7 +28,7 @@ namespace AgoraNavigator.Login
 
     class Users
     {
-        public static Dictionary<int, List<int>> AntenaMembers;
+        public static List<Antena> aegeeAntenas;
         private static IFolder rootFolder;
         private static IFolder userDataFolder;
         private static IFile userDataFile;
@@ -33,9 +39,12 @@ namespace AgoraNavigator.Login
         public static void InitUsers()
         {
             users = new List<User>();
-            users.Add(new User { Id = 1, Pin = 1234 });
-            AntenaMembers = new Dictionary<int, List<int>>();
-            AntenaMembers.Add(1, new List<int> { 2 });
+            User matGrz = new User { Id = 1, Pin = 1234, AntenaId = 1 };
+            users.Add(matGrz);
+            aegeeAntenas = new List<Antena>();
+            Antena cracowAntena = new Antena { Id = 1, members = new List<User>() };
+            cracowAntena.members.Add(matGrz);
+            aegeeAntenas.Add(cracowAntena);
         }
 
         public async static Task InitUserData(User user)

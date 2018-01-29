@@ -30,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksMasterPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksMasterView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AgoraTcpClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
   </ItemGroup>
   <ItemGroup>
