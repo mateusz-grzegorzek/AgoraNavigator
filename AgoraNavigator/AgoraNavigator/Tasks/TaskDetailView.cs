@@ -49,16 +49,21 @@ namespace AgoraNavigator.Tasks
 
         public async Task OnAnswerButtonClick(object sender, EventArgs e)
         {
+            Console.WriteLine("OnAnswerButtonClick");
             switch (actualTask.taskType)
             {
                 case TaskType.Text:
                     Console.WriteLine("answerEntry.Text=" + answerEntry.Text);
                     Console.WriteLine("actualTask.correctAnswer" + actualTask.correctAnswer);
-                    //if (actualTask.correctAnswer == answerEntry.Text)
-                    //{
-                    Console.WriteLine("Yeah! Correct answer!");
-                    TasksPage.tasksMasterPage.closeTask(actualTask);
-                    //}
+                    if (actualTask.correctAnswer == answerEntry.Text)
+                    {
+                        Console.WriteLine("Yeah! Correct answer!");
+                        TasksPage.tasksMasterPage.closeTask(actualTask);
+                    }
+                    else
+                    {
+                        await DisplayAlert("Task", "Failed! Wrong answer!", "Ok");
+                    }
                     break;
                 case TaskType.Button:
                     bool result = await ProcessTask(actualTask);

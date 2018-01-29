@@ -22,7 +22,7 @@ namespace AgoraNavigator.Menu
         {
             Task.Factory.StartNew(AgoraTcpClient.TcpClientThread,
                 CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
-            Users.InitUserData(new User { Id = 4 }); // ToDo: Remove in Release version
+            Users.InitUserData(new User { Id = 7 }); // ToDo: Remove in Release version
             NavigationPage.SetHasNavigationBar(this, false);
             Console.WriteLine("MainPage");
             masterPage = new MasterPage();
