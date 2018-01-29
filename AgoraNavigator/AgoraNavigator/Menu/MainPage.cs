@@ -18,7 +18,7 @@ namespace AgoraNavigator.Menu
 
         public MainPage()
         {
-            Users.InitUserData(new User { Id = 2 }); // ToDo: Remove in Release version
+            Users.InitUserData(new User { Id = 3 }); // ToDo: Remove in Release version
             NavigationPage.SetHasNavigationBar(this, false);
             Console.WriteLine("MainPage");
             masterPage = new MasterPage();
@@ -26,8 +26,8 @@ namespace AgoraNavigator.Menu
             Master = masterPage;
             mapPage = new MapPage();
             schedulePage = new SchedulePage();
-            tasksPage = new TasksPage();
-            Detail = tasksPage;
+            
+            Detail = mapPage;
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -45,6 +45,10 @@ namespace AgoraNavigator.Menu
                         Detail = schedulePage;
                         break;
                     case "Tasks":
+                        if(tasksPage == null) /* workaround for development -> ToDo: remove in Release version */
+                        {
+                            tasksPage = new TasksPage();
+                        }
                         Detail = tasksPage;
                         break;
                     default:

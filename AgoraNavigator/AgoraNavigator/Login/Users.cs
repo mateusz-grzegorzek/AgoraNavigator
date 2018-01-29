@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace AgoraNavigator.Login
         public int Pin { get; set; }
         public int AntentaId { get; set; }
         public int TotalPoints { get; set; }
+        public ObservableCollection<GameTask> openedTasks;
+        public ObservableCollection<GameTask> closedTasks;
     }
 
     class Users
@@ -31,38 +34,51 @@ namespace AgoraNavigator.Login
         {
             users = new List<User>();
             users.Add(new User { Id = 1, Pin = 1234 });
+            AntenaMembers = new Dictionary<int, List<int>>();
             AntenaMembers.Add(1, new List<int> { 2 });
         }
 
-        public async static void InitUserData(User user)
+        public async static Task InitUserData(User user)
         {
-            loggedUser = user;
+            Console.WriteLine("User:InitUserData:user.Id=" + user.Id);
             rootFolder = FileSystem.Current.LocalStorage;
             userDataFolder = await rootFolder.CreateFolderAsync("user_data_" + user.Id, CreationCollisionOption.OpenIfExists);
             try
             {
                 userDataFile = await userDataFolder.CreateFileAsync("user_data.txt", CreationCollisionOption.FailIfExists);
+                Console.WriteLine("Users:InitUserData:userDataFile=" + userDataFile.Name + " created.");
+                loggedUser = user;
                 loggedUser.TotalPoints = 0;
+                loggedUser.closedTasks = new ObservableCollection<GameTask>();
+                loggedUser.openedTasks = new ObservableCollection<GameTask>();
+                GameTask.AddTasks();
                 String userData = JsonConvert.SerializeObject(loggedUser);
                 await userDataFile.WriteAllTextAsync(userData);
             }
             catch (Exception)
             {
                 userDataFile = await userDataFolder.CreateFileAsync("user_data.txt", CreationCollisionOption.OpenIfExists);
+                Console.WriteLine("Users:InitUserData:userDataFile=" + userDataFile.Name + " already exist.");
                 String userData = await userDataFile.ReadAllTextAsync();
                 loggedUser = JsonConvert.DeserializeObject<User>(userData);
-                Console.WriteLine("loggedUser.TotalPoints=" + loggedUser.TotalPoints);
             }
+            Console.WriteLine("Users:InitUserData:loggedUser.TotalPoints=" + loggedUser.TotalPoints);
+            Console.WriteLine("Users:InitUserData:loggedUser.openedTasks.Count=" + loggedUser.openedTasks.Count);
+            Console.WriteLine("Users:InitUserData:loggedUser.closedTasks.Count=" + loggedUser.closedTasks.Count);
         }
 
-        public async static Task addScorePoints(int scorePoints)
+        public async static Task closeTask(GameTask task)
         {
-            String userData = await userDataFile.ReadAllTextAsync();
-            loggedUser = JsonConvert.DeserializeObject<User>(userData);
-            loggedUser.TotalPoints += scorePoints;
-            Console.WriteLine("loggedUser.TotalPoints=" + loggedUser.TotalPoints);
-            userData = JsonConvert.SerializeObject(loggedUser);
+            Console.WriteLine("Users:closeTask:task.id=" + task.id);
+            task.completed = true;
+            loggedUser.TotalPoints += task.scorePoints;
+            loggedUser.openedTasks.Remove(task);
+            loggedUser.closedTasks.Add(task);
+            String userData = JsonConvert.SerializeObject(loggedUser);
             await userDataFile.WriteAllTextAsync(userData);
+            Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + loggedUser.TotalPoints);
+            Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + loggedUser.openedTasks.Count);
+            Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + loggedUser.closedTasks.Count);
         }
     }
 }

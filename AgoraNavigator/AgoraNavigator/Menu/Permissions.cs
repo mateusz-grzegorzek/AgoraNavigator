@@ -9,34 +9,29 @@ namespace AgoraNavigator.Menu
     {
         public static async Task<bool> GetRuntimePermission(Permission permission)
         {
-            Console.WriteLine("OnMyLocationButtonClicked");
+            Console.WriteLine("Permissions:GetRuntimePermission");
             bool permissionsGranted = false;
             try
             {
-                
                 var status = await CrossPermissions.Current.CheckPermissionStatusAsync(permission);
                 if (status != PermissionStatus.Granted)
                 {
-                    Console.WriteLine("Not granted yet!");
-                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(permission))
-                    {
-                        //await DisplayAlert("Need location", "OK", "Cancel");
-                    }
+                    Console.WriteLine("Permissions:GetRuntimePermissionNot granted yet!");
                     var results = await CrossPermissions.Current.RequestPermissionsAsync(permission);
                     status = results[Permission.Location];
                     if (status == PermissionStatus.Granted)
                     {
-                        Console.WriteLine("Access granted! :)");
+                        Console.WriteLine("Permissions:GetRuntimePermissionAccess granted! :)");
                         permissionsGranted = true;
                     }
                     else
                     {
-                        Console.WriteLine("Not granted! :(");
+                        Console.WriteLine("Permissions:GetRuntimePermissionNot granted! :(");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Already granted!");
+                    Console.WriteLine("Permissions:GetRuntimePermissionAlready granted!");
                     permissionsGranted = true;
                 }
             }

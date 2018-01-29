@@ -100,7 +100,7 @@ namespace AgoraNavigator.Login
                     {
                         Console.WriteLine("OnLoginButtonClicked:pin=" + pin);
                         await DisplayAlert("Login", "Succes!", "Ok");
-                        Users.InitUserData(user);
+                        await Users.InitUserData(user);
                         await Navigation.PushAsync(mainPage);
                     }
                     else

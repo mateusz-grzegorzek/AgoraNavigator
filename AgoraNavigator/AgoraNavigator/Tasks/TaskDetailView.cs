@@ -26,12 +26,25 @@ namespace AgoraNavigator.Tasks
                 stack.Children.Add(answerEntry);
             }
             Button answerButton = new Button { Text = "Send answer" };
+            answerButton.Pressed += OnAnswerButtonPressed;
             answerButton.Clicked += async (sender, e) =>
             {
                 await OnAnswerButtonClick(sender, e);
             };
             stack.Children.Add(answerButton);
             Content = stack;
+        }
+        public async void OnAnswerButtonPressed(object sender, EventArgs e)
+        {
+            Console.WriteLine("OnAnswerButtonPressed");
+            if (actualTask.taskType == TaskType.PreBLE)
+            {
+                bool result = await ProcessTask(actualTask);
+                if (result)
+                {
+                    TasksPage.tasksMasterPage.closeTask(actualTask);
+                }
+            }
         }
 
         public async Task OnAnswerButtonClick(object sender, EventArgs e)
@@ -43,8 +56,8 @@ namespace AgoraNavigator.Tasks
                     Console.WriteLine("actualTask.correctAnswer" + actualTask.correctAnswer);
                     //if (actualTask.correctAnswer == answerEntry.Text)
                     //{
-                        Console.WriteLine("Yeah! Correct answer!");
-                        TasksPage.tasksMasterPage.closeTask(actualTask);
+                    Console.WriteLine("Yeah! Correct answer!");
+                    TasksPage.tasksMasterPage.closeTask(actualTask);
                     //}
                     break;
                 case TaskType.Button:

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AgoraNavigator.Menu;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-
+using Plugin.Permissions.Abstractions;
 using Xamarin.Forms;
+using System;
 
 namespace AgoraNavigator.Tasks
 {
@@ -42,12 +40,35 @@ namespace AgoraNavigator.Tasks
             Content = stack;
         }
 
-        public void OnTaskTitleClick(object sender, ItemTappedEventArgs e)
-        {
+        public async void OnTaskTitleClick(object sender, ItemTappedEventArgs e)
+        {        
+            bool showTaskDetails = false;
             GameTask task = (GameTask)e.Item;
+            Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.id=" + task.id + ", completed=" + task.completed);
             if (task.completed == false)
             {
-                Navigation.PushAsync(new TaskDetailView(task));
+                Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.needBluetoothAndLocation=" + task.needBluetoothAndLocation);
+                if (task.needBluetoothAndLocation)
+                {
+                    bool permissionGranted = await Permissions.GetRuntimePermission(Permission.Location);
+                    Console.WriteLine("TasksMasterView:OnTaskTitleClick:permissionGranted=" + permissionGranted);
+                    if (Beacons.IsBluetoothOn() && permissionGranted)
+                    {
+                        showTaskDetails = true;
+                    }
+                    else
+                    {
+                        await DisplayAlert("Bluetooth", "Turn on bluetooth and accept location permission to start this task!", "Ok");
+                    }
+                }
+                else
+                {
+                    showTaskDetails = true;
+                }
+            }
+            if(showTaskDetails)
+            {
+                await Navigation.PushAsync(new TaskDetailView(task));
             }
         }
     }
