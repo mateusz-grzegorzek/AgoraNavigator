@@ -10,10 +10,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contact\ContactPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Info\InfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Login\LoginPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Login\Users.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\MainPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MapPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Map\MapPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\MasterPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\MasterPageItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\Permissions.cs" />
@@ -44,5 +46,8 @@
     <Page Include="$(MSBuildThisFileDirectory)Schedule\View1.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Map\" />
   </ItemGroup>
 </Project>

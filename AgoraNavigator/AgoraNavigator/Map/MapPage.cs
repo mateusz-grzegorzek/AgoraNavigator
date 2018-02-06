@@ -4,7 +4,7 @@ using System;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 
-namespace AgoraNavigator
+namespace AgoraNavigator.GoogleMap
 {
     public class MapPage : NavigationPage
     {

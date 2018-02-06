@@ -8,7 +8,7 @@ namespace AgoraNavigator
     {
         public App()
         {
-            MainPage = new MainPage();
+            MainPage = new StartingPage();
         }
     }
 }

@@ -18,6 +18,7 @@ namespace AgoraNavigator.Schedule
             Navigation.PushAsync(scheduleMasterPage);
         }
     }
+
     public class ScheduleMasterPage : ContentPage
     {
         private ObservableCollection<DayListGroup> _scheduleItems { get; set; }

@@ -6,6 +6,9 @@ using Plugin.Permissions.Abstractions;
 using AgoraNavigator.Login;
 using System.Threading.Tasks;
 using System.Threading;
+using AgoraNavigator.Contact;
+using AgoraNavigator.Info;
+using AgoraNavigator.GoogleMap;
 
 namespace AgoraNavigator.Menu
 {
@@ -17,21 +20,22 @@ namespace AgoraNavigator.Menu
         public static MapPage mapPage;
         public static SchedulePage schedulePage;
         public static TasksPage tasksPage;
+        public static ContactPage contactPage;
+        public static InfoPage infoPage;
 
         public MainPage()
         {
             Task.Factory.StartNew(AgoraTcpClient.TcpClientThread,
                 CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
-            Users.InitUserData(new User { Id = 7 }); // ToDo: Remove in Release version
+            //Users.InitUserData(new User { Id = 7 }); // ToDo: Remove in Release version
             NavigationPage.SetHasNavigationBar(this, false);
             Console.WriteLine("MainPage");
             masterPage = new MasterPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
-            mapPage = new MapPage();
-            schedulePage = new SchedulePage();
-            
-            Detail = mapPage;
+            infoPage = new InfoPage();
+
+            Detail = infoPage;
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -42,18 +46,40 @@ namespace AgoraNavigator.Menu
                 switch(item.Title)
                 {
                     case "Map":
+                        if (mapPage == null)
+                        {
+                            mapPage = new MapPage();
+                        }
                         GoogleMapPage.map.IsShowingUser = await Permissions.GetRuntimePermission(Permission.Location);
                         Detail = mapPage;
                         break;
                     case "Schedule":
+                        if (schedulePage == null)
+                        {
+                            schedulePage = new SchedulePage();
+                        }
                         Detail = schedulePage;
                         break;
                     case "Tasks":
-                        if(tasksPage == null) /* workaround for development -> ToDo: remove in Release version */
+                        if(tasksPage == null)
                         {
                             tasksPage = new TasksPage();
                         }
                         Detail = tasksPage;
+                        break;
+                    case "Contact":
+                        if (contactPage == null)
+                        {
+                            contactPage = new ContactPage();
+                        }
+                        Detail = contactPage;
+                        break;
+                    case "Important info":
+                        if (infoPage == null)
+                        {
+                            infoPage = new InfoPage();
+                        }
+                        Detail = infoPage;
                         break;
                     default:
                         break;

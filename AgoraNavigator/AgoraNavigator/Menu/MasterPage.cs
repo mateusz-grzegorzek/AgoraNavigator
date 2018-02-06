@@ -2,6 +2,9 @@
 using AgoraNavigator.Tasks;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using AgoraNavigator.GoogleMap;
+using AgoraNavigator.Contact;
+using AgoraNavigator.Info;
 
 namespace AgoraNavigator.Menu
 {
@@ -31,6 +34,18 @@ namespace AgoraNavigator.Menu
                 Title = "Tasks",
                 IconSource = "hamburger.png",
                 TargetType = typeof(TasksPage)
+            });
+            masterPageItems.Add(new MasterPageItem
+            {
+                Title = "Contact",
+                IconSource = "hamburger.png",
+                TargetType = typeof(ContactPage)
+            });
+            masterPageItems.Add(new MasterPageItem
+            {
+                Title = "Important info",
+                IconSource = "hamburger.png",
+                TargetType = typeof(InfoPage)
             });
 
             listView = new ListView
