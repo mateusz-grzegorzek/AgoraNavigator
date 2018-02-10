@@ -1,40 +1,32 @@
-﻿using AgoraNavigator.Menu;
+﻿using AgoraNavigator.Login;
+using AgoraNavigator.Menu;
 using Plugin.DeviceInfo;
 using System;
 using Xamarin.Forms;
 
-namespace AgoraNavigator.Login
+namespace AgoraNavigator.Tasks
 {
-    class StartingPage : NavigationPage
+    public class GameLoginNavPage : NavigationPage
     {
-        LoginPage loginPage;
-
-        public StartingPage()
+        GameLoginPage gameLoginPage;
+        public GameLoginNavPage()
         {
-            Console.WriteLine("StartingPage");
-            Users.InitUsers();
-            loginPage = new LoginPage();
-            Navigation.PushAsync(loginPage);
+            gameLoginPage = new GameLoginPage();
+            Navigation.PushAsync(gameLoginPage);
         }
     }
 
-    public class LoginPage : ContentPage
+    public class GameLoginPage : ContentPage
     {
-        MainPage mainPage;
         Entry idEntry;
         Entry pinEntry;
 
-        public LoginPage()
+        public GameLoginPage()
         {
-            Console.WriteLine("LoginPage");
-            mainPage = new MainPage();
-            NavigationPage.SetHasNavigationBar(this, false);
+            Console.WriteLine("GameLoginPage");
 
             int screenHeight = CrossDevice.Hardware.ScreenHeight;
             int screenWidth = CrossDevice.Hardware.ScreenWidth;
-
-            Image backgroundImage = new Image();
-            backgroundImage.Source = "StartingPage.png";
 
             Button loginButton = new Button();
             loginButton.Text = "Login";
@@ -44,8 +36,7 @@ namespace AgoraNavigator.Login
             loginButton.BorderWidth = 1;
             loginButton.BorderColor = Color.Black;
 
-            Label welcomeLabel = new Label();
-            welcomeLabel.Text = "Welcome in Agora Navigator!";
+
             Label idLabel = new Label();
             idLabel.Text = "Enter your ID:";
             Label pinLabel = new Label();
@@ -60,23 +51,18 @@ namespace AgoraNavigator.Login
                 HorizontalOptions = LayoutOptions.FillAndExpand
             };
 
-            AbsoluteLayout.SetLayoutBounds(welcomeLabel, new Rectangle(.5, .1, .5, .1));
-            AbsoluteLayout.SetLayoutBounds(idLabel,  new Rectangle(.5, .4, .5, .1));
-            AbsoluteLayout.SetLayoutBounds(idEntry,  new Rectangle(.5,.45, .5,.08));
+            AbsoluteLayout.SetLayoutBounds(idLabel, new Rectangle(.5, .4, .5, .1));
+            AbsoluteLayout.SetLayoutBounds(idEntry, new Rectangle(.5, .45, .5, .08));
             AbsoluteLayout.SetLayoutBounds(pinLabel, new Rectangle(.5, .6, .5, .1));
-            AbsoluteLayout.SetLayoutBounds(pinEntry, new Rectangle(.5,.65, .5,.08));
+            AbsoluteLayout.SetLayoutBounds(pinEntry, new Rectangle(.5, .65, .5, .08));
             AbsoluteLayout.SetLayoutBounds(loginButton, new Rectangle(.5, .9, .25, .12));
 
-            AbsoluteLayout.SetLayoutFlags(welcomeLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(idLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(idEntry, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(pinLabel, AbsoluteLayoutFlags.All);   
+            AbsoluteLayout.SetLayoutFlags(pinLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(pinEntry, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(loginButton, AbsoluteLayoutFlags.All);
 
-            //simpleLayout.Children.Add(backgroundImage);
-
-            simpleLayout.Children.Add(welcomeLabel);
             simpleLayout.Children.Add(idLabel);
             simpleLayout.Children.Add(idEntry);
             simpleLayout.Children.Add(pinLabel);
@@ -89,19 +75,19 @@ namespace AgoraNavigator.Login
         {
             Console.WriteLine("OnLoginButtonClicked");
             Console.WriteLine("OnLoginButtonClicked:idEntry=" + idEntry.Text + ", pinEntry=" + pinEntry);
-            int id  = Convert.ToInt32(idEntry.Text);
+            int id = Convert.ToInt32(idEntry.Text);
             int pin = Convert.ToInt32(pinEntry.Text);
             foreach (User user in Users.users)
             {
-                if(id == user.Id)
+                if (id == user.Id)
                 {
                     Console.WriteLine("OnLoginButtonClicked:id=" + id);
-                    if(pin == user.Pin)
+                    if (pin == user.Pin)
                     {
                         Console.WriteLine("OnLoginButtonClicked:pin=" + pin);
                         await DisplayAlert("Login", "Succes!", "Ok");
                         await Users.InitUserData(user);
-                        await Navigation.PushAsync(mainPage);
+                        WelcomePage.mainPage.UserLoggedSuccessfully();
                     }
                     else
                     {

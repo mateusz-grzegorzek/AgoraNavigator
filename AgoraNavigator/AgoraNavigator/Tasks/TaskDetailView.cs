@@ -42,7 +42,7 @@ namespace AgoraNavigator.Tasks
                 bool result = await ProcessTask(actualTask);
                 if (result)
                 {
-                    TasksPage.tasksMasterPage.closeTask(actualTask);
+                    GamePage.tasksMasterPage.closeTask(actualTask);
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace AgoraNavigator.Tasks
                     if (actualTask.correctAnswer == answerEntry.Text)
                     {
                         Console.WriteLine("Yeah! Correct answer!");
-                        TasksPage.tasksMasterPage.closeTask(actualTask);
+                        GamePage.tasksMasterPage.closeTask(actualTask);
                     }
                     else
                     {
@@ -69,7 +69,7 @@ namespace AgoraNavigator.Tasks
                     bool result = await ProcessTask(actualTask);
                     if (result)
                     {
-                        TasksPage.tasksMasterPage.closeTask(actualTask);
+                        GamePage.tasksMasterPage.closeTask(actualTask);
                     }
                     break;
                 default:

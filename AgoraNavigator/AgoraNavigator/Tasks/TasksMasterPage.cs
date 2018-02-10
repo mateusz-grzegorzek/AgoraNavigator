@@ -1,15 +1,14 @@
 ﻿using AgoraNavigator.Login;
 using AgoraNavigator.Menu;
-using System.Collections.ObjectModel;
+using System;
 using Xamarin.Forms;
-using static AgoraNavigator.Tasks.GameTask;
 
 namespace AgoraNavigator.Tasks
 {
     public class TasksMasterPage : TabbedPage
     {
-        static public TasksMasterView closedTasksView;
-        static public TasksMasterView openedTasksView;
+        public static TasksMasterView closedTasksView;
+        public static TasksMasterView openedTasksView;
 
         public async void closeTask(GameTask task)
         {
@@ -21,6 +20,7 @@ namespace AgoraNavigator.Tasks
 
         public TasksMasterPage()
         {
+            Console.WriteLine("TasksMasterPage");
             Title = "Tasks";
             BackgroundColor = Color.AliceBlue;
 

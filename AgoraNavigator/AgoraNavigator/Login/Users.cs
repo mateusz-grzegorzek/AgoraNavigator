@@ -4,8 +4,6 @@ using PCLStorage;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AgoraNavigator.Login
@@ -35,9 +33,11 @@ namespace AgoraNavigator.Login
 
         public static List<User> users;
         public static User loggedUser;
+        public static bool isUserLogged;
 
         public static void InitUsers()
         {
+            Console.WriteLine("InitUsers");
             users = new List<User>();
             User matGrz = new User { Id = 1, Pin = 1234, AntenaId = 1 };
             users.Add(matGrz);
@@ -45,6 +45,7 @@ namespace AgoraNavigator.Login
             Antena cracowAntena = new Antena { Id = 1, members = new List<User>() };
             cracowAntena.members.Add(matGrz);
             aegeeAntenas.Add(cracowAntena);
+            Console.WriteLine("InitUsers:Succes!");
         }
 
         public async static Task InitUserData(User user)
@@ -71,6 +72,7 @@ namespace AgoraNavigator.Login
                 String userData = await userDataFile.ReadAllTextAsync();
                 loggedUser = JsonConvert.DeserializeObject<User>(userData);
             }
+            isUserLogged = true;
             Console.WriteLine("Users:InitUserData:loggedUser.TotalPoints=" + loggedUser.TotalPoints);
             Console.WriteLine("Users:InitUserData:loggedUser.openedTasks.Count=" + loggedUser.openedTasks.Count);
             Console.WriteLine("Users:InitUserData:loggedUser.closedTasks.Count=" + loggedUser.closedTasks.Count);

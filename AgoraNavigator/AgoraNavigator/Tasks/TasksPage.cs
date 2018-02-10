@@ -5,17 +5,16 @@ namespace AgoraNavigator.Tasks
 { 
     public class TasksPage : NavigationPage
     {
-        public static TasksMasterPage tasksMasterPage;
-        public static GamePage gamePage;
+        GamePage gamePage;
 
         public TasksPage()
         {
             Console.WriteLine("TasksPage");
-            NavigationPage.SetHasNavigationBar(this, false);
+            SetHasNavigationBar(this, false);
             BarTextColor = Color.Red;
             BackgroundColor = Color.Azure;
-            tasksMasterPage = new TasksMasterPage();
             gamePage = new GamePage();
+            Console.WriteLine("Navigation.PushAsync(gameLoginPage)");
             Navigation.PushAsync(gamePage);
         }
     }

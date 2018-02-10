@@ -1,17 +1,17 @@
 ﻿using AgoraNavigator.Login;
-using PCLStorage;
 using System;
-using System.ComponentModel;
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Tasks
 {
-    public class GamePage : ContentPage, INotifyPropertyChanged
+    public class GamePage : ContentPage
     {
+        public static TasksMasterPage tasksMasterPage;
         public static Label totalPointsLabel;
 
         public GamePage()
         {
+            tasksMasterPage = new TasksMasterPage();
             Title = "Game of Tasks";
             totalPointsLabel = new Label();
             totalPointsLabel.Text = "Total points: " + Users.loggedUser.TotalPoints.ToString();
@@ -25,7 +25,7 @@ namespace AgoraNavigator.Tasks
 
         async public void OnGoToTasksButtonClick(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(TasksPage.tasksMasterPage);
+            await Navigation.PushAsync(tasksMasterPage);
         }
     }
 }

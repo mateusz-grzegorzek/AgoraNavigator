@@ -12,7 +12,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contact\ContactPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Info\InfoPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Login\LoginPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Login\WelcomePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tasks\GameLoginPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Login\Users.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Map\MapPage.cs" />
@@ -34,10 +35,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AgoraTcpClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)Resources\MasterToolbarBackground.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Resources\StartingPage.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Schedule\SchedulePage.xaml">
