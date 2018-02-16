@@ -31,7 +31,7 @@ namespace AgoraNavigator.Schedule
             {
                 new DayListGroup(new DateTime(2017, 4, 23))
                 {
-                    new ScheduleItem()
+                    new ScheduleItemViewModel()
                     {
                         Title = "Opening Ceremony",
                         Presenter = "Chuck Norris",
@@ -40,13 +40,13 @@ namespace AgoraNavigator.Schedule
                 },
                 new DayListGroup(new DateTime(2017, 4, 24))
                 {
-                    new ScheduleItem()
+                    new ScheduleItemViewModel()
                     {
                         Title = "The Pierogi Workshop",
                         Presenter = "Andrzej Duda",
                         StartTime = new DateTime(2017, 4, 24, 13, 00, 00)
                     },
-                    new ScheduleItem()
+                    new ScheduleItemViewModel()
                     {
                         Title = "Melanż & Drinking Presentation",
                         Presenter = "Owca",

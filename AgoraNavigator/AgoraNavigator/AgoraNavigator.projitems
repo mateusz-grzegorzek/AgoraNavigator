@@ -20,7 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Menu\MasterPageItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\Permissions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\DayListGroup.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItemCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\SchedulePage.cs">
       <SubType>Code</SubType>
