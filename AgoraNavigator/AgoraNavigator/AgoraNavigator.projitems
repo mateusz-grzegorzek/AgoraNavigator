@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contact\ContactPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Info\InfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Login\WelcomePage.cs" />
@@ -21,7 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Menu\MasterPageItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\Permissions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\DayListGroup.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItemCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\SchedulePage.cs">
       <SubType>Code</SubType>
