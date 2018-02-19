@@ -14,7 +14,9 @@ namespace AgoraNavigator.Schedule
 
         public ScheduleItemViewModel(ScheduleItem item)
         {
-
+            Title = item.Title;
+            Presenter = item.Presenter;
+            StartTime = item.StartTime;
         }
 
         public string Title { get; set; }

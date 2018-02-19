@@ -11,6 +11,12 @@ namespace AgoraNavigator.Schedule
             Date = date;
         }
 
+        public DayListGroup(DateTime date, IEnumerable<ScheduleItemViewModel> items)
+        {
+            Date = date;
+            AddRange(items);
+        }
+
         public DateTime Date { get; set; }
 
         public string DayName => Date.ToString("M");

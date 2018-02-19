@@ -80,6 +80,9 @@
     <PackageReference Include="Acr.DeviceInfo">
       <Version>5.0.5</Version>
     </PackageReference>
+    <PackageReference Include="FirebaseDatabase.net">
+      <Version>3.3.2</Version>
+    </PackageReference>
     <PackageReference Include="NETStandard.Library">
       <Version>2.0.1</Version>
     </PackageReference>
