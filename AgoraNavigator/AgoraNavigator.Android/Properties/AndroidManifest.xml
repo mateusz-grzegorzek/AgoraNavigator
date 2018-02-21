@@ -7,7 +7,21 @@
 	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 	<uses-permission android:name="android.permission.BLUETOOTH" />
 	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+  <permission android:name="com.Agora.Navigator.permission.C2D_MESSAGE"
+            android:protectionLevel="signature" />
+  <uses-permission android:name="com.Agora.Navigator.permission.C2D_MESSAGE" />  
+
 	<application android:label="Agora Navigator" android:icon="@drawable/icon" android:theme="@style/MyTheme">
 		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDFhKjuQbr-YAHRBkc7JRW0792F9QO21eI" />
+  
+    <receiver android:name="com.onesignal.GcmBroadcastReceiver"
+                android:permission="com.google.android.c2dm.permission.SEND" >
+      <intent-filter>
+        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        <category android:name="com.Agora.Navigator" />
+      </intent-filter>
+    </receiver>
+
 	</application>
 </manifest>

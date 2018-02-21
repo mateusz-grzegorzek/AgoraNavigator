@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contact\ContactPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Info\InfoPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Local Notifications\INotification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Login\WelcomePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\GameLoginPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Login\Users.cs" />
