@@ -53,6 +53,7 @@ namespace AgoraNavigator.Login
         public void OnWelcomeButtonClicked(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
+            DependencyService.Get<INotification>().Notify("Title", "Message");
             mainPage = new MainPage();
             Navigation.PushAsync(mainPage);
         }

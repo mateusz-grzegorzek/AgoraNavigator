@@ -54,12 +54,12 @@
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
+    <Compile Include="Notification_Android.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
@@ -79,6 +79,9 @@
   <ItemGroup>
     <PackageReference Include="Acr.DeviceInfo">
       <Version>5.0.5</Version>
+    </PackageReference>
+    <PackageReference Include="Com.OneSignal">
+      <Version>3.0.1</Version>
     </PackageReference>
     <PackageReference Include="FirebaseDatabase.net">
       <Version>3.3.2</Version>
@@ -118,6 +121,7 @@
     <AndroidResource Include="Resources\drawable\StartingPage.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\" />
     <Folder Include="Resources\layout\" />
   </ItemGroup>
   <ItemGroup>

@@ -49,9 +49,7 @@ namespace AgoraNavigator.Tasks
                     {
                         task.ownerId = Users.loggedUser.Id;
                         String msg = JsonConvert.SerializeObject(task);
-                        AgoraTcpClient.ClientSend(msg);
-                        String resp = AgoraTcpClient.ClientReceive();
-                        Console.WriteLine("GameTask:ProcessTask:resp=" + resp);
+                        Console.WriteLine("GameTask:ProcessTask:resp=");
                     }
                     break;
             }

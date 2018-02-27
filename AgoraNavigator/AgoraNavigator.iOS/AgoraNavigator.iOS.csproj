@@ -92,6 +92,7 @@
     <Compile Include="AppDelegate.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
+    <Compile Include="Notification_IOS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +122,9 @@
   <ItemGroup>
     <PackageReference Include="Acr.DeviceInfo">
       <Version>5.0.5</Version>
+    </PackageReference>
+    <PackageReference Include="Com.OneSignal">
+      <Version>3.0.1</Version>
     </PackageReference>
     <PackageReference Include="FirebaseDatabase.net">
       <Version>3.3.2</Version>
