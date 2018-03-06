@@ -2,7 +2,7 @@
 using Plugin.Permissions.Abstractions;
 using System;
 using Xamarin.Forms;
-using Xamarin.Forms.GoogleMaps;
+using Xamarin.Forms.Maps;
 
 namespace AgoraNavigator.GoogleMap
 {
@@ -33,9 +33,6 @@ namespace AgoraNavigator.GoogleMap
                 IsShowingUser = false,
                 HeightRequest = 100,
                 WidthRequest = 960,
-                IsIndoorEnabled = true,
-                HasRotationEnabled = true,
-                MapType = MapType.Hybrid,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(50.0655097, 19.9099141), Distance.FromMiles(0.05)));

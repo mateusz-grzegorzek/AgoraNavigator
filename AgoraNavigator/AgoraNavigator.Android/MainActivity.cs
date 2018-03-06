@@ -2,13 +2,16 @@
 
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 using Plugin.Permissions;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+
+using Android.Gms.Common;
+using Firebase.Messaging;
+using Firebase.Iid;
+using Android.Util;
 
 namespace AgoraNavigator.Droid
 {
@@ -20,8 +23,8 @@ namespace AgoraNavigator.Droid
             base.OnCreate(bundle);
 
             Forms.Init(this, bundle);
-            Xamarin.FormsGoogleMaps.Init(this, bundle);
-
+            Xamarin.FormsMaps.Init(this, bundle);
+            Log.Debug("MainActivity", "InstanceID token: " + FirebaseInstanceId.Instance.Token);
             LoadApplication(new App());
         }
 
