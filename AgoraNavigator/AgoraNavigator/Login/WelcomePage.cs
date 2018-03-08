@@ -1,6 +1,9 @@
 ﻿using AgoraNavigator.Menu;
 using System;
 using Xamarin.Forms;
+using Firebase.Database;
+using Newtonsoft.Json;
+using Plugin.FirebasePushNotification;
 
 namespace AgoraNavigator.Login
 {
@@ -24,12 +27,10 @@ namespace AgoraNavigator.Login
         public WelcomePage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
-            Label welcomeLabel = new Label();
-            welcomeLabel.Text = "Welcome in Agora Navigator!";
+            Label welcomeLabel = new Label {Text = "Welcome in Agora Navigator!"};
 
-            Button welcomeButton = new Button();
-            welcomeButton.Text = "Enter Agora Navigator!";
-            welcomeButton.Clicked += OnWelcomeButtonClicked;
+            Button welcomeButton = new Button{Text = "Enter Agora Navigator!"};
+            welcomeButton.Clicked += OnWelcomeButtonClickedAsync;
             welcomeButton.BackgroundColor = Color.Transparent;
             welcomeButton.TextColor = Color.Blue;
             welcomeButton.BorderWidth = 1;
@@ -49,13 +50,26 @@ namespace AgoraNavigator.Login
             simpleLayout.Children.Add(welcomeButton);
             Content = simpleLayout;
         }
-
-        public void OnWelcomeButtonClicked(object sender, EventArgs e)
+        
+        public async void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
-            DependencyService.Get<INotification>().Notify("Title", "Message");
-            mainPage = new MainPage();
-            Navigation.PushAsync(mainPage);
+            var firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
+
+            //FirebaseMessaging.Instance.SubscribeToTopic("AEGEE_Army");
+            CrossFirebasePushNotification.Current.Subscribe("AEGEE_Army");
+            Message msg = new Message
+            {
+                userId = Users.users[0].Id,
+                antenaId = Users.users[0].AntenaId,
+                taskId = 3,
+                body = ""
+            };
+            String jMsg = JsonConvert.SerializeObject(msg);
+            String path = "tasks/3/" + Users.users[0].Id;
+            await firebaseClient.Child(path).PutAsync("2");
+            //mainPage = new MainPage();
+            //Navigation.PushAsync(mainPage);
         }
     }
 }

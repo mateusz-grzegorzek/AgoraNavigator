@@ -43,13 +43,12 @@ namespace AgoraNavigator.Menu
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as MasterPageItem;
-            if (item != null)
+            if (e.SelectedItem is MasterPageItem item)
             {
                 switch (item.Title)
                 {
                     case "Map":
-                        GoogleMapPage.map.IsShowingUser = await Permissions.GetRuntimePermission(Permission.Location);
+                        GoogleMapPage.map.MyLocationEnabled = await Permissions.GetRuntimePermission(Permission.Location);
                         Detail = mapPage;
                         break;
                     case "Schedule":

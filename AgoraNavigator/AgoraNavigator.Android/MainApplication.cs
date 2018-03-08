@@ -1,9 +1,11 @@
 using System;
 
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CurrentActivity;
+using Plugin.FirebasePushNotification;
 
 namespace AgoraNavigator.Droid
 {
@@ -20,7 +22,12 @@ namespace AgoraNavigator.Droid
         {
             base.OnCreate();
             RegisterActivityLifecycleCallbacks(this);
-            //A great place to initialize Xamarin.Insights and Dependency Services!
+            FirebasePushNotificationManager.Initialize(this, true);
+
+            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
+            {
+                Console.WriteLine("CrossFirebasePushNotificationCrossFirebasePushNotificationCrossFirebasePushNotification");
+            };
         }
 
         public override void OnTerminate()
