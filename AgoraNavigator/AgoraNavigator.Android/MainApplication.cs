@@ -1,15 +1,14 @@
 using System;
-
 using Android.App;
-using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CurrentActivity;
 using Plugin.FirebasePushNotification;
 
+
 namespace AgoraNavigator.Droid
 {
-	 //You can specify additional application information in this attribute
+    //You can specify additional application information in this attribute
     [Application]
     public class MainApplication : Application, Application.IActivityLifecycleCallbacks
     {
@@ -22,12 +21,7 @@ namespace AgoraNavigator.Droid
         {
             base.OnCreate();
             RegisterActivityLifecycleCallbacks(this);
-            FirebasePushNotificationManager.Initialize(this, true);
-
-            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
-            {
-                Console.WriteLine("CrossFirebasePushNotificationCrossFirebasePushNotificationCrossFirebasePushNotification");
-            };
+            FirebasePushNotificationManager.Initialize(this, true); 
         }
 
         public override void OnTerminate()
