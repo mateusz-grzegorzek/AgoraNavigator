@@ -1,6 +1,4 @@
-﻿using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
-using System;
+﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 
@@ -30,14 +28,14 @@ namespace AgoraNavigator.GoogleMap
             Title = "Map";
             map = new Map()
             {
-                IsShowingUser = false,
+                MyLocationEnabled = true,
                 HeightRequest = 100,
                 WidthRequest = 960,
                 IsIndoorEnabled = true,
-                HasRotationEnabled = true,
                 MapType = MapType.Hybrid,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
+            map.UiSettings.RotateGesturesEnabled = true;
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(50.0655097, 19.9099141), Distance.FromMiles(0.05)));
             var stack = new StackLayout { Spacing = 0 };
             stack.Children.Add(map);

@@ -1,13 +1,14 @@
 using System;
-
 using Android.App;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CurrentActivity;
+using Plugin.FirebasePushNotification;
+
 
 namespace AgoraNavigator.Droid
 {
-	 //You can specify additional application information in this attribute
+    //You can specify additional application information in this attribute
     [Application]
     public class MainApplication : Application, Application.IActivityLifecycleCallbacks
     {
@@ -20,7 +21,7 @@ namespace AgoraNavigator.Droid
         {
             base.OnCreate();
             RegisterActivityLifecycleCallbacks(this);
-            //A great place to initialize Xamarin.Insights and Dependency Services!
+            FirebasePushNotificationManager.Initialize(this, true); 
         }
 
         public override void OnTerminate()

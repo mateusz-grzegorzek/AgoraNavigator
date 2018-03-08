@@ -24,12 +24,10 @@ namespace AgoraNavigator.Login
         public WelcomePage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
-            Label welcomeLabel = new Label();
-            welcomeLabel.Text = "Welcome in Agora Navigator!";
+            Label welcomeLabel = new Label {Text = "Welcome in Agora Navigator!"};
 
-            Button welcomeButton = new Button();
-            welcomeButton.Text = "Enter Agora Navigator!";
-            welcomeButton.Clicked += OnWelcomeButtonClicked;
+            Button welcomeButton = new Button{Text = "Enter Agora Navigator!"};
+            welcomeButton.Clicked += OnWelcomeButtonClickedAsync;
             welcomeButton.BackgroundColor = Color.Transparent;
             welcomeButton.TextColor = Color.Blue;
             welcomeButton.BorderWidth = 1;
@@ -49,11 +47,10 @@ namespace AgoraNavigator.Login
             simpleLayout.Children.Add(welcomeButton);
             Content = simpleLayout;
         }
-
-        public void OnWelcomeButtonClicked(object sender, EventArgs e)
+        
+        public void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
-            DependencyService.Get<INotification>().Notify("Title", "Message");
             mainPage = new MainPage();
             Navigation.PushAsync(mainPage);
         }

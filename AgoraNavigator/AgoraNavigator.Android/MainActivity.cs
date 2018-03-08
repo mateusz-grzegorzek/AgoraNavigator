@@ -1,14 +1,12 @@
-﻿using System;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 using Plugin.Permissions;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using Plugin.FirebasePushNotification;
+using Android.Content;
+using Xamarin;
 
 namespace AgoraNavigator.Droid
 {
@@ -20,9 +18,9 @@ namespace AgoraNavigator.Droid
             base.OnCreate(bundle);
 
             Forms.Init(this, bundle);
-            Xamarin.FormsGoogleMaps.Init(this, bundle);
-
+            FormsGoogleMaps.Init(this, bundle);
             LoadApplication(new App());
+            FirebasePushNotificationManager.ProcessIntent(this, Intent);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)

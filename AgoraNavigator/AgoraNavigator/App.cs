@@ -1,8 +1,7 @@
 ﻿using AgoraNavigator.Login;
-using AgoraNavigator.Menu;
+using Plugin.FirebasePushNotification;
 using System;
 using Xamarin.Forms;
-using Com.OneSignal;
 
 namespace AgoraNavigator
 {
@@ -11,8 +10,16 @@ namespace AgoraNavigator
         public App()
         {
             Console.WriteLine("Application started!");
+            FirebaseMessagingClient.InitFirebaseMessagingClient();
+            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
+            {
+                Console.WriteLine("OnNotificationReceived:");
+                foreach (var data in p.Data)
+                {
+                    Console.WriteLine($"{data.Key} : {data.Value}");
+                }
+            };
             MainPage = new StartingPage();
-            OneSignal.Current.StartInit("c4f53afa-e275-4d90-9a9c-82f94d5e40bc").EndInit();
         }
     }
 }

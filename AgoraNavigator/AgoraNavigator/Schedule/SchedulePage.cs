@@ -59,11 +59,7 @@ namespace AgoraNavigator.Schedule
 
         private async Task FetchScheduleAsync()
         {
-            var firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
-
-            var items = await firebaseClient
-                .Child(_databaseScheduleKey)
-                .OnceAsync<ScheduleItem>();
+            var items = await FirebaseMessagingClient.SendQuery<ScheduleItem>(_databaseScheduleKey);
 
             var groupedItems = items
                 .GroupBy(item => item.Object.StartTime.Date, item => item.Object)
