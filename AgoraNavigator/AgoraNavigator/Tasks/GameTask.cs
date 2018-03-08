@@ -1,5 +1,5 @@
 ﻿using AgoraNavigator.Login;
-using Newtonsoft.Json;
+using Plugin.FirebasePushNotification;
 using System;
 using System.Threading.Tasks;
 
@@ -47,9 +47,9 @@ namespace AgoraNavigator.Tasks
                     result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
                     if(result)
                     {
-                        task.ownerId = Users.loggedUser.Id;
-                        String msg = JsonConvert.SerializeObject(task);
-                        Console.WriteLine("GameTask:ProcessTask:resp=");
+                        CrossFirebasePushNotification.Current.Subscribe("AEGEE_Army");
+                        String databasePath = "tasks/3/" + Users.loggedUser.AntenaId + "/" + Users.loggedUser.Id;
+                        await FirebaseMessagingClient.SendMessage(databasePath, "1");
                     }
                     break;
             }

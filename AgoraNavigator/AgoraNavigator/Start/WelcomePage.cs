@@ -1,9 +1,6 @@
 ﻿using AgoraNavigator.Menu;
 using System;
 using Xamarin.Forms;
-using Firebase.Database;
-using Newtonsoft.Json;
-using Plugin.FirebasePushNotification;
 
 namespace AgoraNavigator.Login
 {
@@ -51,25 +48,11 @@ namespace AgoraNavigator.Login
             Content = simpleLayout;
         }
         
-        public async void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
+        public void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
-            var firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
-
-            //FirebaseMessaging.Instance.SubscribeToTopic("AEGEE_Army");
-            CrossFirebasePushNotification.Current.Subscribe("AEGEE_Army");
-            Message msg = new Message
-            {
-                userId = Users.users[0].Id,
-                antenaId = Users.users[0].AntenaId,
-                taskId = 3,
-                body = ""
-            };
-            String jMsg = JsonConvert.SerializeObject(msg);
-            String path = "tasks/3/" + Users.users[0].Id;
-            await firebaseClient.Child(path).PutAsync("2");
-            //mainPage = new MainPage();
-            //Navigation.PushAsync(mainPage);
+            mainPage = new MainPage();
+            Navigation.PushAsync(mainPage);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace AgoraNavigator
         public App()
         {
             Console.WriteLine("Application started!");
+            FirebaseMessagingClient.InitFirebaseMessagingClient();
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
             {
                 Console.WriteLine("OnNotificationReceived:");
