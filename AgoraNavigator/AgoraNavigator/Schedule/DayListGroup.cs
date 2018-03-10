@@ -19,6 +19,8 @@ namespace AgoraNavigator.Schedule
 
         public DateTime Date { get; set; }
 
-        public string DayName => Date.ToString("M");
+        public string DayName => Date.ToString("dddd, d MMM");
+
+        public IEnumerable<ScheduleItemViewModel> Items => this;
     }
 }
