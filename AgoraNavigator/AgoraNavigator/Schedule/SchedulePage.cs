@@ -1,5 +1,4 @@
 ﻿using AgoraNavigator.Domain.Schedule;
-using Firebase.Database;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,50 +10,35 @@ namespace AgoraNavigator.Schedule
 {
     public class SchedulePage : NavigationPage
     {
-        public static ScheduleMasterPage scheduleMasterPage;
+        private static ScheduleDaysPage scheduleDaysPage;
 
         public SchedulePage()
         {
-            scheduleMasterPage = new ScheduleMasterPage();
-            Navigation.PushAsync(scheduleMasterPage);
+            scheduleDaysPage = new ScheduleDaysPage();
+            Navigation.PushAsync(scheduleDaysPage);
         }
     }
 
-    public class ScheduleMasterPage : ContentPage
+    public class ScheduleDaysPage : CarouselPage
     {
-        private ObservableCollection<DayListGroup> _scheduleItems { get; set; }
-        private ListView _scheduleItemsListView;
         private const string _databaseScheduleKey = "schedule";
 
-        public ScheduleMasterPage()
+        public ScheduleDaysPage()
         {
             Title = "Schedule";
 
-            _scheduleItems = new ObservableCollection<DayListGroup>();
-
-            _scheduleItemsListView = new ListView()
-            {
-                ItemsSource = _scheduleItems,
-                ItemTemplate = new DataTemplate(typeof(ScheduleItemCell)),
-                IsGroupingEnabled = true,
-                GroupDisplayBinding = new Binding("DayName"),
-                HasUnevenRows = true,
-            };
-
-            _scheduleItemsListView.ItemSelected += OnScheduleItemSelected;
-
             Appearing += OnPageAppearing;
 
-            var stack = new StackLayout();
-            stack.Children.Add(_scheduleItemsListView);
-            Content = stack;
+            ItemsSource = new ObservableCollection<DayListGroup>();
+
+            ItemTemplate = new DataTemplate(typeof(ScheduleDayPage));
         }
 
         private async void OnPageAppearing(object sender, EventArgs e)
         {
-            _scheduleItemsListView.IsRefreshing = true;
+            this.IsBusy = true;
             await FetchScheduleAsync();
-            _scheduleItemsListView.IsRefreshing = false;
+            this.IsBusy = false;
         }
 
         private async Task FetchScheduleAsync()
@@ -64,15 +48,47 @@ namespace AgoraNavigator.Schedule
             var groupedItems = items
                 .GroupBy(item => item.Object.StartTime.Date, item => item.Object)
                 .Select(group => new DayListGroup(
-                    group.Key, 
+                    group.Key,
                     group.Select(item => new ScheduleItemViewModel(item))
                 ));
 
-            _scheduleItems.Clear();
+            var days = (ObservableCollection<DayListGroup>) ItemsSource;
+
+            days.Clear();
+
             foreach (var scheduleItem in groupedItems)
             {
-                _scheduleItems.Add(scheduleItem);
+                days.Add(scheduleItem);
             }
+        }
+    }
+
+    public class ScheduleDayPage : ContentPage
+    {
+        private ListView _scheduleItemsListView;
+        private Label _dayTitleLabel;
+
+        public ScheduleDayPage()
+        {
+            _dayTitleLabel = new Label()
+            {
+                Style = Device.Styles.SubtitleStyle,
+                FontSize = 24
+            };
+            _dayTitleLabel.SetBinding(Label.TextProperty, "DayName");
+
+            _scheduleItemsListView = new ListView()
+            {
+                ItemTemplate = new DataTemplate(typeof(ScheduleItemCell)),
+                HasUnevenRows = true,
+            };
+            _scheduleItemsListView.SetBinding(ListView.ItemsSourceProperty, "Items");
+            _scheduleItemsListView.ItemSelected += OnScheduleItemSelected;
+
+            var stack = new StackLayout();
+            stack.Children.Add(_dayTitleLabel);
+            stack.Children.Add(_scheduleItemsListView);
+            Content = stack;
         }
 
         private void OnScheduleItemSelected(object sender, SelectedItemChangedEventArgs e)
