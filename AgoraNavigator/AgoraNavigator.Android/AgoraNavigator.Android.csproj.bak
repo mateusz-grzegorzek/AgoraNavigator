@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>AgoraNavigator.Droid</RootNamespace>
     <AssemblyName>AgoraNavigator.Android</AssemblyName>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -82,7 +82,7 @@
       <Version>5.0.5</Version>
     </PackageReference>
     <PackageReference Include="FirebaseDatabase.net">
-      <Version>3.3.3</Version>
+      <Version>3.3.2</Version>
     </PackageReference>
     <PackageReference Include="NETStandard.Library">
       <Version>2.0.1</Version>
@@ -101,9 +101,6 @@
     </PackageReference>
     <PackageReference Include="Plugin.Permissions">
       <Version>2.2.1</Version>
-    </PackageReference>
-    <PackageReference Include="Xam.Plugins.Settings">
-      <Version>3.1.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Design">
       <Version>26.1.0.1</Version>
