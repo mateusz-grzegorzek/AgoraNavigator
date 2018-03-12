@@ -20,12 +20,15 @@ namespace AgoraNavigator.Schedule
 
             Label titleLabel = new Label()
             {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                Style = Device.Styles.ListItemTextStyle
             };
-            Label presenterLabel = new Label();
+            Label presenterLabel = new Label()
+            {
+                Style = Device.Styles.BodyStyle
+            };
             Label timeLabel = new Label()
             {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                Style = Device.Styles.ListItemTextStyle
             };
 
             titleLabel.SetBinding(Label.TextProperty, "Title");
