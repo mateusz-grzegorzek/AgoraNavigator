@@ -13,7 +13,7 @@ namespace AgoraNavigator.Tasks
         public async void closeTask(GameTask task)
         {
             await DisplayAlert("Task", "Succes!", "Ok");
-            await Users.closeTask(task);
+            await GameTask.closeTask(task.id);
             GamePage.totalPointsLabel.Text = "Total points: " + Users.loggedUser.TotalPoints.ToString();
             await MainPage.tasksPage.Navigation.PopAsync();
         }
@@ -24,12 +24,12 @@ namespace AgoraNavigator.Tasks
             Title = "Tasks";
             BackgroundColor = Color.AliceBlue;
 
-            closedTasksView = new TasksMasterView(Users.loggedUser.closedTasks);
-            closedTasksView.Title = "Closed";
-            this.Children.Add(closedTasksView);
             openedTasksView = new TasksMasterView(Users.loggedUser.openedTasks);
             openedTasksView.Title = "Open";
             this.Children.Add(openedTasksView);
+            closedTasksView = new TasksMasterView(Users.loggedUser.closedTasks);
+            closedTasksView.Title = "Closed";
+            this.Children.Add(closedTasksView);
         }
     }
 }

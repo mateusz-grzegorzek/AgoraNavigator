@@ -73,6 +73,9 @@ namespace AgoraNavigator.Tasks
 
         public async void OnLoginButtonClicked(object sender, EventArgs e)
         {
+            await Users.InitUserData(Users.users[0]);
+            WelcomePage.mainPage.UserLoggedSuccessfully();
+            /*
             Console.WriteLine("OnLoginButtonClicked");
             Console.WriteLine("OnLoginButtonClicked:idEntry=" + idEntry.Text + ", pinEntry=" + pinEntry);
             int id = Convert.ToInt32(idEntry.Text);
@@ -99,6 +102,7 @@ namespace AgoraNavigator.Tasks
             }
             Console.WriteLine("OnLoginButtonClicked:User with id=" + id + " doesn't exist!");
             await DisplayAlert("Login", "User with id=" + id + " doesn't exist!", "Ok");
+            */
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AgoraNavigator.Tasks;
+using Firebase.Auth;
 using Newtonsoft.Json;
 using PCLStorage;
 using System;
@@ -16,6 +17,7 @@ namespace AgoraNavigator.Login
 
     public class User
     {
+        public String firebaseToken;
         public int Id { get; set; }
         public int Pin { get; set; }
         public int AntenaId { get; set; }
@@ -58,10 +60,10 @@ namespace AgoraNavigator.Login
                 userDataFile = await userDataFolder.CreateFileAsync("user_data.txt", CreationCollisionOption.FailIfExists);
                 Console.WriteLine("Users:InitUserData:userDataFile=" + userDataFile.Name + " created.");
                 loggedUser = user;
+                loggedUser.firebaseToken = FirebaseMessagingClient.firebaseToken;
                 loggedUser.TotalPoints = 0;
+                loggedUser.openedTasks = new ObservableCollection<GameTask>(GameTask.allTasks);
                 loggedUser.closedTasks = new ObservableCollection<GameTask>();
-                loggedUser.openedTasks = new ObservableCollection<GameTask>();
-                GameTask.AddTasks();
                 String userData = JsonConvert.SerializeObject(loggedUser);
                 await userDataFile.WriteAllTextAsync(userData);
             }
@@ -72,24 +74,16 @@ namespace AgoraNavigator.Login
                 String userData = await userDataFile.ReadAllTextAsync();
                 loggedUser = JsonConvert.DeserializeObject<User>(userData);
             }
+            await FirebaseMessagingClient.CreateUserProfile(loggedUser.firebaseToken);
             isUserLogged = true;
             Console.WriteLine("Users:InitUserData:loggedUser.TotalPoints=" + loggedUser.TotalPoints);
             Console.WriteLine("Users:InitUserData:loggedUser.openedTasks.Count=" + loggedUser.openedTasks.Count);
             Console.WriteLine("Users:InitUserData:loggedUser.closedTasks.Count=" + loggedUser.closedTasks.Count);
         }
 
-        public async static Task closeTask(GameTask task)
+        public async static Task SaveUserData(String userData)
         {
-            Console.WriteLine("Users:closeTask:task.id=" + task.id);
-            task.completed = true;
-            loggedUser.TotalPoints += task.scorePoints;
-            loggedUser.openedTasks.Remove(task);
-            loggedUser.closedTasks.Add(task);
-            String userData = JsonConvert.SerializeObject(loggedUser);
             await userDataFile.WriteAllTextAsync(userData);
-            Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + loggedUser.TotalPoints);
-            Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + loggedUser.openedTasks.Count);
-            Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + loggedUser.closedTasks.Count);
         }
     }
 }

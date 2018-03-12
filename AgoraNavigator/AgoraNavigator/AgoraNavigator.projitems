@@ -17,7 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Local Notifications\INotification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Start\WelcomePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\GameLoginPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Start\Users.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Users.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\MainPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Map\MapPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\MasterPage.cs" />
