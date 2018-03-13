@@ -53,8 +53,7 @@ namespace AgoraNavigator.Schedule
                 processDays(groupedItems);
 
             } catch(Exception e)
-            {
-                DependencyService.Get<INotification>().Notify("Brak połączenia z internetem", "Plan może być nie aktualny, włącz internet w celu aktualizacji");
+            {                
                 List<ScheduleItem> itemList = new List<ScheduleItem>();
                 while (counter != 0)
                 {
@@ -65,6 +64,11 @@ namespace AgoraNavigator.Schedule
 
                     itemList.Add(item);
                 }
+                if (itemList.Count.Equals(0))
+                {
+                    LoadDefaultData(itemList);
+                }
+                DependencyService.Get<INotification>().Notify("No internet connection", "The plan may be out of date, turn on the internet for updates");
 
                 var groupedItems = itemList.GroupBy(value => value.StartTime.Date, value => value)
                     .Select(group => new DayListGroup(
@@ -73,6 +77,27 @@ namespace AgoraNavigator.Schedule
 
                 processDays(groupedItems);
             }
+        }
+
+        private static void LoadDefaultData(List<ScheduleItem> itemList)
+        {
+            //Load default data
+            AddItemToList(itemList, "Opening Ceremony", DateTime.Parse("2017-04-23T13:00:00"), "Chuck Norris");
+            AddItemToList(itemList, "The Pierogi Workshop", DateTime.Parse("2017-04-24T13:00:00"), "Andrzej Duda");
+            AddItemToList(itemList, "Melanż & Drinking Presentation", DateTime.Parse("2017-04-24T14:15:00"), "Owca");
+            AddItemToList(itemList, "Another lecture", DateTime.Parse("2017-04-24T18:00:00"), "Michael Jackson");
+            AddItemToList(itemList, "Lorem Ipsum", DateTime.Parse("2017-04-25T13:00:00"), "Bill Gates");
+            AddItemToList(itemList, "Sid Domet", DateTime.Parse("2017-04-26"), "Franek Kimono");
+            AddItemToList(itemList, "Lelum Polelum", DateTime.Parse("2017-04-27"), "Ferdynand Kiepski");
+        }
+
+        private static void AddItemToList(List<ScheduleItem> itemList, String title, DateTime date, String presenter)
+        {
+            ScheduleItem item = new ScheduleItem();
+            item.Title = title;
+            item.StartTime = date;
+            item.Presenter = presenter;
+            itemList.Add(item);
         }
 
         private void processDays(IEnumerable<DayListGroup> groupedItems)
