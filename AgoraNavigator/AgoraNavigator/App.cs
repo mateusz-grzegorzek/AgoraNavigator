@@ -1,10 +1,8 @@
 ﻿using AgoraNavigator.Login;
 using AgoraNavigator.Tasks;
-using Newtonsoft.Json;
 using Plugin.FirebasePushNotification;
 using Plugin.FirebasePushNotification.Abstractions;
 using System;
-using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
@@ -14,9 +12,8 @@ namespace AgoraNavigator
         public App()
         {
             Console.WriteLine("Application started!");
+            Console.WriteLine("Application started:firebaseToken="+ FirebaseMessagingClient.firebaseToken);
             FirebaseMessagingClient.InitFirebaseMessagingClient();
-            CrossFirebasePushNotification.Current.Subscribe("Agora_News");
-            CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
             GameTask.AddTasks();
             CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandler;
             MainPage = new StartingPage();
@@ -25,16 +22,23 @@ namespace AgoraNavigator
         async void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationDataEventArgs e)
         {
             Console.WriteLine("OnNotificationReceived");
-            String title = e.Data["title"].ToString();
-            Console.WriteLine("OnNotificationReceived:title:" + title);
-            if (title == "Login state")
+            try
             {
-                GameLoginNavPage.gameLoginPage.Login(e.Data);
+                String title = e.Data["title"].ToString();
+                Console.WriteLine("OnNotificationReceived:title:" + title);
+                if (title == "Login state")
+                {
+                    GameLoginNavPage.gameLoginPage.Login(e.Data);
+                }
+                else if (title == "AEGEE Army")
+                {
+                    Console.WriteLine("AEGEE Army task done!");
+                    await GameTask.CloseTask(2);
+                }
             }
-            else if(title == "AEGEE Army")
+            catch(Exception err)
             {
-                Console.WriteLine("AEGEE Army task done!");
-                await GameTask.closeTask(2);
+                Console.WriteLine("OnNotificationReceived:" + err.ToString());
             }
         }
     }

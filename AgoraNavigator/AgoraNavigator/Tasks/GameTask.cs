@@ -18,8 +18,6 @@ namespace AgoraNavigator.Tasks
             PreBLE = 2
         }
 
-        public int ownerId { get; set; }
-
         public int id { get; set; }
 
         public string title { get; set; }
@@ -76,7 +74,7 @@ namespace AgoraNavigator.Tasks
             return result;
         }
 
-        public async static Task closeTask(int taskId)
+        public async static Task CloseTask(int taskId)
         {
             GameTask task = allTasks[taskId];
             Console.WriteLine("Users:closeTask:task.id=" + task.id);
@@ -86,6 +84,8 @@ namespace AgoraNavigator.Tasks
             Users.loggedUser.closedTasks.Add(task);
             String databasePath = "/users/" + Users.loggedUser.Id + "/closedTasks/" + taskId;
             await FirebaseMessagingClient.SendMessage(databasePath, taskId.ToString());
+            databasePath = "/users/" + Users.loggedUser.Id + "/totalPoints/";
+            await FirebaseMessagingClient.SendMessage(databasePath, Users.loggedUser.TotalPoints.ToString());
             Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.TotalPoints);
             Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.openedTasks.Count);
             Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.closedTasks.Count);

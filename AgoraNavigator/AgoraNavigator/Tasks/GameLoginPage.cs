@@ -92,9 +92,9 @@ namespace AgoraNavigator.Tasks
                 String pin = pinEntry.Text;
 
                 CrossFirebasePushNotification.Current.Subscribe("User_" + id);
-                String databasePath = "/login/" + id;
+                String databasePath = "/login/" + id + "/" + pin;
                 infoLabel.Text = "Logging in, please wait...";
-                await FirebaseMessagingClient.SendMessage(databasePath, pin);
+                await FirebaseMessagingClient.SendMessage(databasePath, JsonConvert.SerializeObject(FirebaseMessagingClient.firebaseToken));
             }
             else
             {
@@ -107,16 +107,14 @@ namespace AgoraNavigator.Tasks
             String succes = loginInfo["succes"].ToString();
             if (succes == "true")
             {
-                DependencyService.Get<INotification>().Notify("Login status", "Login succes!");
-                //FirebaseMessagingClient.SignInWithCustomTokenAsync(loginInfo["token"].ToString());
                 String obj = loginInfo["userInfo"].ToString();
                 IDictionary<string, object> userInfo = JsonConvert.DeserializeObject<IDictionary<string, object>>(obj);
                 Users.InitUserData(userInfo);
-                WelcomePage.mainPage.UserLoggedSuccessfully();
-            }
-            else
-            {
-                DependencyService.Get<INotification>().Notify("Login status", "Login failed! Wrong PIN number!");
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    WelcomePage.mainPage.DisplayAlert("Login state", "Login succes!", "Ok");
+                    WelcomePage.mainPage.UserLoggedSuccessfully();
+                });
             }
         }
     }

@@ -1,6 +1,9 @@
 ﻿using AgoraNavigator.Menu;
+using Firebase.Iid;
+using Newtonsoft.Json;
 using Plugin.FirebasePushNotification;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Login
@@ -48,17 +51,15 @@ namespace AgoraNavigator.Login
             Content = simpleLayout;
         }
         
-        public void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
+        public async void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
-            string[] topics = CrossFirebasePushNotification.Current.SubscribedTopics;
-            Console.WriteLine("SubscribedTopics:");
-            foreach (string topic in topics)
-            {
-                Console.WriteLine("topic=" + topic);
-            }
+            String databasePath = "/register/";
+            await FirebaseMessagingClient.SendMessage(databasePath, JsonConvert.SerializeObject(FirebaseInstanceId.Instance.Token));
+            CrossFirebasePushNotification.Current.Subscribe("Agora_News");
+            CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
             mainPage = new MainPage();
-            Navigation.PushAsync(mainPage);
+            await Navigation.PushAsync(mainPage);
         }
     }
 }

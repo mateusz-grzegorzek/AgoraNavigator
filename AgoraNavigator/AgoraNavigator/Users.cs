@@ -14,7 +14,6 @@ namespace AgoraNavigator.Login
 
     public class User
     {
-        public String firebaseToken;
         public int Id { get; set; }
         public int AntenaId { get; set; }
         public int TotalPoints { get; set; }
@@ -32,40 +31,47 @@ namespace AgoraNavigator.Login
             loggedUser = new User();
             loggedUser.Id = Convert.ToInt32(userInfo["userId"]);
             loggedUser.AntenaId = Convert.ToInt32(userInfo["antenaId"]);
-            loggedUser.firebaseToken = FirebaseMessagingClient.firebaseToken;
             loggedUser.TotalPoints = Convert.ToInt32(userInfo["totalPoints"]);
             loggedUser.closedTasks = new ObservableCollection<GameTask>();
-            loggedUser.openedTasks = new ObservableCollection<GameTask>();
-            JArray closedTasks = (JArray)userInfo["closedTasks"];
-            foreach (GameTask task in GameTask.allTasks)
+            try
             {
-                bool closed = false;
-                foreach (JToken token in closedTasks)
+                JObject closedTasks = (JObject)userInfo["closedTasks"];
+                loggedUser.openedTasks = new ObservableCollection<GameTask>();
+                foreach (GameTask task in GameTask.allTasks)
                 {
-                    try
+                    bool closed = false;
+                    foreach (KeyValuePair<string, JToken> token in closedTasks)
                     {
-                        if (Convert.ToUInt32(token) == task.id)
+                        try
                         {
-                            closed = true;
-                            break;
+                            if (Convert.ToUInt32(token.Key) == task.id)
+                            {
+                                task.completed = true;
+                                closed = true;
+                                break;
+                            }
                         }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.ToString());
+                        }
+
                     }
-                    catch (Exception e)
+                    if (closed)
                     {
-                        Console.WriteLine(e.ToString());
+                        loggedUser.closedTasks.Add(task);
                     }
-                    
-                }
-                if (closed)
-                {
-                    loggedUser.closedTasks.Add(task);
-                }
-                else
-                {
-                    loggedUser.openedTasks.Add(task);
+                    else
+                    {
+                        loggedUser.openedTasks.Add(task);
+                    }
                 }
             }
-
+            catch(Exception)
+            {
+                loggedUser.openedTasks = new ObservableCollection<GameTask>(GameTask.allTasks);
+            }
+  
             isUserLogged = true;
             Console.WriteLine("Users:InitUserData:loggedUser.Id=" + loggedUser.Id);
             Console.WriteLine("Users:InitUserData:loggedUser.AntenaId=" + loggedUser.AntenaId);

@@ -1,9 +1,6 @@
 ﻿using Android.App;
-using Android.Gms.Tasks;
-using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Iid;
-using Plugin.CurrentActivity;
 using Plugin.DeviceInfo;
 using System;
 using System.Collections.Generic;
@@ -45,7 +42,7 @@ namespace AgoraNavigator
             firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
         }
 
-        public static async System.Threading.Tasks.Task SendMessage(String path, String msg)
+        public static async Task SendMessage(String path, String msg)
         {  
             if(IsNetworkAvailable())
             {
