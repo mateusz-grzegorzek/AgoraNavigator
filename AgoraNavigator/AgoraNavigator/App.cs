@@ -1,25 +1,22 @@
 ﻿using AgoraNavigator.Login;
 using AgoraNavigator.Tasks;
-using Firebase.Auth;
+using Newtonsoft.Json;
 using Plugin.FirebasePushNotification;
 using Plugin.FirebasePushNotification.Abstractions;
 using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
 {
     public class App : Application
-    {
-        class Message
-        {
-            public String head;
-            public String body;
-        }
-
+    {    
         public App()
         {
             Console.WriteLine("Application started!");
             FirebaseMessagingClient.InitFirebaseMessagingClient();
+            CrossFirebasePushNotification.Current.Subscribe("Agora_News");
+            CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
             GameTask.AddTasks();
             CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandler;
             MainPage = new StartingPage();
@@ -27,21 +24,18 @@ namespace AgoraNavigator
 
         async void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationDataEventArgs e)
         {
-            Console.WriteLine("OnNotificationReceived:");
-            foreach (var data in e.Data)
+            Console.WriteLine("OnNotificationReceived");
+            String title = e.Data["title"].ToString();
+            Console.WriteLine("OnNotificationReceived:title:" + title);
+            if (title == "Login state")
             {
-                Console.WriteLine($"{data.Key} : {data.Value}");
-                if (data.Value.ToString().Contains("AEGEE_Army"))
-                {
-                    Console.WriteLine("AEGEE_Army");
-                    await GameTask.closeTask(2);
-                }
-                else if(((Message)data.Value).head != null && ((Message)data.Value).head == "customToken")
-                {
-                    FirebaseMessagingClient.SignInWithCustomToken(((Message)data.Value).body);
-                }
+                GameLoginNavPage.gameLoginPage.Login(e.Data);
             }
-            var userAS = FirebaseAuth.Instance.CurrentUser;
+            else if(title == "AEGEE Army")
+            {
+                Console.WriteLine("AEGEE Army task done!");
+                await GameTask.closeTask(2);
+            }
         }
     }
 }

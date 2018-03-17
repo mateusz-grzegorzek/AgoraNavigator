@@ -84,8 +84,8 @@ namespace AgoraNavigator.Tasks
             Users.loggedUser.TotalPoints += task.scorePoints;
             Users.loggedUser.openedTasks.Remove(task);
             Users.loggedUser.closedTasks.Add(task);
-            String userData = JsonConvert.SerializeObject(Users.loggedUser);
-            await Users.SaveUserData(userData);
+            String databasePath = "/users/" + Users.loggedUser.Id + "/closedTasks/" + taskId;
+            await FirebaseMessagingClient.SendMessage(databasePath, taskId.ToString());
             Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.TotalPoints);
             Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.openedTasks.Count);
             Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.closedTasks.Count);

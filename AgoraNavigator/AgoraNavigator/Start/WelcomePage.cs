@@ -1,4 +1,5 @@
 ﻿using AgoraNavigator.Menu;
+using Plugin.FirebasePushNotification;
 using System;
 using Xamarin.Forms;
 
@@ -11,7 +12,6 @@ namespace AgoraNavigator.Login
         public StartingPage()
         {
             Console.WriteLine("StartingPage");
-            Users.InitUsers();
             welcomePage = new WelcomePage();
             Navigation.PushAsync(welcomePage);
         }
@@ -51,6 +51,12 @@ namespace AgoraNavigator.Login
         public void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
+            string[] topics = CrossFirebasePushNotification.Current.SubscribedTopics;
+            Console.WriteLine("SubscribedTopics:");
+            foreach (string topic in topics)
+            {
+                Console.WriteLine("topic=" + topic);
+            }
             mainPage = new MainPage();
             Navigation.PushAsync(mainPage);
         }

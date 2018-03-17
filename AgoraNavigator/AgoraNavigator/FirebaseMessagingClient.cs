@@ -1,11 +1,14 @@
-﻿using AgoraNavigator.Login;
-using Android.App;
+﻿using Android.App;
+using Android.Gms.Tasks;
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Iid;
+using Plugin.CurrentActivity;
+using Plugin.DeviceInfo;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace AgoraNavigator
 {
@@ -16,18 +19,25 @@ namespace AgoraNavigator
         private static FirebaseClient firebaseClient;
         public static String firebaseToken;
 
+        public static bool IsNetworkAvailable()
+        {
+            bool result = false;
+            NetworkInfo netInfo = new NetworkInfo();
+            if(NetworkReachability.NotReachable != netInfo.InternetReachability && 
+                NetworkReachability.Unknown != netInfo.InternetReachability)
+            {
+                result = true;
+            }
+            else
+            {
+                DependencyService.Get<INotification>().Notify("No internet connection", "Turn on the network.");
+            }
+            return result;
+        }
+
         public override void OnTokenRefresh()
         {
             firebaseToken = FirebaseInstanceId.Instance.Token;
-        }
-
-        public static async Task CreateUserProfile(String token)
-        {
-            await SendMessage("users/" + Users.loggedUser.Id, token);
-        }
-        public static void SignInWithCustomToken(String token)
-        {
-            FirebaseAuth.Instance.SignInWithCustomToken(token);
         }
 
         public static void InitFirebaseMessagingClient()
@@ -35,9 +45,12 @@ namespace AgoraNavigator
             firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
         }
 
-        public static async Task SendMessage(String path, String msg)
+        public static async System.Threading.Tasks.Task SendMessage(String path, String msg)
         {  
-            await firebaseClient.Child(path).PutAsync(msg);
+            if(IsNetworkAvailable())
+            {
+                await firebaseClient.Child(path).PutAsync(msg);
+            }
         }
 
         public static async Task<IReadOnlyCollection<FirebaseObject<T>>> SendQuery<T>(String path)
