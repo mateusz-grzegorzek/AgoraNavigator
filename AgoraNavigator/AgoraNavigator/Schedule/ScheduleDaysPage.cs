@@ -55,16 +55,20 @@ namespace AgoraNavigator.Schedule
             } catch(Exception e)
             {                
                 List<ScheduleItem> itemList = new List<ScheduleItem>();
-                while (counter != 0)
+                counter = Plugin.Settings.CrossSettings.Current.GetValueOrDefault("counter", 0);
+                if(counter > 0)
                 {
-                    ScheduleItem item = new ScheduleItem();
-                    item.Title = Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), "");
-                    item.StartTime = DateTime.Parse(Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), ""));
-                    item.Presenter = Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), "");
+                    while (counter != 0)
+                    {
+                        ScheduleItem item = new ScheduleItem();
+                        item.Title = Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), "");
+                        item.StartTime = DateTime.Parse(Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), ""));
+                        item.Presenter = Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), "");
 
-                    itemList.Add(item);
+                        itemList.Add(item);
+                    }
                 }
-                if (itemList.Count.Equals(0))
+                else
                 {
                     LoadDefaultData(itemList);
                 }
@@ -81,7 +85,6 @@ namespace AgoraNavigator.Schedule
 
         private static void LoadDefaultData(List<ScheduleItem> itemList)
         {
-            //Load default data
             AddItemToList(itemList, "Opening Ceremony", DateTime.Parse("2017-04-23T13:00:00"), "Chuck Norris");
             AddItemToList(itemList, "The Pierogi Workshop", DateTime.Parse("2017-04-24T13:00:00"), "Andrzej Duda");
             AddItemToList(itemList, "Melanż & Drinking Presentation", DateTime.Parse("2017-04-24T14:15:00"), "Owca");
@@ -116,6 +119,7 @@ namespace AgoraNavigator.Schedule
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.Presenter);
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.StartTime.Date.ToString());
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.Title);
+            Plugin.Settings.CrossSettings.Current.AddOrUpdateValue("counter", counter);
         }
     }
 }

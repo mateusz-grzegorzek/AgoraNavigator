@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Firebase.Iid;
+using Xamarin.Forms;
 
 namespace AgoraNavigator.Info
 {
@@ -21,7 +22,7 @@ namespace AgoraNavigator.Info
             Content = new StackLayout
             {
                 Children = {
-                   new Label { Text = "Welcome to Xamarin.Forms!" }
+                   new Label { Text = FirebaseInstanceId.Instance.Token }
                 }
             };
         }

@@ -1,5 +1,9 @@
 ﻿using AgoraNavigator.Menu;
+using Firebase.Iid;
+using Newtonsoft.Json;
+using Plugin.FirebasePushNotification;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Login
@@ -11,7 +15,6 @@ namespace AgoraNavigator.Login
         public StartingPage()
         {
             Console.WriteLine("StartingPage");
-            Users.InitUsers();
             welcomePage = new WelcomePage();
             Navigation.PushAsync(welcomePage);
         }
@@ -48,11 +51,11 @@ namespace AgoraNavigator.Login
             Content = simpleLayout;
         }
         
-        public void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
+        public async void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
             mainPage = new MainPage();
-            Navigation.PushAsync(mainPage);
+            await Navigation.PushAsync(mainPage);
         }
     }
 }

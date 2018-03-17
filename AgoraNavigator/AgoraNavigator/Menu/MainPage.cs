@@ -32,7 +32,7 @@ namespace AgoraNavigator.Menu
             infoPage = new InfoPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
-            Detail = infoPage;
+            Detail = gameLoginNavPage;// infoPage;
         }
 
         public void UserLoggedSuccessfully()

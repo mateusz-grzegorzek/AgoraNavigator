@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using static AgoraNavigator.Tasks.GameTask;
@@ -50,6 +47,7 @@ namespace AgoraNavigator.Tasks
         public async Task OnAnswerButtonClick(object sender, EventArgs e)
         {
             Console.WriteLine("OnAnswerButtonClick");
+            bool result = false;
             switch (actualTask.taskType)
             {
                 case TaskType.Text:
@@ -58,7 +56,7 @@ namespace AgoraNavigator.Tasks
                     if (actualTask.correctAnswer == answerEntry.Text)
                     {
                         Console.WriteLine("Yeah! Correct answer!");
-                        GamePage.tasksMasterPage.closeTask(actualTask);
+                        result = true;
                     }
                     else
                     {
@@ -66,15 +64,16 @@ namespace AgoraNavigator.Tasks
                     }
                     break;
                 case TaskType.Button:
-                    bool result = await ProcessTask(actualTask);
-                    if (result)
-                    {
-                        GamePage.tasksMasterPage.closeTask(actualTask);
-                    }
+                case TaskType.PreBLE:
+                    result = await ProcessTask(actualTask);
                     break;
                 default:
                     Console.WriteLine("Error!");
                     break;
+            }
+            if(result)
+            {
+                GamePage.tasksMasterPage.closeTask(actualTask);
             }
         }
     }
