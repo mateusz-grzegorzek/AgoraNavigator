@@ -54,10 +54,6 @@ namespace AgoraNavigator.Login
         public async void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
-            String databasePath = "/register/";
-            await FirebaseMessagingClient.SendMessage(databasePath, JsonConvert.SerializeObject(FirebaseInstanceId.Instance.Token));
-            CrossFirebasePushNotification.Current.Subscribe("Agora_News");
-            CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
             mainPage = new MainPage();
             await Navigation.PushAsync(mainPage);
         }

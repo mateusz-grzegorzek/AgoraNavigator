@@ -35,16 +35,16 @@ namespace AgoraNavigator.Login
             loggedUser.closedTasks = new ObservableCollection<GameTask>();
             try
             {
-                JObject closedTasks = (JObject)userInfo["closedTasks"];
+                JArray closedTasks = (JArray)userInfo["closedTasks"];
                 loggedUser.openedTasks = new ObservableCollection<GameTask>();
                 foreach (GameTask task in GameTask.allTasks)
                 {
                     bool closed = false;
-                    foreach (KeyValuePair<string, JToken> token in closedTasks)
+                    foreach (JToken token in closedTasks)
                     {
                         try
                         {
-                            if (Convert.ToUInt32(token.Key) == task.id)
+                            if (Convert.ToUInt32(token) == task.id)
                             {
                                 task.completed = true;
                                 closed = true;

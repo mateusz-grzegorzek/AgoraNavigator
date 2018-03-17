@@ -1,9 +1,12 @@
 ﻿using Android.App;
 using Firebase.Database;
 using Firebase.Iid;
+using Newtonsoft.Json;
 using Plugin.DeviceInfo;
+using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -15,6 +18,7 @@ namespace AgoraNavigator
     {
         private static FirebaseClient firebaseClient;
         public static String firebaseToken;
+        private static bool isRegistered = false;
 
         public static bool IsNetworkAvailable()
         {
@@ -40,6 +44,19 @@ namespace AgoraNavigator
         public static void InitFirebaseMessagingClient()
         {
             firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
+            CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(() =>
+            {
+                Console.WriteLine("WhenStatusChanged");
+                if(IsNetworkAvailable() && !isRegistered)
+                {
+                    Console.WriteLine("NetworkAvailable");
+                    String databasePath = "/register/";
+                    FirebaseMessagingClient.SendMessage(databasePath, JsonConvert.SerializeObject(FirebaseInstanceId.Instance.Token));
+                    CrossFirebasePushNotification.Current.Subscribe("Agora_News");
+                    CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
+                    isRegistered = true;
+                }
+            }));                    
         }
 
         public static async Task SendMessage(String path, String msg)
