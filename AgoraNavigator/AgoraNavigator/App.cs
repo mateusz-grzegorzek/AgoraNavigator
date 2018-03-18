@@ -3,6 +3,7 @@ using AgoraNavigator.Tasks;
 using Plugin.FirebasePushNotification;
 using Plugin.FirebasePushNotification.Abstractions;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
@@ -13,7 +14,7 @@ namespace AgoraNavigator
         {
             Console.WriteLine("Application started!");
             Console.WriteLine("Application started:firebaseToken="+ FirebaseMessagingClient.firebaseToken);
-            FirebaseMessagingClient.InitFirebaseMessagingClient();
+            Task.Run(() => FirebaseMessagingClient.InitFirebaseMessagingClientAsync()).Wait();
             GameTask.AddTasks();
             CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandler;
             MainPage = new StartingPage();
@@ -29,6 +30,11 @@ namespace AgoraNavigator
                 if (title == "Login state")
                 {
                     GameLoginNavPage.gameLoginPage.Login(e.Data);
+                }
+                else if (title == "Download")
+                {
+                    String path = e.Data["body"].ToString();
+                    FirebaseMessagingClient.DownloadFileAsync(path);
                 }
                 else if (title == "AEGEE Army")
                 {
