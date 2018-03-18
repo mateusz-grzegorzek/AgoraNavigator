@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using AgoraNavigator.Login;
+using Android.App;
 using Android.Gms.Tasks;
 using Firebase.Database;
 using Firebase.Iid;
@@ -8,6 +9,7 @@ using Plugin.DeviceInfo;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -42,6 +44,7 @@ namespace AgoraNavigator
         {
             firebaseToken = FirebaseInstanceId.Instance.Token;
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue("firebaseToken", firebaseToken);
+            SubscribeForTopicsAsync(true);
         }
 
         public static async System.Threading.Tasks.Task InitFirebaseMessagingClientAsync()
@@ -49,22 +52,26 @@ namespace AgoraNavigator
             firebaseToken = Plugin.Settings.CrossSettings.Current.GetValueOrDefault("firebaseToken", FirebaseInstanceId.Instance.Token);
             Console.WriteLine("InitFirebaseMessagingClientAsync:firebaseToken=" + firebaseToken);
             firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
-            await SubscribeForTopicsAsync();
+            await SubscribeForTopicsAsync(false);
             CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(async () =>
             {
-                await SubscribeForTopicsAsync();
+                await SubscribeForTopicsAsync(false);
             }));                    
         }
 
-        private static async System.Threading.Tasks.Task SubscribeForTopicsAsync()
+        private static async System.Threading.Tasks.Task SubscribeForTopicsAsync(bool tokenChanged)
         {
-            if (IsNetworkAvailable() && !isRegistered)
+            if (tokenChanged || (IsNetworkAvailable() && !isRegistered))
             {
                 Console.WriteLine("SubscribeForTopics");
                 String databasePath = "/register/";
                 await SendMessage(databasePath, JsonConvert.SerializeObject(firebaseToken));
                 CrossFirebasePushNotification.Current.Subscribe("Agora_News");
                 CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
+                if(Users.isUserLogged)
+                {
+                    CrossFirebasePushNotification.Current.Subscribe("User_" + Users.loggedUser.Id);
+                }
                 isRegistered = true;
             }
         }
@@ -93,11 +100,13 @@ namespace AgoraNavigator
             StorageReference storageRef = storage.GetReferenceFromUrl("gs://agora-ada18.appspot.com");
             StorageReference fileRef = storageRef.Child(path);
 
-            Java.IO.File dir = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/Download/");
+            string folderName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
+            Java.IO.File dir = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/Download/" + folderName);
             if (!dir.Exists())
                 dir.Mkdirs();
 
-            Java.IO.File file = new Java.IO.File(dir, path);
+            string fileName = Path.GetFileName(path);
+            Java.IO.File file = new Java.IO.File(dir, fileName);
             file.CreateNewFile();
             fileRef.GetFile(file).AddOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>());
         }

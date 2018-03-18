@@ -49,11 +49,13 @@ namespace AgoraNavigator.Login
             simpleLayout.Children.Add(welcomeLabel);
             simpleLayout.Children.Add(welcomeButton);
             Content = simpleLayout;
+            
         }
-        
+
         public async void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
+            await FirebaseMessagingClient.InitFirebaseMessagingClientAsync();
             mainPage = new MainPage();
             await Navigation.PushAsync(mainPage);
         }

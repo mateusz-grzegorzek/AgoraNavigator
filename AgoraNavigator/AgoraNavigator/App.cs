@@ -14,7 +14,6 @@ namespace AgoraNavigator
         {
             Console.WriteLine("Application started!");
             Console.WriteLine("Application started:firebaseToken="+ FirebaseMessagingClient.firebaseToken);
-            Task.Run(() => FirebaseMessagingClient.InitFirebaseMessagingClientAsync()).Wait();
             GameTask.AddTasks();
             CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandler;
             MainPage = new StartingPage();
