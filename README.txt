@@ -7,6 +7,7 @@ a) Xamarin.Forms - 2.4.0.282
 b) Plugin.Permissions - 1.2.1
 c) Xamarin.Forms.GoogleMaps - 1.8.1
 d) Com.OneSignal - 3.0.1
+e) Rg.Plugins.Popup - 1.0.4
 Inne wersje tych pakietów mog¹ powodowaæ b³êdy kompilacji!
 3. 
 Pozyskaæ SHA-1 st¹d:
@@ -16,6 +17,15 @@ i podes³aæ mi
 
 
 ### Powiadomienia lokalne (z kodu)
-```
-DependencyService.Get<INotification>().Notify("Title", "Message");
-```
+
+	DependencyService.Get<INotification>().Notify("Title", "Message");
+
+
+### Custom popups (ex. SimplePopup)
+	SimplePopup popup = new SimplePopup("title", "content")
+	{
+		// options
+		ColorBackground = Color.White
+		// ...
+	};
+	Navigation.PushPopupAsync(popup);

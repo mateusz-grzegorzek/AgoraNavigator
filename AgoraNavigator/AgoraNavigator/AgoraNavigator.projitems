@@ -15,6 +15,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)FirebaseMessagingClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Info\InfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Local Notifications\INotification.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Popup\SimplePopup.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>SimplePopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleDayPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleDaysPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Start\WelcomePage.cs" />
@@ -41,6 +45,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Popup\SimplePopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <Page Include="$(MSBuildThisFileDirectory)Schedule\SchedulePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
