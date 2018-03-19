@@ -19,6 +19,7 @@
       <SubType>Code</SubType>
       <DependentUpon>SimplePopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleDayPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleDaysPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Start\WelcomePage.cs" />

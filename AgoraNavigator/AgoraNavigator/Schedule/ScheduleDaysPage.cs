@@ -1,4 +1,5 @@
 ﻿using AgoraNavigator.Domain.Schedule;
+using Firebase.Database;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,27 +35,20 @@ namespace AgoraNavigator.Schedule
 
         private async Task FetchScheduleAsync()
         {
+            IEnumerable<DayListGroup> groupedItems;
+            List<ScheduleItem> itemList = new List<ScheduleItem>();
             try
             {
-                var items = await FirebaseMessagingClient.SendQuery<ScheduleItem>(_databaseScheduleKey);
+                IReadOnlyCollection<FirebaseObject<ScheduleItem>> items = await FirebaseMessagingClient.SendQuery<ScheduleItem>(_databaseScheduleKey);
                 counter = 0;
-                foreach (var groups in items)
+                foreach (FirebaseObject<ScheduleItem> groups in items)
                 {
                     SaveFiles(groups.Object);
+                    itemList.Add(groups.Object);
                 }
-
-                var groupedItems = items
-                .GroupBy(item => item.Object.StartTime.Date, item => item.Object)
-                .Select(group => new DayListGroup(
-                    group.Key,
-                    group.Select(item => new ScheduleItemViewModel(item))
-                ));
-
-                processDays(groupedItems);
-
-            } catch(Exception e)
+            }
+            catch (Exception)
             {                
-                List<ScheduleItem> itemList = new List<ScheduleItem>();
                 counter = Plugin.Settings.CrossSettings.Current.GetValueOrDefault("counter", 0);
                 if(counter > 0)
                 {
@@ -64,7 +58,6 @@ namespace AgoraNavigator.Schedule
                         item.Title = Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), "");
                         item.StartTime = DateTime.Parse(Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), ""));
                         item.Presenter = Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), "");
-
                         itemList.Add(item);
                     }
                 }
@@ -73,14 +66,15 @@ namespace AgoraNavigator.Schedule
                     LoadDefaultData(itemList);
                 }
                 DependencyService.Get<INotification>().Notify("No internet connection", "The plan may be out of date, turn on the internet for updates");
-
-                var groupedItems = itemList.GroupBy(value => value.StartTime.Date, value => value)
-                    .Select(group => new DayListGroup(
-                group.Key,
-                group.Select(it => new ScheduleItemViewModel(it))));
-
-                processDays(groupedItems);
             }
+            groupedItems = itemList
+                .OrderBy(item => item.StartTime)
+                .GroupBy(item => item.StartTime.Date, item => item)
+                .Select(group => new DayListGroup(
+                    group.Key,
+                    group.Select(item => new ScheduleItemViewModel(item))
+                ));
+            processDays(groupedItems);
         }
 
         private static void LoadDefaultData(List<ScheduleItem> itemList)
@@ -92,6 +86,7 @@ namespace AgoraNavigator.Schedule
             AddItemToList(itemList, "Lorem Ipsum", DateTime.Parse("2017-04-25T13:00:00"), "Bill Gates");
             AddItemToList(itemList, "Sid Domet", DateTime.Parse("2017-04-26"), "Franek Kimono");
             AddItemToList(itemList, "Lelum Polelum", DateTime.Parse("2017-04-27"), "Ferdynand Kiepski");
+            itemList.OrderBy(x => x.StartTime);
         }
 
         private static void AddItemToList(List<ScheduleItem> itemList, String title, DateTime date, String presenter)
@@ -105,11 +100,18 @@ namespace AgoraNavigator.Schedule
 
         private void processDays(IEnumerable<DayListGroup> groupedItems)
         {
-            var days = (ObservableCollection<DayListGroup>)ItemsSource;
+            ObservableCollection<DayListGroup> days = (ObservableCollection<DayListGroup>)ItemsSource;
 
             days.Clear();
-            foreach (var scheduleItem in groupedItems)
+            foreach (DayListGroup scheduleItem in groupedItems)
             {
+                foreach (ScheduleItemViewModel item in scheduleItem)
+                {
+                    if(item.StartTime < DateTime.Now)
+                    {
+                        item.Color = Color.Gray;
+                    }  
+                }
                 days.Add(scheduleItem);
             }
         }
@@ -117,7 +119,7 @@ namespace AgoraNavigator.Schedule
         private void SaveFiles(ScheduleItem item)
         {
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.Presenter);
-            Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.StartTime.Date.ToString());
+            Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.StartTime.ToString());
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.Title);
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue("counter", counter);
         }

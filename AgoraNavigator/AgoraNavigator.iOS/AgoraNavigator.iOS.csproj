@@ -157,12 +157,6 @@
       <Version>2.3.0</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\AgoraNavigator.Domain\AgoraNavigator.Domain.csproj">
-      <Project>{070a36cc-61cf-4201-9be3-9f873e71f307}</Project>
-      <Name>AgoraNavigator.Domain</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />
 </Project>

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Xamarin.Forms;
 using AgoraNavigator.Domain.Schedule;
 
 namespace AgoraNavigator.Schedule
@@ -17,6 +16,7 @@ namespace AgoraNavigator.Schedule
             Title = item.Title;
             Presenter = item.Presenter;
             StartTime = item.StartTime;
+            Color = item.Color;
         }
 
         public string Title { get; set; }
@@ -26,5 +26,7 @@ namespace AgoraNavigator.Schedule
         public DateTime StartTime { get; set; }
 
         public string StartTimeText => StartTime.ToShortTimeString();
+
+        public Color Color { get; set; }
     }
 }
