@@ -20,4 +20,5 @@ i podes³aæ mi
 		ColorBackground = Color.White
 		// ...
 	};
+	popup.SetColors();
 	Navigation.PushPopupAsync(popup);
