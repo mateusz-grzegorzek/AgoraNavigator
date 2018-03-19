@@ -3,7 +3,6 @@ using AgoraNavigator.Tasks;
 using Plugin.FirebasePushNotification;
 using Plugin.FirebasePushNotification.Abstractions;
 using System;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
