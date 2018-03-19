@@ -1,7 +1,9 @@
 ﻿using AgoraNavigator.Menu;
+using AgoraNavigator.Popup;
 using Firebase.Iid;
 using Newtonsoft.Json;
 using Plugin.FirebasePushNotification;
+using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -55,6 +57,14 @@ namespace AgoraNavigator.Login
         public async void OnWelcomeButtonClickedAsync(object sender, EventArgs e)
         {
             Console.WriteLine("OnWelcomeButtonClicked");
+            SimplePopup popup = new SimplePopup("Welcome!", "No co tam?")
+            {
+                ColorBackground = Color.BlueViolet,
+                ColorButtonBackground = Color.Yellow,
+                ColorTitle = Color.Tomato
+            };
+            popup.SetColors();
+            await Navigation.PushPopupAsync(popup);
             await FirebaseMessagingClient.InitFirebaseMessagingClientAsync();
             mainPage = new MainPage();
             await Navigation.PushAsync(mainPage);
