@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Schedule
@@ -11,7 +9,8 @@ namespace AgoraNavigator.Schedule
         {
             StackLayout cellWrapper = new StackLayout()
             {
-                Orientation = StackOrientation.Horizontal
+                Orientation = StackOrientation.Horizontal,
+
             };
             StackLayout eventDescriptionWrapper = new StackLayout()
             {
@@ -40,6 +39,7 @@ namespace AgoraNavigator.Schedule
 
             cellWrapper.Children.Add(timeLabel);
             cellWrapper.Children.Add(eventDescriptionWrapper);
+            cellWrapper.SetBinding(VisualElement.BackgroundColorProperty, "Color");
 
             View = cellWrapper;
         }
