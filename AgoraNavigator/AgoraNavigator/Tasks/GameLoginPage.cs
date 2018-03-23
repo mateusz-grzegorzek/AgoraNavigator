@@ -93,8 +93,14 @@ namespace AgoraNavigator.Tasks
 
                 CrossFirebasePushNotification.Current.Subscribe("User_" + id);
                 String databasePath = "/login/" + id + "/" + pin;
-                infoLabel.Text = "Logging in, please wait...";
-                FirebaseMessagingClient.SendMessage(databasePath, JsonConvert.SerializeObject(FirebaseMessagingClient.firebaseToken));
+                if(FirebaseMessagingClient.SendMessage(databasePath, JsonConvert.SerializeObject(FirebaseMessagingClient.firebaseToken)))
+                {
+                    infoLabel.Text = "Logging in, please wait...";
+                }
+                else
+                {
+                    DependencyService.Get<INotification>().Notify("No internet connection", "You need internet connection to login in to the game!");
+                }
             }
             else
             {

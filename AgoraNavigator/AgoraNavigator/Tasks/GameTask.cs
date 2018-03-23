@@ -4,6 +4,7 @@ using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace AgoraNavigator.Tasks
 {
@@ -55,8 +56,14 @@ namespace AgoraNavigator.Tasks
                     {
                         CrossFirebasePushNotification.Current.Subscribe("AEGEE_Army_" + Users.loggedUser.AntenaId);
                         databasePath = tasksPath + task.dbName + "/Active/" + Users.loggedUser.AntenaId + "/" + Users.loggedUser.Id;
-                        FirebaseMessagingClient.SendMessage(databasePath, "1");
-                        /* ToDo: add notifier: Wait for your friends! */
+                        if(FirebaseMessagingClient.SendMessage(databasePath, "1"))
+                        {
+                            DependencyService.Get<INotification>().Notify("Task state", "Great! Now wait for your friends!");
+                        }
+                        else
+                        {
+                            DependencyService.Get<INotification>().Notify("No internet connection", "You need internet connection to complete this task!");
+                        }
                         result = false;
                     }
                     break;

@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using AgoraNavigator.GoogleMap;
 using AgoraNavigator.Contact;
 using AgoraNavigator.Info;
+using AgoraNavigator.Downloads;
 
 namespace AgoraNavigator.Menu
 {
@@ -46,6 +47,12 @@ namespace AgoraNavigator.Menu
                 Title = "Important info",
                 IconSource = "hamburger.png",
                 TargetType = typeof(InfoPage)
+            });
+            masterPageItems.Add(new MasterPageItem
+            {
+                Title = "Downloads",
+                IconSource = "hamburger.png",
+                TargetType = typeof(DownloadsPage)
             });
 
             listView = new ListView

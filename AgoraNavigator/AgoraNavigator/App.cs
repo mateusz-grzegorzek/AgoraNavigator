@@ -34,8 +34,9 @@ namespace AgoraNavigator
                 }
                 else if (title == "Download")
                 {
-                    String path = e.Data["body"].ToString();
-                    FirebaseMessagingClient.DownloadFileAsync(path);
+                    String url = e.Data["url"].ToString();
+                    String fileName = e.Data["fileName"].ToString();
+                    FirebaseMessagingClient.DownloadFileAsync(url, fileName);
                 }
                 else if (title == "AEGEE Army")
                 {

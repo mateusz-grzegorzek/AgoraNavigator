@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contact\ContactPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Downloads\DownloadsPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FirebaseMessagingClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Info\InfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Local Notifications\INotification.cs" />

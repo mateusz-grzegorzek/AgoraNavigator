@@ -1,15 +1,14 @@
-﻿using AgoraNavigator.Login;
+﻿using AgoraNavigator.Downloads;
+using AgoraNavigator.Login;
 using Android.App;
-using Android.Gms.Tasks;
 using Firebase.Database;
 using Firebase.Iid;
-using Firebase.Storage;
 using Newtonsoft.Json;
 using Plugin.DeviceInfo;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Net;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -32,10 +31,6 @@ namespace AgoraNavigator
                 NetworkReachability.Unknown != netInfo.InternetReachability)
             {
                 result = true;
-            }
-            else
-            {
-                DependencyService.Get<INotification>().Notify("No internet connection", "Turn on the network.");
             }
             return result;
         }
@@ -65,23 +60,39 @@ namespace AgoraNavigator
             {
                 Console.WriteLine("SubscribeForTopics");
                 String databasePath = "/register/";
-                SendMessage(databasePath, JsonConvert.SerializeObject(firebaseToken));
-                CrossFirebasePushNotification.Current.Subscribe("Agora_News");
-                CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
-                if(Users.isUserLogged)
+                if(SendMessage(databasePath, JsonConvert.SerializeObject(firebaseToken)))
                 {
-                    CrossFirebasePushNotification.Current.Subscribe("User_" + Users.loggedUser.Id);
+                    CrossFirebasePushNotification.Current.Subscribe("Agora_News");
+                    CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
+                    if (Users.isUserLogged)
+                    {
+                        CrossFirebasePushNotification.Current.Subscribe("User_" + Users.loggedUser.Id);
+                    }
+                    isRegistered = true;
                 }
-                isRegistered = true;
+                else
+                {
+                    DependencyService.Get<INotification>().Notify("No internet connection", "Turn on the network to register for Agora News!");
+                }
             }
         }
 
-        public static void SendMessage(String path, String msg)
-        {  
+        public static bool SendMessage(String path, String msg)
+        {
+            bool result = false;
             if(IsNetworkAvailable())
             {
-                firebaseClient.Child(path).PutAsync(msg);
+                try
+                {
+                    firebaseClient.Child(path).PutAsync(msg);
+                    result = true;
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
             }
+            return result;
         }
 
         public static async Task<IReadOnlyCollection<FirebaseObject<T>>> SendQuery<T>(String path)
@@ -94,29 +105,23 @@ namespace AgoraNavigator
             return await firebaseClient.Child(path).OnceSingleAsync<T>();
         }
 
-        public static void DownloadFileAsync(String path)
+        public static void DownloadFileAsync(String url, String fileName)
         {
-            FirebaseStorage storage = FirebaseStorage.Instance;
-            StorageReference storageRef = storage.GetReferenceFromUrl("gs://agora-ada18.appspot.com");
-            StorageReference fileRef = storageRef.Child(path);
-
-            string folderName = new DirectoryInfo(Path.GetDirectoryName(path)).Name;
-            Java.IO.File dir = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/Download/" + folderName);
+            string pathToFileFolder = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/Download/AgoraData";
+            Java.IO.File dir = new Java.IO.File(pathToFileFolder);
             if (!dir.Exists())
+            {
                 dir.Mkdirs();
+            }  
+            string pathToFile = pathToFileFolder + "/" + fileName;
 
-            string fileName = Path.GetFileName(path);
-            Java.IO.File file = new Java.IO.File(dir, fileName);
-            file.CreateNewFile();
-            fileRef.GetFile(file).AddOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>());
-        }
-    }
+            WebClient webClient = new WebClient();
+            webClient.DownloadFile(url, pathToFile);
 
-    internal class OnSuccessListener<T> : Activity, IOnSuccessListener
-    {
-        public void OnSuccess(Java.Lang.Object result)
-        {
-            Console.WriteLine("Download completed!");
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                DownloadsPage.downloadsMasterPage.AddNewFile(url, fileName);
+            });
         }
     }
 }

@@ -7,6 +7,7 @@ using AgoraNavigator.Login;
 using AgoraNavigator.Contact;
 using AgoraNavigator.Info;
 using AgoraNavigator.GoogleMap;
+using AgoraNavigator.Downloads;
 
 namespace AgoraNavigator.Menu
 {
@@ -20,6 +21,7 @@ namespace AgoraNavigator.Menu
         public static GameLoginNavPage gameLoginNavPage;
         public static ContactPage contactPage;
         public static InfoPage infoPage;
+        public static DownloadsPage downloadsPage;
 
         public MainPage()
         {
@@ -32,9 +34,10 @@ namespace AgoraNavigator.Menu
             gameLoginNavPage = new GameLoginNavPage();
             contactPage = new ContactPage();
             infoPage = new InfoPage();
+            downloadsPage = new DownloadsPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
-            Detail = welcomePage;
+            Detail = downloadsPage;
         }
 
         public void UserLoggedSuccessfully()
@@ -71,6 +74,9 @@ namespace AgoraNavigator.Menu
                         break;
                     case "Important info":
                         Detail = infoPage;
+                        break;
+                    case "Downloads":
+                        Detail = downloadsPage;
                         break;
                     default:
                         break;
