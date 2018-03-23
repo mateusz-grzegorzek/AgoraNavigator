@@ -13,7 +13,7 @@ namespace AgoraNavigator.Tasks
         public async void closeTask(GameTask task)
         {
             await DisplayAlert("Task", "Succes!", "Ok");
-            await GameTask.CloseTask(task.id);
+            GameTask.CloseTask(task.id);
             GamePage.totalPointsLabel.Text = "Total points: " + Users.loggedUser.TotalPoints.ToString();
             await MainPage.tasksPage.Navigation.PopAsync();
         }

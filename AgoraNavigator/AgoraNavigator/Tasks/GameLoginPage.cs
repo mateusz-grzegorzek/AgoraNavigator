@@ -51,7 +51,7 @@ namespace AgoraNavigator.Tasks
             pinEntry = new Entry();
 
             idEntry.Text = "1";
-            pinEntry.Text = "1";
+            pinEntry.Text = "1234";
 
             AbsoluteLayout simpleLayout = new AbsoluteLayout
             {
@@ -94,7 +94,7 @@ namespace AgoraNavigator.Tasks
                 CrossFirebasePushNotification.Current.Subscribe("User_" + id);
                 String databasePath = "/login/" + id + "/" + pin;
                 infoLabel.Text = "Logging in, please wait...";
-                await FirebaseMessagingClient.SendMessage(databasePath, JsonConvert.SerializeObject(FirebaseMessagingClient.firebaseToken));
+                FirebaseMessagingClient.SendMessage(databasePath, JsonConvert.SerializeObject(FirebaseMessagingClient.firebaseToken));
             }
             else
             {
@@ -112,8 +112,8 @@ namespace AgoraNavigator.Tasks
                 Users.InitUserData(userInfo);
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    WelcomePage.mainPage.DisplayAlert("Login state", "Login succes!", "Ok");
-                    WelcomePage.mainPage.UserLoggedSuccessfully();
+                    App.mainPage.DisplayAlert("Login state", "Login succes!", "Ok");
+                    App.mainPage.UserLoggedSuccessfully();
                 });
             }
         }

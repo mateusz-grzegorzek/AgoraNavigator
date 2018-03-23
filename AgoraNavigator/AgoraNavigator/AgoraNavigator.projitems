@@ -22,7 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleDayPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Schedule\ScheduleDaysPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Start\WelcomePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\WelcomePage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\GameLoginPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Users.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\MainPage.cs" />

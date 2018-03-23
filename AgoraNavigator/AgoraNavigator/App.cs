@@ -1,4 +1,4 @@
-﻿using AgoraNavigator.Login;
+﻿using AgoraNavigator.Menu;
 using AgoraNavigator.Tasks;
 using Plugin.FirebasePushNotification;
 using Plugin.FirebasePushNotification.Abstractions;
@@ -8,17 +8,20 @@ using Xamarin.Forms;
 namespace AgoraNavigator
 {
     public class App : Application
-    {    
+    {
+        public static MainPage mainPage;
         public App()
         {
             Console.WriteLine("Application started!");
             Console.WriteLine("Application started:firebaseToken="+ FirebaseMessagingClient.firebaseToken);
             GameTask.AddTasks();
+            FirebaseMessagingClient.InitFirebaseMessagingClientAsync();
             CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandler;
-            MainPage = new StartingPage();
+            mainPage = new MainPage();
+            MainPage = mainPage;
         }
 
-        async void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationDataEventArgs e)
+        void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationDataEventArgs e)
         {
             Console.WriteLine("OnNotificationReceived");
             try
@@ -37,7 +40,7 @@ namespace AgoraNavigator
                 else if (title == "AEGEE Army")
                 {
                     Console.WriteLine("AEGEE Army task done!");
-                    await GameTask.CloseTask(2);
+                    GameTask.CloseTask(2);
                 }
             }
             catch(Exception err)

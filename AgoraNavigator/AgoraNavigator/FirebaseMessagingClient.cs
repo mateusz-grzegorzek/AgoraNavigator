@@ -44,28 +44,28 @@ namespace AgoraNavigator
         {
             firebaseToken = FirebaseInstanceId.Instance.Token;
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue("firebaseToken", firebaseToken);
-            SubscribeForTopicsAsync(true);
+            SubscribeForTopics(true);
         }
 
-        public static async System.Threading.Tasks.Task InitFirebaseMessagingClientAsync()
+        public static void InitFirebaseMessagingClientAsync()
         {
             firebaseToken = Plugin.Settings.CrossSettings.Current.GetValueOrDefault("firebaseToken", FirebaseInstanceId.Instance.Token);
             Console.WriteLine("InitFirebaseMessagingClientAsync:firebaseToken=" + firebaseToken);
             firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
-            await SubscribeForTopicsAsync(false);
-            CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(async () =>
+            SubscribeForTopics(false);
+            CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(() =>
             {
-                await SubscribeForTopicsAsync(false);
+                SubscribeForTopics(false);
             }));                    
         }
 
-        private static async System.Threading.Tasks.Task SubscribeForTopicsAsync(bool tokenChanged)
+        private static void SubscribeForTopics(bool tokenChanged)
         {
             if (tokenChanged || (IsNetworkAvailable() && !isRegistered))
             {
                 Console.WriteLine("SubscribeForTopics");
                 String databasePath = "/register/";
-                await SendMessage(databasePath, JsonConvert.SerializeObject(firebaseToken));
+                SendMessage(databasePath, JsonConvert.SerializeObject(firebaseToken));
                 CrossFirebasePushNotification.Current.Subscribe("Agora_News");
                 CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
                 if(Users.isUserLogged)
@@ -76,11 +76,11 @@ namespace AgoraNavigator
             }
         }
 
-        public static async System.Threading.Tasks.Task SendMessage(String path, String msg)
+        public static void SendMessage(String path, String msg)
         {  
             if(IsNetworkAvailable())
             {
-                await firebaseClient.Child(path).PutAsync(msg);
+                firebaseClient.Child(path).PutAsync(msg);
             }
         }
 

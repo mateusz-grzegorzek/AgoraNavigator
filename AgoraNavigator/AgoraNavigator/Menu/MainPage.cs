@@ -13,6 +13,7 @@ namespace AgoraNavigator.Menu
     public class MainPage : MasterDetailPage
     {
         public static MasterPage masterPage;
+        public static WelcomePage welcomePage;
         public static MapPage mapPage;
         public static SchedulePage schedulePage;
         public static TasksPage tasksPage;
@@ -25,6 +26,7 @@ namespace AgoraNavigator.Menu
             Console.WriteLine("MainPage");
             NavigationPage.SetHasNavigationBar(this, false);
             masterPage = new MasterPage();
+            welcomePage = new WelcomePage();
             mapPage = new MapPage();
             schedulePage = new SchedulePage();
             gameLoginNavPage = new GameLoginNavPage();
@@ -32,7 +34,7 @@ namespace AgoraNavigator.Menu
             infoPage = new InfoPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
-            Detail = schedulePage;
+            Detail = welcomePage;
         }
 
         public void UserLoggedSuccessfully()
