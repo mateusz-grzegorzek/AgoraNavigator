@@ -1,5 +1,4 @@
-﻿using AgoraNavigator.Domain.Schedule;
-using Firebase.Database;
+﻿using Firebase.Database;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

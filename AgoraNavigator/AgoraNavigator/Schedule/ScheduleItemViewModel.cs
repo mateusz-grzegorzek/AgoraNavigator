@@ -1,6 +1,5 @@
 ﻿using System;
 using Xamarin.Forms;
-using AgoraNavigator.Domain.Schedule;
 
 namespace AgoraNavigator.Schedule
 {
