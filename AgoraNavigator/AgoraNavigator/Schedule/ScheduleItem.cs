@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace AgoraNavigator.Domain.Schedule
+namespace AgoraNavigator.Schedule
 {
     public class ScheduleItem
     {

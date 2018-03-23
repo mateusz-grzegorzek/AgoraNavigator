@@ -55,7 +55,7 @@ namespace AgoraNavigator.Tasks
                     {
                         CrossFirebasePushNotification.Current.Subscribe("AEGEE_Army_" + Users.loggedUser.AntenaId);
                         databasePath = tasksPath + task.dbName + "/Active/" + Users.loggedUser.AntenaId + "/" + Users.loggedUser.Id;
-                        await FirebaseMessagingClient.SendMessage(databasePath, "1");
+                        FirebaseMessagingClient.SendMessage(databasePath, "1");
                         /* ToDo: add notifier: Wait for your friends! */
                         result = false;
                     }
@@ -74,7 +74,7 @@ namespace AgoraNavigator.Tasks
             return result;
         }
 
-        public async static Task CloseTask(int taskId)
+        public static void CloseTask(int taskId)
         {
             GameTask task = allTasks[taskId];
             Console.WriteLine("Users:closeTask:task.id=" + task.id);
@@ -83,9 +83,9 @@ namespace AgoraNavigator.Tasks
             Users.loggedUser.openedTasks.Remove(task);
             Users.loggedUser.closedTasks.Add(task);
             String databasePath = "/users/" + Users.loggedUser.Id + "/closedTasks/" + taskId;
-            await FirebaseMessagingClient.SendMessage(databasePath, taskId.ToString());
+            FirebaseMessagingClient.SendMessage(databasePath, taskId.ToString());
             databasePath = "/users/" + Users.loggedUser.Id + "/totalPoints/";
-            await FirebaseMessagingClient.SendMessage(databasePath, Users.loggedUser.TotalPoints.ToString());
+            FirebaseMessagingClient.SendMessage(databasePath, Users.loggedUser.TotalPoints.ToString());
             Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.TotalPoints);
             Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.openedTasks.Count);
             Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.closedTasks.Count);
