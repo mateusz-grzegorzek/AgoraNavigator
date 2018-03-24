@@ -9,6 +9,7 @@ namespace AgoraNavigator.Menu
         public WelcomePage()
         {
             welcomeMasterPage = new WelcomeMasterPage();
+            BarBackgroundColor = Color.FromHex("061d3f");
             Navigation.PushAsync(welcomeMasterPage);
         }
     }
@@ -18,12 +19,8 @@ namespace AgoraNavigator.Menu
         public WelcomeMasterPage()
         {
             Title = "Hello dear AEGEEan!";
-            Content = new StackLayout
-            {
-                Children = {
-                   new Label { Text = "Hello dear AEGEEan!" }
-                }
-            };
+            
+            BackgroundImage = "Welcome.png";
         }
     }
 }

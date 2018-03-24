@@ -27,6 +27,8 @@ namespace AgoraNavigator.Menu
         {
             Console.WriteLine("MainPage");
             NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetTitleIcon(this, "menu_icon.png");
+            this.BackgroundColor = Color.FromHex("061d3f");
             masterPage = new MasterPage();
             welcomePage = new WelcomePage();
             mapPage = new MapPage();
@@ -37,7 +39,7 @@ namespace AgoraNavigator.Menu
             downloadsPage = new DownloadsPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
-            Detail = downloadsPage;
+            Detail = welcomePage;
         }
 
         public void UserLoggedSuccessfully()
