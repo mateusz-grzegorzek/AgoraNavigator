@@ -21,7 +21,7 @@ namespace AgoraNavigator.Droid
                 .SetAutoCancel(true)                            // Dismiss from the notif. area when clicked
                 .SetContentTitle("")                            // Set its title
                 .SetContentText("")                             // The message to display
-                .SetSmallIcon(Resource.Drawable.hamburger);     // Set icon
+                .SetSmallIcon(Resource.Drawable.menu_icon);     // Set icon
 
             manager = (NotificationManager)context.GetSystemService(Context.NotificationService);
 
