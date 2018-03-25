@@ -10,9 +10,8 @@ namespace AgoraNavigator.Tasks
         public TasksPage()
         {
             Console.WriteLine("TasksPage");
-            SetHasNavigationBar(this, false);
-            BarTextColor = Color.Red;
-            BackgroundColor = Color.Azure;
+            BarBackgroundColor = AgoraColor.DarkBlue;
+            BarTextColor = AgoraColor.Blue;
             gamePage = new GamePage();
             Console.WriteLine("Navigation.PushAsync(gameLoginPage)");
             Navigation.PushAsync(gamePage);

@@ -26,6 +26,17 @@ namespace AgoraNavigator.Login
         public static User loggedUser;
         public static bool isUserLogged;
 
+        public static void InitDefaultUser()
+        {
+            loggedUser = new User();
+            loggedUser.Id = 1;
+            loggedUser.AntenaId = 1;
+            loggedUser.TotalPoints = 0;
+            loggedUser.closedTasks = new ObservableCollection<GameTask>();
+            loggedUser.openedTasks = new ObservableCollection<GameTask>(GameTask.allTasks);
+            isUserLogged = true;
+        }
+
         public static void InitUserData(IDictionary<string, object> userInfo)
         {
             loggedUser = new User();

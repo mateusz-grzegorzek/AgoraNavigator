@@ -1,6 +1,5 @@
 ﻿using AgoraNavigator.Login;
 using Newtonsoft.Json;
-using Plugin.DeviceInfo;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,6 @@ using Xamarin.Forms;
 
 namespace AgoraNavigator.Tasks
 {
-    
     public class GameLoginNavPage : NavigationPage
     {
         public static GameLoginPage gameLoginPage;
@@ -29,57 +27,120 @@ namespace AgoraNavigator.Tasks
         {
             Console.WriteLine("GameLoginPage");
 
-            int screenHeight = CrossDevice.Hardware.ScreenHeight;
-            int screenWidth = CrossDevice.Hardware.ScreenWidth;
+            infoLabel = new Label
+            {
+                Text = " Login to start \nGame of Tasks",
+                FontFamily = AgoraFonts.GetPoppinsBold(),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                TextColor = AgoraColor.Blue,
+                HorizontalOptions = LayoutOptions.CenterAndExpand
+            };
 
-            Button loginButton = new Button();
-            loginButton.Text = "Login";
+            Label idLabel = new Label
+            {
+                Text = "Enter your ID:",
+                FontFamily = AgoraFonts.GetPoppinsMedium(),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.White,
+                HorizontalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            idEntry = new Entry
+            {
+                TextColor = Color.White,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                Keyboard = Keyboard.Numeric
+            };
+            idEntry.TextChanged += OnEntryTextChanged;
+
+            Image pinEntrySep = new Image
+            {
+                Source = "entry_separator.png",
+                VerticalOptions = LayoutOptions.End
+            };
+
+            Label pinLabel = new Label
+            {
+                Text = "Enter your PIN:",
+                FontFamily = AgoraFonts.GetPoppinsMedium(),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.White,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+            };
+            
+            pinEntry = new Entry
+            {
+                TextColor = Color.White,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                Keyboard = Keyboard.Numeric
+            };
+            pinEntry.TextChanged += OnEntryTextChanged;
+
+            Image idEntrySep = new Image
+            {
+                Source = "entry_separator.png",
+                VerticalOptions = LayoutOptions.End
+            };
+
+            idEntry.Placeholder = "XXXX";
+            pinEntry.Placeholder = "XXXX";
+
+            Button loginButton = new Button
+            {
+                Text = "LOGIN",
+                BackgroundColor = AgoraColor.Blue,
+                TextColor = AgoraColor.DarkBlue
+            };
             loginButton.Clicked += OnLoginButtonClicked;
-            loginButton.BackgroundColor = Color.Transparent;
-            loginButton.TextColor = Color.Blue;
-            loginButton.BorderWidth = 1;
-            loginButton.BorderColor = Color.Black;
 
-            Label idLabel = new Label();
-            idLabel.Text = "Enter your ID:";
-            Label pinLabel = new Label();
-            pinLabel.Text = "Enter your PIN:";
-            infoLabel = new Label();
-            infoLabel.Text = "Please enter your login ID and PIN number:";
-
-            idEntry = new Entry();
-            pinEntry = new Entry();
-
-            idEntry.Text = "1";
-            pinEntry.Text = "1234";
-
-            AbsoluteLayout simpleLayout = new AbsoluteLayout
+            AbsoluteLayout layout = new AbsoluteLayout
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand
             };
 
-            AbsoluteLayout.SetLayoutBounds(infoLabel, new Rectangle(.4, .2, .5, .1));
-            AbsoluteLayout.SetLayoutBounds(idLabel, new Rectangle(.5, .4, .5, .1));
-            AbsoluteLayout.SetLayoutBounds(idEntry, new Rectangle(.5, .45, .5, .08));
-            AbsoluteLayout.SetLayoutBounds(pinLabel, new Rectangle(.5, .6, .5, .1));
-            AbsoluteLayout.SetLayoutBounds(pinEntry, new Rectangle(.5, .65, .5, .08));
-            AbsoluteLayout.SetLayoutBounds(loginButton, new Rectangle(.5, .9, .25, .12));
+            AbsoluteLayout.SetLayoutBounds(infoLabel,  new Rectangle(.5, .45, .50, .20));
+            AbsoluteLayout.SetLayoutBounds(idLabel,    new Rectangle(.5, .55, .50, .10));
+            AbsoluteLayout.SetLayoutBounds(idEntry,    new Rectangle(.5, .60, .50, .08));
+            AbsoluteLayout.SetLayoutBounds(idEntrySep, new Rectangle(.5,.585, .50, .08));
+            AbsoluteLayout.SetLayoutBounds(pinLabel,   new Rectangle(.5, .75, .50, .10));
+            AbsoluteLayout.SetLayoutBounds(pinEntry,   new Rectangle(.5, .80, .50, .08));
+            AbsoluteLayout.SetLayoutBounds(pinEntrySep,new Rectangle(.5,.785, .50, .08));
+            AbsoluteLayout.SetLayoutBounds(loginButton,new Rectangle(.5, .95, .35, .12));
 
             AbsoluteLayout.SetLayoutFlags(infoLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(idLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(idEntry, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutFlags(idEntrySep, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(pinLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(pinEntry, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutFlags(pinEntrySep, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(loginButton, AbsoluteLayoutFlags.All);
 
-            simpleLayout.Children.Add(infoLabel);
-            simpleLayout.Children.Add(idLabel);
-            simpleLayout.Children.Add(idEntry);
-            simpleLayout.Children.Add(pinLabel);
-            simpleLayout.Children.Add(pinEntry);
-            simpleLayout.Children.Add(loginButton);
-            Content = simpleLayout;
+            layout.Children.Add(infoLabel);
+            layout.Children.Add(idLabel);
+            layout.Children.Add(idEntry);
+            layout.Children.Add(idEntrySep);
+            layout.Children.Add(pinLabel);
+            layout.Children.Add(pinEntry);
+            layout.Children.Add(pinEntrySep);
+            layout.Children.Add(loginButton);
+            Content = layout;
+            BackgroundImage = "Login.png";
+            Title = "Game of Tasks - Login";
+        }
+
+        private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var entry = (Entry)sender;
+
+            if (entry.Text.Length > 4)
+            {
+                string entryText = entry.Text;
+                entry.TextChanged -= OnEntryTextChanged;
+                entry.Text = e.OldTextValue;
+                entry.TextChanged += OnEntryTextChanged;
+            }
         }
 
         public async void OnLoginButtonClicked(object sender, EventArgs e)
