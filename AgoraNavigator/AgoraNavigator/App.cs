@@ -36,7 +36,7 @@ namespace AgoraNavigator
                 {
                     String url = e.Data["url"].ToString();
                     String fileName = e.Data["fileName"].ToString();
-                    FirebaseMessagingClient.DownloadFileAsync(url, fileName);
+                    FirebaseMessagingClient.AddUrlToDownloads(url, fileName);
                 }
                 else if (title == "AEGEE Army")
                 {
