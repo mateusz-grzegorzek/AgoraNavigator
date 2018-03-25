@@ -25,42 +25,35 @@ namespace AgoraNavigator.Tasks
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(35) });
+                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(5, GridUnitType.Star) });
+                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
                     Label taskTitle = new Label
                     {
                         TextColor = AgoraColor.Blue,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
                         FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        VerticalOptions = LayoutOptions.Start,
+                        VerticalTextAlignment = TextAlignment.Center
                     };
                     taskTitle.SetBinding(Label.TextProperty, "title");
                     Image arrow = new Image
                     {
                         Source = "arrow.png",
-                        VerticalOptions = LayoutOptions.Start,
+                        VerticalOptions = LayoutOptions.Center,
                         HorizontalOptions = LayoutOptions.End,
                         Margin = new Thickness(2,2)
                     };
-                    Image separator1 = new Image
+                    Image task_separator = new Image
                     {
-                        Source = "menu_separator.png",
+                        Source = "task_separator.png",
                         VerticalOptions = LayoutOptions.Start,
-                        HorizontalOptions = LayoutOptions.StartAndExpand
+                        HorizontalOptions = LayoutOptions.EndAndExpand
                     };
-                    Image separator2 = new Image
-                    {
-                        Source = "menu_separator.png",
-                        VerticalOptions = LayoutOptions.Start,
-                        HorizontalOptions = LayoutOptions.Start
-                    };
-
+                    Grid.SetColumnSpan(task_separator, 2);
                     grid.Children.Add(taskTitle);
                     grid.Children.Add(arrow, 1, 0);
-                    grid.Children.Add(separator1, 0, 1);
-                    //grid.Children.Add(separator2, 1, 1);
-                    Grid.SetColumnSpan(separator1, 2);
+                    grid.Children.Add(task_separator, 0, 2, 1, 2);
+                    
                     return new ViewCell { View = grid };
                 }),
                 SeparatorVisibility = SeparatorVisibility.None
