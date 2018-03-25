@@ -39,8 +39,7 @@ namespace AgoraNavigator.Menu
             downloadsPage = new DownloadsPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
-            //tasksPage = new TasksPage();
-            Detail = gameLoginNavPage;
+            Detail = welcomePage;
         }
 
         public void UserLoggedSuccessfully()
