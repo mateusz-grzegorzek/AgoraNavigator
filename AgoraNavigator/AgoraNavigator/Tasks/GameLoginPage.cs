@@ -1,6 +1,8 @@
 ﻿using AgoraNavigator.Login;
+using AgoraNavigator.Popup;
 using Newtonsoft.Json;
 using Plugin.FirebasePushNotification;
+using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -12,6 +14,7 @@ namespace AgoraNavigator.Tasks
         public static GameLoginPage gameLoginPage;
         public GameLoginNavPage()
         {
+            BarTextColor = AgoraColor.Blue;
             gameLoginPage = new GameLoginPage();
             Navigation.PushAsync(gameLoginPage);
         }
@@ -33,7 +36,7 @@ namespace AgoraNavigator.Tasks
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 TextColor = AgoraColor.Blue,
-                HorizontalOptions = LayoutOptions.CenterAndExpand
+                HorizontalTextAlignment = TextAlignment.Center,
             };
 
             Label idLabel = new Label
@@ -48,15 +51,15 @@ namespace AgoraNavigator.Tasks
             idEntry = new Entry
             {
                 TextColor = Color.White,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                Keyboard = Keyboard.Numeric
+                Keyboard = Keyboard.Numeric,
+                HorizontalTextAlignment = TextAlignment.Center,
             };
             idEntry.TextChanged += OnEntryTextChanged;
 
             Image pinEntrySep = new Image
             {
                 Source = "entry_separator.png",
-                VerticalOptions = LayoutOptions.End
+                VerticalOptions = LayoutOptions.End,             
             };
 
             Label pinLabel = new Label
@@ -71,8 +74,8 @@ namespace AgoraNavigator.Tasks
             pinEntry = new Entry
             {
                 TextColor = Color.White,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                Keyboard = Keyboard.Numeric
+                Keyboard = Keyboard.Numeric,
+                HorizontalTextAlignment = TextAlignment.Center
             };
             pinEntry.TextChanged += OnEntryTextChanged;
 
@@ -81,9 +84,6 @@ namespace AgoraNavigator.Tasks
                 Source = "entry_separator.png",
                 VerticalOptions = LayoutOptions.End
             };
-
-            idEntry.Placeholder = "XXXX";
-            pinEntry.Placeholder = "XXXX";
 
             Button loginButton = new Button
             {
@@ -99,14 +99,14 @@ namespace AgoraNavigator.Tasks
                 HorizontalOptions = LayoutOptions.FillAndExpand
             };
 
-            AbsoluteLayout.SetLayoutBounds(infoLabel,  new Rectangle(.5, .45, .50, .20));
-            AbsoluteLayout.SetLayoutBounds(idLabel,    new Rectangle(.5, .55, .50, .10));
+            AbsoluteLayout.SetLayoutBounds(infoLabel,  new Rectangle(.5, .45, .50, .2));
+            AbsoluteLayout.SetLayoutBounds(idLabel,    new Rectangle(.5, .55, .50, .1));
             AbsoluteLayout.SetLayoutBounds(idEntry,    new Rectangle(.5, .60, .50, .08));
             AbsoluteLayout.SetLayoutBounds(idEntrySep, new Rectangle(.5,.585, .50, .08));
-            AbsoluteLayout.SetLayoutBounds(pinLabel,   new Rectangle(.5, .75, .50, .10));
+            AbsoluteLayout.SetLayoutBounds(pinLabel,   new Rectangle(.5, .75, .50, .1));
             AbsoluteLayout.SetLayoutBounds(pinEntry,   new Rectangle(.5, .80, .50, .08));
             AbsoluteLayout.SetLayoutBounds(pinEntrySep,new Rectangle(.5,.785, .50, .08));
-            AbsoluteLayout.SetLayoutBounds(loginButton,new Rectangle(.5, .95, .35, .12));
+            AbsoluteLayout.SetLayoutBounds(loginButton,new Rectangle(.5, .95, .35, .1));
 
             AbsoluteLayout.SetLayoutFlags(infoLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(idLabel, AbsoluteLayoutFlags.All);
@@ -160,12 +160,28 @@ namespace AgoraNavigator.Tasks
                 }
                 else
                 {
-                    DependencyService.Get<INotification>().Notify("No internet connection", "You need internet connection to login in to the game!");
+                    SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to login!")
+                    {
+                        ColorBackground = Color.Red,
+                        ColorBody = Color.White,
+                        ColorTitle = Color.White,
+                    };
+                    popup.SetColors();
+                    await Navigation.PushPopupAsync(popup);
+                    infoLabel.Text = "Login failed.";
                 }
             }
             else
             {
-                await DisplayAlert("Login", "Enter ID and PIN!", "Ok");
+                SimplePopup popup = new SimplePopup("Login failed!", "Wrong ID or PIN number!")
+                {
+                    ColorBackground = Color.Red,
+                    ColorBody = Color.White,
+                    ColorTitle = Color.White,
+                };
+                popup.SetColors();
+                await Navigation.PushPopupAsync(popup);
+                infoLabel.Text = "Login failed.";
             }
         }
 
@@ -177,12 +193,35 @@ namespace AgoraNavigator.Tasks
                 String obj = loginInfo["userInfo"].ToString();
                 IDictionary<string, object> userInfo = JsonConvert.DeserializeObject<IDictionary<string, object>>(obj);
                 Users.InitUserData(userInfo);
-                Device.BeginInvokeOnMainThread(() =>
+                Device.BeginInvokeOnMainThread(async () =>
                 {
-                    App.mainPage.DisplayAlert("Login state", "Login succes!", "Ok");
+                    SimplePopup popup = new SimplePopup("Login succes!", "Let's start Game of Tasks!")
+                    {
+                        ColorBackground = Color.Green,
+                        ColorBody = Color.White,
+                        ColorTitle = Color.White,
+                    };
+                    popup.SetColors();
+                    await Navigation.PushPopupAsync(popup);
                     App.mainPage.UserLoggedSuccessfully();
                 });
             }
+            else
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    SimplePopup popup = new SimplePopup("Login failed!", "Wrong ID or PIN number!")
+                    {
+                        ColorBackground = Color.Red,
+                        ColorBody = Color.White,
+                        ColorTitle = Color.White,
+                    };
+                    popup.SetColors();
+                    await Navigation.PushPopupAsync(popup);
+                    infoLabel.Text = "Login failed.";
+                });
+            }
         }
+
     }
 }

@@ -23,7 +23,6 @@ namespace AgoraNavigator.Tasks
 
         public GamePage()
         {
-            Users.InitDefaultUser();
             tasksMasterPage = new TasksMasterPage();
             Title = "Game of Tasks";
             Label totalPointsLabel = new Label

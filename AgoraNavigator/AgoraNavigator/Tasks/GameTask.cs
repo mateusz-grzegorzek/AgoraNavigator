@@ -80,21 +80,29 @@ namespace AgoraNavigator.Tasks
             return result;
         }
 
-        public static void CloseTask(int taskId)
+        public static bool CloseTask(int taskId)
         {
+            bool result = false;
             GameTask task = allTasks[taskId];
             Console.WriteLine("Users:closeTask:task.id=" + task.id);
-            task.completed = true;
-            Users.loggedUser.TotalPoints += task.scorePoints;
-            Users.loggedUser.openedTasks.Remove(task);
-            Users.loggedUser.closedTasks.Add(task);
             String databasePath = "/users/" + Users.loggedUser.Id + "/closedTasks/" + taskId;
-            FirebaseMessagingClient.SendMessage(databasePath, taskId.ToString());
-            databasePath = "/users/" + Users.loggedUser.Id + "/totalPoints/";
-            FirebaseMessagingClient.SendMessage(databasePath, Users.loggedUser.TotalPoints.ToString());
+            if(FirebaseMessagingClient.SendMessage(databasePath, taskId.ToString()))
+            {
+                databasePath = "/users/" + Users.loggedUser.Id + "/totalPoints/";
+                String totalPoints = (Users.loggedUser.TotalPoints + task.scorePoints).ToString();
+                if (FirebaseMessagingClient.SendMessage(databasePath, totalPoints))
+                {
+                    task.completed = true;
+                    Users.loggedUser.TotalPoints += task.scorePoints;
+                    Users.loggedUser.openedTasks.Remove(task);
+                    Users.loggedUser.closedTasks.Add(task);
+                    result = true;
+                }
+            }
             Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.TotalPoints);
             Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.openedTasks.Count);
             Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.closedTasks.Count);
+            return result;
         }
 
         public static void AddTasks()

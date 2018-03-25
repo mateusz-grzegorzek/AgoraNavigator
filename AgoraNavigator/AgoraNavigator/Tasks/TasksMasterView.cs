@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using Plugin.Permissions.Abstractions;
 using Xamarin.Forms;
 using System;
+using AgoraNavigator.Popup;
+using Rg.Plugins.Popup.Extensions;
 
 namespace AgoraNavigator.Tasks
 {
@@ -10,7 +12,7 @@ namespace AgoraNavigator.Tasks
     {
         ListView tasksListView;
 
-        public TasksMasterView(ObservableCollection<GameTask> tasks)
+        public TasksMasterView(ObservableCollection<GameTask> tasks, bool isOpenTasks)
         {
             tasksListView = new ListView
             {
@@ -51,7 +53,10 @@ namespace AgoraNavigator.Tasks
                     };
                     Grid.SetColumnSpan(task_separator, 2);
                     grid.Children.Add(taskTitle);
-                    grid.Children.Add(arrow, 1, 0);
+                    if(isOpenTasks)
+                    {
+                        grid.Children.Add(arrow, 1, 0);
+                    }
                     grid.Children.Add(task_separator, 0, 2, 1, 2);
                     
                     return new ViewCell { View = grid };
@@ -60,7 +65,7 @@ namespace AgoraNavigator.Tasks
             };
             tasksListView.ItemTapped += OnTaskTitleClick;
 
-            var stack = new StackLayout { Spacing = 0 };
+            StackLayout stack = new StackLayout { Spacing = 0 };
             stack.Children.Add(tasksListView);
             Content = stack;
             BackgroundColor = AgoraColor.DarkBlue;
@@ -84,7 +89,14 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        await DisplayAlert("Bluetooth", "Turn on bluetooth and accept location permission to start this task!", "Ok");
+                        SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!")
+                        {
+                            ColorBackground = Color.Red,
+                            ColorBody = Color.White,
+                            ColorTitle = Color.White,
+                        };
+                        popup.SetColors();
+                        await Navigation.PushPopupAsync(popup);
                     }
                 }
                 else
