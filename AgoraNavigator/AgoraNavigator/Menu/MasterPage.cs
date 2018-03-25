@@ -21,19 +21,16 @@ namespace AgoraNavigator.Menu
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Map",
-                IconSource = "hamburger.png",
                 TargetType = typeof(MapPage)
             });
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Schedule",
-                IconSource = "hamburger.png",
                 TargetType = typeof(SchedulePage)
             });
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Tasks",
-                IconSource = "hamburger.png",
                 TargetType = typeof(TasksPage)
             });
             masterPageItems.Add(new MasterPageItem
