@@ -170,6 +170,18 @@
   <ItemGroup>
     <BundleResource Include="Resources\menu_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Login.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\entry_separator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\task_separator.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />
 </Project>

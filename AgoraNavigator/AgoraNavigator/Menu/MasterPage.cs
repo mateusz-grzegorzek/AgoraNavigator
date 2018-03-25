@@ -61,9 +61,6 @@ namespace AgoraNavigator.Menu
                     {
                         Padding = new Thickness(1, 1),
                     };
-                    //grid.ColumnSpacing = 10;
-                    //grid.RowSpacing = 5;
-                    //grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150)});
 
                     grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3, GridUnitType.Star) });
@@ -80,14 +77,12 @@ namespace AgoraNavigator.Menu
                         VerticalOptions = LayoutOptions.Center
                     };
                     menuOption.SetBinding(Label.TextProperty, "Title");
-                    menuOption.FontFamily = "Poppins-Medium.ttf#Poppins-Medium";
+                    menuOption.FontFamily = AgoraFonts.GetPoppinsMedium();
                     menuOption.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
-                    menuOption.TextColor = Color.FromHex("061d3f");
+                    menuOption.TextColor = AgoraColor.DarkBlue;
                     Image separator = new Image { Source = "menu_separator.png" };
 
-                    //grid.Children.Add(icon);
                     grid.Children.Add(menuOption);
-                    //grid.Children.Add(separator, 1, 1);
                     grid.Children.Add(separator, 0, 1);
                     return new ViewCell { View = grid };
                 }),
@@ -96,7 +91,7 @@ namespace AgoraNavigator.Menu
 
             Icon = "menu_separator.png";
             Title = "Agora Navigator";
-            BackgroundColor = Color.FromHex("47c0ff");
+            BackgroundColor = AgoraColor.Blue;
             Padding = new Thickness(20, 40, 0, 0);
 
             var stack = new StackLayout();
