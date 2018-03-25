@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using Plugin.Permissions.Abstractions;
 using Xamarin.Forms;
 using System;
+using AgoraNavigator.Popup;
+using Rg.Plugins.Popup.Extensions;
 
 namespace AgoraNavigator.Tasks
 {
@@ -10,7 +12,7 @@ namespace AgoraNavigator.Tasks
     {
         ListView tasksListView;
 
-        public TasksMasterView(ObservableCollection<GameTask> tasks)
+        public TasksMasterView(ObservableCollection<GameTask> tasks, bool isOpenTasks)
         {
             tasksListView = new ListView
             {
@@ -25,49 +27,45 @@ namespace AgoraNavigator.Tasks
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(35) });
+                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(5, GridUnitType.Star) });
+                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
                     Label taskTitle = new Label
                     {
                         TextColor = AgoraColor.Blue,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
                         FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        VerticalOptions = LayoutOptions.Start,
+                        VerticalTextAlignment = TextAlignment.Center
                     };
                     taskTitle.SetBinding(Label.TextProperty, "title");
                     Image arrow = new Image
                     {
                         Source = "arrow.png",
-                        VerticalOptions = LayoutOptions.Start,
+                        VerticalOptions = LayoutOptions.Center,
                         HorizontalOptions = LayoutOptions.End,
                         Margin = new Thickness(2,2)
                     };
-                    Image separator1 = new Image
+                    Image task_separator = new Image
                     {
-                        Source = "menu_separator.png",
+                        Source = "task_separator.png",
                         VerticalOptions = LayoutOptions.Start,
-                        HorizontalOptions = LayoutOptions.StartAndExpand
+                        HorizontalOptions = LayoutOptions.EndAndExpand
                     };
-                    Image separator2 = new Image
-                    {
-                        Source = "menu_separator.png",
-                        VerticalOptions = LayoutOptions.Start,
-                        HorizontalOptions = LayoutOptions.Start
-                    };
-
+                    Grid.SetColumnSpan(task_separator, 2);
                     grid.Children.Add(taskTitle);
-                    grid.Children.Add(arrow, 1, 0);
-                    grid.Children.Add(separator1, 0, 1);
-                    //grid.Children.Add(separator2, 1, 1);
-                    Grid.SetColumnSpan(separator1, 2);
+                    if(isOpenTasks)
+                    {
+                        grid.Children.Add(arrow, 1, 0);
+                    }
+                    grid.Children.Add(task_separator, 0, 2, 1, 2);
+                    
                     return new ViewCell { View = grid };
                 }),
                 SeparatorVisibility = SeparatorVisibility.None
             };
             tasksListView.ItemTapped += OnTaskTitleClick;
 
-            var stack = new StackLayout { Spacing = 0 };
+            StackLayout stack = new StackLayout { Spacing = 0 };
             stack.Children.Add(tasksListView);
             Content = stack;
             BackgroundColor = AgoraColor.DarkBlue;
@@ -91,7 +89,14 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        await DisplayAlert("Bluetooth", "Turn on bluetooth and accept location permission to start this task!", "Ok");
+                        SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!")
+                        {
+                            ColorBackground = Color.Red,
+                            ColorBody = Color.White,
+                            ColorTitle = Color.White,
+                        };
+                        popup.SetColors();
+                        await Navigation.PushPopupAsync(popup);
                     }
                 }
                 else

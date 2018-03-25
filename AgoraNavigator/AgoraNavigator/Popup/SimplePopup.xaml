@@ -8,7 +8,7 @@
     BackgroundColor="Transparent"
     InputTransparent="True"
     HasSystemPadding="False"
-    CloseWhenBackgroundIsClicked="False">
+    CloseWhenBackgroundIsClicked="True">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation 
             PositionIn="Center"
@@ -22,27 +22,17 @@
             HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
     <Frame
+        x:Name="frame"
         VerticalOptions="Center"
         HorizontalOptions="Center"
         HasShadow="true"
-        WidthRequest="200">
-         <StackLayout
-            x:Name="stackLayout"
-            VerticalOptions="Center"
-            HorizontalOptions="CenterAndExpand"
-            Spacing="20">
-                <Label
-                    x:Name="labelTitle"
-                    FontAttributes="Bold"
-                    HorizontalTextAlignment="Center"/>
-            <Label
-                    x:Name="labelBody"
-                    HorizontalTextAlignment="Center"/>
-            <Button
-                x:Name="buttonOk"
-                FontAttributes="Bold"
-                BorderWidth="1"
-                Clicked="buttonOk_Clicked"/>
-        </StackLayout>
+        HeightRequest="200"
+        WidthRequest="300"
+        Padding ="0">
+         <AbsoluteLayout
+            x:Name="layout"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand">
+        </AbsoluteLayout>
     </Frame>
 </pages:PopupPage>
