@@ -1,23 +1,18 @@
 ﻿using AgoraNavigator.Downloads;
 using AgoraNavigator.Login;
-using Android.App;
 using Firebase.Database;
-using Firebase.Iid;
 using Newtonsoft.Json;
 using Plugin.DeviceInfo;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
 {
-    [Service]
-    [IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]
-    class FirebaseMessagingClient : FirebaseInstanceIdService
+    class FirebaseMessagingClient
     {
         private static FirebaseClient firebaseClient;
         public static String firebaseToken;
@@ -35,16 +30,16 @@ namespace AgoraNavigator
             return result;
         }
 
-        public override void OnTokenRefresh()
+        public static void TokenRefresh(String token)
         {
-            firebaseToken = FirebaseInstanceId.Instance.Token;
+            firebaseToken = token;
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue("firebaseToken", firebaseToken);
             SubscribeForTopics(true);
         }
 
         public static void InitFirebaseMessagingClientAsync()
         {
-            firebaseToken = Plugin.Settings.CrossSettings.Current.GetValueOrDefault("firebaseToken", FirebaseInstanceId.Instance.Token);
+            firebaseToken = Plugin.Settings.CrossSettings.Current.GetValueOrDefault("firebaseToken", "");
             Console.WriteLine("InitFirebaseMessagingClientAsync:firebaseToken=" + firebaseToken);
             firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
             SubscribeForTopics(false);
@@ -105,19 +100,8 @@ namespace AgoraNavigator
             return await firebaseClient.Child(path).OnceSingleAsync<T>();
         }
 
-        public static void DownloadFileAsync(String url, String fileName)
+        public static void AddUrlToDownloads(String url, String fileName)
         {
-            string pathToFileFolder = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/Download/AgoraData";
-            Java.IO.File dir = new Java.IO.File(pathToFileFolder);
-            if (!dir.Exists())
-            {
-                dir.Mkdirs();
-            }  
-            string pathToFile = pathToFileFolder + "/" + fileName;
-
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile(url, pathToFile);
-
             Device.BeginInvokeOnMainThread(() =>
             {
                 DownloadsPage.downloadsMasterPage.AddNewFile(url, fileName);
