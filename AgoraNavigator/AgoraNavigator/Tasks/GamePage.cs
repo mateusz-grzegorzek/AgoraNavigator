@@ -35,7 +35,7 @@ namespace AgoraNavigator.Tasks
             };
             totalPoints = new Label
             {
-                Text = Users.loggedUser.TotalPoints.ToString(),
+                Text = Users.loggedUser.Tasks.TotalPoints.ToString(),
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 TextColor = Color.White,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),

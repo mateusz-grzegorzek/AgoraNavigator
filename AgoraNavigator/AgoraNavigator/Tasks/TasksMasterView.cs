@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using System;
 using AgoraNavigator.Popup;
 using Rg.Plugins.Popup.Extensions;
+using static AgoraNavigator.Tasks.GameTask;
 
 namespace AgoraNavigator.Tasks
 {
@@ -75,8 +76,8 @@ namespace AgoraNavigator.Tasks
         {
             bool showTaskDetails = false;
             GameTask task = (GameTask)e.Item;
-            Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.id=" + task.id + ", completed=" + task.completed);
-            if (task.completed == false)
+            Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.id=" + task.id + ", completed=" + task.taskStatus);
+            if (task.taskStatus == TaskStatus.NotStarted)
             {
                 Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.needBluetoothAndLocation=" + task.needBluetoothAndLocation);
                 if (task.needBluetoothAndLocation)

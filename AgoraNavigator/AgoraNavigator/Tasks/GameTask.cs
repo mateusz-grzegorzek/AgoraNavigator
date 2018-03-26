@@ -1,9 +1,7 @@
 ﻿using AgoraNavigator.Login;
-using Plugin.FirebasePushNotification;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace AgoraNavigator.Tasks
 {
@@ -15,6 +13,14 @@ namespace AgoraNavigator.Tasks
         {
             Text = 0,
             Button = 1
+        }
+
+        public enum TaskStatus
+        {
+            NotStarted = 0,
+            Checking = 1,
+            Processing = 2,
+            Completed = 3
         }
 
         public int id { get; set; }
@@ -31,76 +37,30 @@ namespace AgoraNavigator.Tasks
 
         public int scorePoints { get; set; }
 
-        public bool completed { get; set; }
+        public TaskStatus taskStatus { get; set; }
 
         public bool needBluetoothAndLocation { get; set; }
 
         public string dbName { get; set; }
-
-        public static async Task<bool> ProcessTask(GameTask task)
-        {
-            String tasksPath = "tasks/";
-            Console.WriteLine("GameTask:ProcessTask:task.id=" + task.id);
-            bool result = false;
-            String databasePath;
-            switch (task.title)
-            {
-                case "Adventurer quest":
-                    result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
-                    break;
-                case "AEGEE Army":
-                    result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
-                    if(result)
-                    {
-                        CrossFirebasePushNotification.Current.Subscribe("AEGEE_Army_" + Users.loggedUser.AntenaId);
-                        databasePath = tasksPath + task.dbName + "/Active/" + Users.loggedUser.AntenaId + "/" + Users.loggedUser.Id;
-                        if(FirebaseMessagingClient.SendMessage(databasePath, "1"))
-                        {
-                            DependencyService.Get<INotification>().Notify("Task state", "Great! Now wait for your friends!");
-                        }
-                        else
-                        {
-                            DependencyService.Get<INotification>().Notify("No internet connection", "You need internet connection to complete this task!");
-                        }
-                        result = false;
-                    }
-                    break;
-                case "Plenary photo":
-                case "Redbull give you the wings":
-                case "Selfie with friends!":
-                    databasePath = tasksPath + task.dbName + "/" + Users.loggedUser.Id;
-                    bool succes = await FirebaseMessagingClient.SendSingleQuery<bool>(databasePath);
-                    if(succes)
-                    {
-                        result = true;
-                    }
-                    break;
-            }
-            return result;
-        }
 
         public static bool CloseTask(int taskId)
         {
             bool result = false;
             GameTask task = allTasks[taskId];
             Console.WriteLine("Users:closeTask:task.id=" + task.id);
-            String databasePath = "/users/" + Users.loggedUser.Id + "/closedTasks/" + taskId;
-            if(FirebaseMessagingClient.SendMessage(databasePath, taskId.ToString()))
+            String databasePath = "/users/" + Users.loggedUser.Id + "/" + Users.loggedUser.Pin + "/tasks/";
+            String tasks = JsonConvert.SerializeObject(Users.loggedUser.Tasks);
+            if(FirebaseMessagingClient.SendMessage(databasePath, tasks))
             {
-                databasePath = "/users/" + Users.loggedUser.Id + "/totalPoints/";
-                String totalPoints = (Users.loggedUser.TotalPoints + task.scorePoints).ToString();
-                if (FirebaseMessagingClient.SendMessage(databasePath, totalPoints))
-                {
-                    task.completed = true;
-                    Users.loggedUser.TotalPoints += task.scorePoints;
-                    Users.loggedUser.openedTasks.Remove(task);
-                    Users.loggedUser.closedTasks.Add(task);
-                    result = true;
-                }
+                task.taskStatus = TaskStatus.Completed;
+                Users.loggedUser.Tasks.TotalPoints += task.scorePoints;
+                Users.loggedUser.Tasks.OpenedTasks.Remove(task);
+                Users.loggedUser.Tasks.ClosedTasks.Add(task);
+                result = true;
             }
-            Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.TotalPoints);
-            Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.openedTasks.Count);
-            Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.closedTasks.Count);
+            Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.Tasks.TotalPoints);
+            Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.Tasks.OpenedTasks.Count);
+            Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.Tasks.ClosedTasks.Count);
             return result;
         }
 
@@ -115,7 +75,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 1,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = true,
             });
             allTasks.Add(new GameTask
@@ -126,7 +86,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Text,
                 correctAnswer = "1047",
                 scorePoints = 1,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
             allTasks.Add(new GameTask
@@ -137,7 +97,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 3,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = true,
                 dbName = "AEGEE_Army"
             });
@@ -149,7 +109,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Text,
                 correctAnswer = "1919",
                 scorePoints = 1,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
             allTasks.Add(new GameTask
@@ -160,7 +120,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Text,
                 correctAnswer = "Mateusz",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
             allTasks.Add(new GameTask
@@ -171,7 +131,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
                 dbName = "Plenary_photo"
             });
@@ -183,7 +143,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
                 dbName = "Redbull"
             });
@@ -195,8 +155,9 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 1,
-                completed = false,
-                needBluetoothAndLocation = true
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = true,
+                dbName = "First_Come_First_Served"
             });
             allTasks.Add(new GameTask
             {
@@ -206,7 +167,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Text,
                 correctAnswer = "GUNNAR",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
             allTasks.Add(new GameTask
@@ -217,7 +178,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Text,
                 correctAnswer = "Buka",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
             allTasks.Add(new GameTask
@@ -228,7 +189,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Text,
                 correctAnswer = "Closed",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
             allTasks.Add(new GameTask
@@ -239,7 +200,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Text,
                 correctAnswer = "Code",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
             allTasks.Add(new GameTask
@@ -250,7 +211,7 @@ namespace AgoraNavigator.Tasks
                 taskType = TaskType.Text,
                 correctAnswer = "Familiada",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
             allTasks.Add(new GameTask
@@ -260,9 +221,20 @@ namespace AgoraNavigator.Tasks
                 description = "Take a photo with your friends, send it on Facebook participants group and tag your friends",
                 taskType = TaskType.Button,
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
                 dbName = "Selfie"
+            });
+            allTasks.Add(new GameTask
+            {
+                id = 13,
+                title = "I need a dollar dollar...",
+                description = "Lend from AEGEEans five different currency in banknote or coin and show them to local organizer",
+                taskType = TaskType.Button,
+                scorePoints = 3,
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = false,
+                dbName = "Dollar"
             });
         }
     }

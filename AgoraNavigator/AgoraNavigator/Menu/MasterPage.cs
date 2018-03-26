@@ -17,7 +17,7 @@ namespace AgoraNavigator.Menu
 
         public MasterPage()
         {
-            var masterPageItems = new List<MasterPageItem>();
+            List<MasterPageItem> masterPageItems = new List<MasterPageItem>();
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Map",
@@ -91,7 +91,7 @@ namespace AgoraNavigator.Menu
             BackgroundColor = AgoraColor.Blue;
             Padding = new Thickness(20, 40, 0, 0);
 
-            var stack = new StackLayout();
+            StackLayout stack = new StackLayout();
             stack.Children.Add(listView);
             Content = stack;
         }

@@ -17,6 +17,7 @@ namespace AgoraNavigator
             GameTask.AddTasks();
             FirebaseMessagingClient.InitFirebaseMessagingClientAsync();
             CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandler;
+            CrossFirebasePushNotification.Current.OnNotificationOpened += FirebasePushNotificationDataEventHandler;
             mainPage = new MainPage();
             MainPage = mainPage;
         }
@@ -28,20 +29,11 @@ namespace AgoraNavigator
             {
                 String title = e.Data["title"].ToString();
                 Console.WriteLine("OnNotificationReceived:title:" + title);
-                if (title == "Login state")
-                {
-                    GameLoginNavPage.gameLoginPage.Login(e.Data);
-                }
-                else if (title == "Download")
+                if (title == "Download")
                 {
                     String url = e.Data["url"].ToString();
                     String fileName = e.Data["fileName"].ToString();
                     FirebaseMessagingClient.AddUrlToDownloads(url, fileName);
-                }
-                else if (title == "AEGEE Army")
-                {
-                    Console.WriteLine("AEGEE Army task done!");
-                    GameTask.CloseTask(2);
                 }
             }
             catch(Exception err)
@@ -49,6 +41,26 @@ namespace AgoraNavigator
                 Console.WriteLine("OnNotificationReceived:" + err.ToString());
             }
         }
+        void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationResponseEventArgs e)
+        {
+            Console.WriteLine("OnNotificationReceived");
+            try
+            {
+                String title = e.Data["title"].ToString();
+                Console.WriteLine("OnNotificationReceived:title:" + title);
+                if (title == "Download")
+                {
+                    String url = e.Data["url"].ToString();
+                    String fileName = e.Data["fileName"].ToString();
+                    FirebaseMessagingClient.AddUrlToDownloads(url, fileName);
+                }
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("OnNotificationReceived:" + err.ToString());
+            }
+        }
+        
     }
 }
 
