@@ -14,8 +14,7 @@ namespace AgoraNavigator.Tasks
         public enum TaskType
         {
             Text = 0,
-            Button = 1,
-            PreBLE = 2
+            Button = 1
         }
 
         public int id { get; set; }
@@ -113,7 +112,7 @@ namespace AgoraNavigator.Tasks
                 id = 0,
                 title = "Adventurer quest",
                 description = "Find beacon at gym",
-                taskType = TaskType.PreBLE,
+                taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 1,
                 completed = false,
@@ -135,7 +134,7 @@ namespace AgoraNavigator.Tasks
                 id = 2,
                 title = "AEGEE Army",
                 description = "Gather more than half of your antena members near beacon at gym",
-                taskType = TaskType.PreBLE,
+                taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 3,
                 completed = false,
@@ -193,7 +192,7 @@ namespace AgoraNavigator.Tasks
                 id = 7,
                 title = "The first are the best",
                 description = "Be the one of first persons on morning plenary",
-                taskType = TaskType.PreBLE,
+                taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 1,
                 completed = false,

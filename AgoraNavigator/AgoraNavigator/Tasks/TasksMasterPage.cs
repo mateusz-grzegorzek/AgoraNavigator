@@ -4,6 +4,7 @@ using AgoraNavigator.Popup;
 using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Services;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Tasks
@@ -13,7 +14,7 @@ namespace AgoraNavigator.Tasks
         public static TasksMasterView closedTasksView;
         public static TasksMasterView openedTasksView;
 
-        public async void closeTask(GameTask task)
+        public async Task closeTask(GameTask task)
         {
             if(GameTask.CloseTask(task.id))
             {

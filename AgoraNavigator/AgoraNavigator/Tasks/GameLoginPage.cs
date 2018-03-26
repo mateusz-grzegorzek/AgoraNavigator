@@ -53,6 +53,8 @@ namespace AgoraNavigator.Tasks
                 TextColor = Color.White,
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Center,
+                PlaceholderColor = Color.LightGray,
+                Placeholder = "ID"
             };
             idEntry.TextChanged += OnEntryTextChanged;
 
@@ -120,7 +122,7 @@ namespace AgoraNavigator.Tasks
             layout.Children.Add(infoLabel);
             layout.Children.Add(idLabel);
             layout.Children.Add(idEntry);
-            layout.Children.Add(idEntrySep);
+            //layout.Children.Add(idEntrySep);
             layout.Children.Add(pinLabel);
             layout.Children.Add(pinEntry);
             layout.Children.Add(pinEntrySep);
