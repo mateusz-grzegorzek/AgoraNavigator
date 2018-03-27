@@ -1,10 +1,8 @@
 ﻿using AgoraNavigator.Login;
 using AgoraNavigator.Popup;
-using Newtonsoft.Json;
-using Plugin.FirebasePushNotification;
+using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Extensions;
 using System;
-using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Tasks
@@ -25,6 +23,7 @@ namespace AgoraNavigator.Tasks
         Entry idEntry;
         Entry pinEntry;
         Label infoLabel;
+        bool isLoginStarted = false;
 
         public GameLoginPage()
         {
@@ -53,14 +52,10 @@ namespace AgoraNavigator.Tasks
                 TextColor = Color.White,
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Center,
+                PlaceholderColor = Color.LightGray,
+                Placeholder = "ID"
             };
             idEntry.TextChanged += OnEntryTextChanged;
-
-            Image pinEntrySep = new Image
-            {
-                Source = "entry_separator.png",
-                VerticalOptions = LayoutOptions.End,             
-            };
 
             Label pinLabel = new Label
             {
@@ -75,15 +70,12 @@ namespace AgoraNavigator.Tasks
             {
                 TextColor = Color.White,
                 Keyboard = Keyboard.Numeric,
-                HorizontalTextAlignment = TextAlignment.Center
+                HorizontalTextAlignment = TextAlignment.Center,
+                PlaceholderColor = Color.LightGray,
+                Placeholder = "PIN",
+                IsPassword = true
             };
             pinEntry.TextChanged += OnEntryTextChanged;
-
-            Image idEntrySep = new Image
-            {
-                Source = "entry_separator.png",
-                VerticalOptions = LayoutOptions.End
-            };
 
             Button loginButton = new Button
             {
@@ -102,31 +94,25 @@ namespace AgoraNavigator.Tasks
             AbsoluteLayout.SetLayoutBounds(infoLabel,  new Rectangle(.5, .45, .50, .2));
             AbsoluteLayout.SetLayoutBounds(idLabel,    new Rectangle(.5, .55, .50, .1));
             AbsoluteLayout.SetLayoutBounds(idEntry,    new Rectangle(.5, .60, .50, .08));
-            AbsoluteLayout.SetLayoutBounds(idEntrySep, new Rectangle(.5,.585, .50, .08));
-            AbsoluteLayout.SetLayoutBounds(pinLabel,   new Rectangle(.5, .75, .50, .1));
-            AbsoluteLayout.SetLayoutBounds(pinEntry,   new Rectangle(.5, .80, .50, .08));
-            AbsoluteLayout.SetLayoutBounds(pinEntrySep,new Rectangle(.5,.785, .50, .08));
-            AbsoluteLayout.SetLayoutBounds(loginButton,new Rectangle(.5, .95, .35, .1));
+            AbsoluteLayout.SetLayoutBounds(pinLabel,   new Rectangle(.5, .70, .50, .1));
+            AbsoluteLayout.SetLayoutBounds(pinEntry,   new Rectangle(.5, .75, .50, .08));
+            AbsoluteLayout.SetLayoutBounds(loginButton,new Rectangle(.5, .95, .45, .15));
 
             AbsoluteLayout.SetLayoutFlags(infoLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(idLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(idEntry, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(idEntrySep, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(pinLabel, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(pinEntry, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(pinEntrySep, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutFlags(loginButton, AbsoluteLayoutFlags.All);
 
             layout.Children.Add(infoLabel);
             layout.Children.Add(idLabel);
             layout.Children.Add(idEntry);
-            layout.Children.Add(idEntrySep);
             layout.Children.Add(pinLabel);
             layout.Children.Add(pinEntry);
-            layout.Children.Add(pinEntrySep);
             layout.Children.Add(loginButton);
             Content = layout;
-            BackgroundImage = "Login.png";
+            BackgroundImage = "Login_Background.png";
             Title = "Game of Tasks - Login";
         }
 
@@ -146,69 +132,45 @@ namespace AgoraNavigator.Tasks
         public async void OnLoginButtonClicked(object sender, EventArgs e)
         {
             Console.WriteLine("OnLoginButtonClicked");
-            if(idEntry.Text != null && pinEntry.Text != null)
+            if (!isLoginStarted)
             {
-                Console.WriteLine("OnLoginButtonClicked:idEntry=" + idEntry.Text + ", pinEntry=" + pinEntry.Text);
-                String id = idEntry.Text;
-                String pin = pinEntry.Text;
-
-                CrossFirebasePushNotification.Current.Subscribe("User_" + id);
-                String databasePath = "/login/" + id + "/" + pin;
-                if(FirebaseMessagingClient.SendMessage(databasePath, JsonConvert.SerializeObject(FirebaseMessagingClient.firebaseToken)))
+                isLoginStarted = true;
+                if (idEntry.Text != null && pinEntry.Text != null)
                 {
-                    infoLabel.Text = "Logging in, please wait...";
+                    Console.WriteLine("OnLoginButtonClicked:idEntry=" + idEntry.Text + ", pinEntry=" + pinEntry.Text);
+                    String id = idEntry.Text;
+                    String pin = pinEntry.Text;
+                    try
+                    {
+                        String databasePath = "/users/" + id + "/" + pin;
+                        JObject userInfo = await FirebaseMessagingClient.SendSingleQuery<JObject>(databasePath);
+                        Users.InitUserData(Convert.ToInt32(id), Convert.ToInt32(pin), userInfo);
+                        SimplePopup popup = new SimplePopup("Login succes!", "Let's start Game of Tasks!")
+                        {
+                            ColorBackground = Color.Green,
+                            ColorBody = Color.White,
+                            ColorTitle = Color.White,
+                        };
+                        popup.SetColors();
+                        await Navigation.PushPopupAsync(popup);
+                        App.mainPage.UserLoggedSuccessfully();
+                    }
+                    catch (Exception err)
+                    {
+                        Console.WriteLine("OnLoginButtonClicked:err=" + err.ToString());
+                        SimplePopup popup = new SimplePopup("Login failed!", "Check your internet connection, ID and PIN number and try again")
+                        {
+                            ColorBackground = Color.Red,
+                            ColorBody = Color.White,
+                            ColorTitle = Color.White,
+                        };
+                        popup.SetColors();
+                        await Navigation.PushPopupAsync(popup);
+                        infoLabel.Text = "Login failed.";
+                        isLoginStarted = false;
+                    }
                 }
                 else
-                {
-                    SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to login!")
-                    {
-                        ColorBackground = Color.Red,
-                        ColorBody = Color.White,
-                        ColorTitle = Color.White,
-                    };
-                    popup.SetColors();
-                    await Navigation.PushPopupAsync(popup);
-                    infoLabel.Text = "Login failed.";
-                }
-            }
-            else
-            {
-                SimplePopup popup = new SimplePopup("Login failed!", "Wrong ID or PIN number!")
-                {
-                    ColorBackground = Color.Red,
-                    ColorBody = Color.White,
-                    ColorTitle = Color.White,
-                };
-                popup.SetColors();
-                await Navigation.PushPopupAsync(popup);
-                infoLabel.Text = "Login failed.";
-            }
-        }
-
-        public void Login(IDictionary<string, object> loginInfo)
-        {
-            String succes = loginInfo["succes"].ToString();
-            if (succes == "true")
-            {
-                String obj = loginInfo["userInfo"].ToString();
-                IDictionary<string, object> userInfo = JsonConvert.DeserializeObject<IDictionary<string, object>>(obj);
-                Users.InitUserData(userInfo);
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    SimplePopup popup = new SimplePopup("Login succes!", "Let's start Game of Tasks!")
-                    {
-                        ColorBackground = Color.Green,
-                        ColorBody = Color.White,
-                        ColorTitle = Color.White,
-                    };
-                    popup.SetColors();
-                    await Navigation.PushPopupAsync(popup);
-                    App.mainPage.UserLoggedSuccessfully();
-                });
-            }
-            else
-            {
-                Device.BeginInvokeOnMainThread(async () =>
                 {
                     SimplePopup popup = new SimplePopup("Login failed!", "Wrong ID or PIN number!")
                     {
@@ -218,10 +180,9 @@ namespace AgoraNavigator.Tasks
                     };
                     popup.SetColors();
                     await Navigation.PushPopupAsync(popup);
-                    infoLabel.Text = "Login failed.";
-                });
+                    isLoginStarted = false;
+                }
             }
-        }
-
+        }      
     }
 }

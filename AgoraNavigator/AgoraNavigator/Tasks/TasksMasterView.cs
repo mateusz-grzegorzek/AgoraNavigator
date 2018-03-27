@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using System;
 using AgoraNavigator.Popup;
 using Rg.Plugins.Popup.Extensions;
+using static AgoraNavigator.Tasks.GameTask;
 
 namespace AgoraNavigator.Tasks
 {
@@ -40,14 +41,14 @@ namespace AgoraNavigator.Tasks
                     taskTitle.SetBinding(Label.TextProperty, "title");
                     Image arrow = new Image
                     {
-                        Source = "arrow.png",
+                        Source = "Arrow.png",
                         VerticalOptions = LayoutOptions.Center,
                         HorizontalOptions = LayoutOptions.End,
                         Margin = new Thickness(2,2)
                     };
                     Image task_separator = new Image
                     {
-                        Source = "task_separator.png",
+                        Source = "TasksMasterView_Task_Separator.png",
                         VerticalOptions = LayoutOptions.Start,
                         HorizontalOptions = LayoutOptions.EndAndExpand
                     };
@@ -75,8 +76,8 @@ namespace AgoraNavigator.Tasks
         {
             bool showTaskDetails = false;
             GameTask task = (GameTask)e.Item;
-            Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.id=" + task.id + ", completed=" + task.completed);
-            if (task.completed == false)
+            Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.id=" + task.id + ", completed=" + task.taskStatus);
+            if (task.taskStatus == TaskStatus.NotStarted)
             {
                 Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.needBluetoothAndLocation=" + task.needBluetoothAndLocation);
                 if (task.needBluetoothAndLocation)

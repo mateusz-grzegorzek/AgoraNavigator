@@ -8,6 +8,7 @@ namespace AgoraNavigator.Schedule
 
         public SchedulePage()
         {
+            BarTextColor = AgoraColor.Blue;
             scheduleDaysPage = new ScheduleDaysPage();
             Navigation.PushAsync(scheduleDaysPage);
         }

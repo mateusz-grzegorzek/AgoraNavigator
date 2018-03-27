@@ -5,29 +5,41 @@ namespace AgoraNavigator.Schedule
 
     public class ScheduleDayPage : ContentPage
     {
-        private ListView _scheduleItemsListView;
-        private Label _dayTitleLabel;
 
         public ScheduleDayPage()
         {
-            _dayTitleLabel = new Label()
+            Label dayNameLabel = new Label()
             {
-                Style = Device.Styles.SubtitleStyle,
-                FontSize = 24
+                FontFamily = AgoraFonts.GetPoppinsBold(),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = AgoraColor.Dark,
+                HorizontalOptions = LayoutOptions.Center,
+                HorizontalTextAlignment = TextAlignment.Center
             };
-            _dayTitleLabel.SetBinding(Label.TextProperty, "DayName");
+            dayNameLabel.SetBinding(Label.TextProperty, "DayName");
 
-            _scheduleItemsListView = new ListView()
+            Label dayLabel = new Label()
+            {
+                FontFamily = AgoraFonts.GetPoppinsRegular(),
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                TextColor = AgoraColor.Dark,
+                HorizontalOptions = LayoutOptions.Center,
+                HorizontalTextAlignment = TextAlignment.Center
+            };
+            dayLabel.SetBinding(Label.TextProperty, "Day");
+
+            ListView scheduleItemsListView = new ListView()
             {
                 ItemTemplate = new DataTemplate(typeof(ScheduleItemCell)),
                 HasUnevenRows = true,
             };
-            _scheduleItemsListView.SetBinding(ListView.ItemsSourceProperty, "Items");
-            _scheduleItemsListView.ItemSelected += OnScheduleItemSelected;
+            scheduleItemsListView.SetBinding(ListView.ItemsSourceProperty, "Items");
+            scheduleItemsListView.ItemSelected += OnScheduleItemSelected;
 
-            var stack = new StackLayout();
-            stack.Children.Add(_dayTitleLabel);
-            stack.Children.Add(_scheduleItemsListView);
+            StackLayout stack = new StackLayout();
+            stack.Children.Add(dayNameLabel);
+            stack.Children.Add(dayLabel);
+            stack.Children.Add(scheduleItemsListView);
             Content = stack;
         }
 

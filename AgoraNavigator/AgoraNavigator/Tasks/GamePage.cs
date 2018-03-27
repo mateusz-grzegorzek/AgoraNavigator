@@ -1,7 +1,7 @@
 ﻿using AgoraNavigator.Login;
-using Firebase.Database;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -145,15 +145,23 @@ namespace AgoraNavigator.Tasks
         {
             try
             {
-                IReadOnlyCollection<FirebaseObject<TopScorers>> items = await FirebaseMessagingClient.SendQuery<TopScorers>(databaseTopScorersKey);
-                ObservableCollection<TopScorers> topScorers = new ObservableCollection<TopScorers>();
-                foreach (FirebaseObject<TopScorers> groups in items)
+                String items = await FirebaseMessagingClient.SendSingleQuery<String>(databaseTopScorersKey);
+                JArray array = JsonConvert.DeserializeObject< JArray>(items);
+                ObservableCollection<TopScorers> topScorers = new ObservableCollection<TopScorers>(); 
+                foreach (JToken token in array)
                 {
-                    TopScorers topScorer = groups.Object;
+                    int userId = int.Parse(token["userId"].ToString());
+                    int totalPoints = int.Parse(token["totalPoints"].ToString());
+                    TopScorers topScorer = new TopScorers
+                    {
+                        userId = userId,
+                        totalPoints = totalPoints
+                    };
                     Console.WriteLine("FetchTopScorersAsync:userId=" + topScorer.userId + ", totalPoints=" + topScorer.totalPoints);
                     topScorers.Add(topScorer);
                 }
                 topScorersListView.ItemsSource = topScorers;
+                
             }
             catch(Exception err)
             {
