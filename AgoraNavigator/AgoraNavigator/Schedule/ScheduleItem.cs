@@ -11,6 +11,8 @@ namespace AgoraNavigator.Schedule
 
         public DateTime StartTime { get; set; }
 
+        public DateTime EndTime { get; set; }
+
         public Color Color { get; set; }
     }
 }

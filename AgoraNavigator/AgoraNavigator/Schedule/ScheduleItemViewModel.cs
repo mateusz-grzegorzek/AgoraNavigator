@@ -5,16 +5,12 @@ namespace AgoraNavigator.Schedule
 {
     class ScheduleItemViewModel
     {
-        public ScheduleItemViewModel()
-        {
-
-        }
-
         public ScheduleItemViewModel(ScheduleItem item)
         {
             Title = item.Title;
             Presenter = item.Presenter;
             StartTime = item.StartTime;
+            EndTime = item.EndTime;
             Color = item.Color;
         }
 
@@ -24,7 +20,9 @@ namespace AgoraNavigator.Schedule
 
         public DateTime StartTime { get; set; }
 
-        public string StartTimeText => StartTime.ToShortTimeString();
+        public DateTime EndTime { get; set; }
+
+        public string TimeText => StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString();
 
         public Color Color { get; set; }
     }

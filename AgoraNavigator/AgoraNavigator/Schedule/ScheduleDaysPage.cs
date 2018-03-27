@@ -56,6 +56,7 @@ namespace AgoraNavigator.Schedule
                         ScheduleItem item = new ScheduleItem();
                         item.Title = Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), "");
                         item.StartTime = DateTime.Parse(Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), ""));
+                        item.EndTime = DateTime.Parse(Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), ""));
                         item.Presenter = Plugin.Settings.CrossSettings.Current.GetValueOrDefault(String.Format("{0}", --counter), "");
                         itemList.Add(item);
                     }
@@ -108,8 +109,12 @@ namespace AgoraNavigator.Schedule
                 {
                     if(item.StartTime < DateTime.Now)
                     {
-                        item.Color = Color.Gray;
+                        item.Color = AgoraColor.LightGray;
                     }  
+                    else
+                    {
+                        item.Color = Color.White;
+                    }
                 }
                 days.Add(scheduleItem);
             }
@@ -119,6 +124,7 @@ namespace AgoraNavigator.Schedule
         {
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.Presenter);
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.StartTime.ToString());
+            Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.EndTime.ToString());
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue(String.Format("{0}", counter++), item.Title);
             Plugin.Settings.CrossSettings.Current.AddOrUpdateValue("counter", counter);
         }

@@ -1,5 +1,6 @@
 ﻿using AgoraNavigator.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,11 +13,10 @@ namespace AgoraNavigator.Login
         public List<User> members { get; set; }
     }
 
-    public class UserTasks
+    public class UserTasksInDb
     {
-        public int TotalPoints { get; set; }
-        public ObservableCollection<GameTask> OpenedTasks;
-        public ObservableCollection<GameTask> ClosedTasks;
+        public int totalPoints { get; set; }
+        public List<int> closedTasks;   
     }
 
     public class User
@@ -24,7 +24,9 @@ namespace AgoraNavigator.Login
         public int Id { get; set; }
         public int Pin { get; set; }
         public int AntenaId { get; set; }
-        public UserTasks Tasks { get; set; }
+        public int TotalPoints { get; set; }
+        public ObservableCollection<GameTask> OpenedTasks;
+        public ObservableCollection<GameTask> ClosedTasks;
     }
 
     class Users
@@ -38,39 +40,52 @@ namespace AgoraNavigator.Login
             loggedUser.Id = 1;
             loggedUser.Pin = 1234;
             loggedUser.AntenaId = 1;
-            loggedUser.Tasks.TotalPoints = 0;
-            loggedUser.Tasks.ClosedTasks = new ObservableCollection<GameTask>();
-            loggedUser.Tasks.OpenedTasks = new ObservableCollection<GameTask>(GameTask.allTasks);
+            loggedUser.TotalPoints = 0;
+            loggedUser.ClosedTasks = new ObservableCollection<GameTask>();
+            loggedUser.OpenedTasks = new ObservableCollection<GameTask>(GameTask.allTasks);
             isUserLogged = true;
         }
 
-        public static void InitUserData(int userId, int pin, UserInfo userInfo)
+        public static void InitUserData(int userId, int pin, JObject userInfo)
         {
             loggedUser = new User();
             loggedUser.Id = userId;
             loggedUser.Pin = pin;
-            loggedUser.AntenaId = userInfo.antenaId;
-            loggedUser.Tasks = new UserTasks();
+            loggedUser.AntenaId = int.Parse(userInfo["antenaId"].ToString());
+
             try
             {
-                UserTasks userTasks = JsonConvert.DeserializeObject<UserTasks>(userInfo.tasks);
-                loggedUser.Tasks.TotalPoints = userInfo.totalPoints;
-                loggedUser.Tasks.ClosedTasks = new ObservableCollection<GameTask>(userTasks.ClosedTasks);
-                loggedUser.Tasks.OpenedTasks = new ObservableCollection<GameTask>(userTasks.OpenedTasks);
+                JToken tasks = userInfo["tasks"];
+                List<int> closedTasks = tasks["closedTasks"].ToObject<List<int>>();
+                loggedUser.TotalPoints = int.Parse(tasks["totalPoints"].ToString());
+                loggedUser.ClosedTasks = new ObservableCollection<GameTask>();
+                loggedUser.OpenedTasks = new ObservableCollection<GameTask>();
+                foreach (GameTask task in GameTask.allTasks)
+                {
+                    if(closedTasks.Contains(task.id))
+                    {
+                        task.taskStatus = GameTask.TaskStatus.Completed;
+                        loggedUser.ClosedTasks.Add(task);
+                    }
+                    else
+                    {
+                        loggedUser.OpenedTasks.Add(task);
+                    }
+                }
             }
             catch(Exception)
             {
-                loggedUser.Tasks.TotalPoints = 0;
-                loggedUser.Tasks.ClosedTasks = new ObservableCollection<GameTask>();
-                loggedUser.Tasks.OpenedTasks = new ObservableCollection<GameTask>(GameTask.allTasks);
+                loggedUser.TotalPoints = 0;
+                loggedUser.ClosedTasks = new ObservableCollection<GameTask>();
+                loggedUser.OpenedTasks = new ObservableCollection<GameTask>(GameTask.allTasks);
             }
             
             isUserLogged = true;
             Console.WriteLine("Users:InitUserData:loggedUser.Id=" + loggedUser.Id);
             Console.WriteLine("Users:InitUserData:loggedUser.AntenaId=" + loggedUser.AntenaId);
-            Console.WriteLine("Users:InitUserData:loggedUser.TotalPoints=" + loggedUser.Tasks.TotalPoints);
-            Console.WriteLine("Users:InitUserData:loggedUser.openedTasks.Count=" + loggedUser.Tasks.OpenedTasks.Count);
-            Console.WriteLine("Users:InitUserData:loggedUser.closedTasks.Count=" + loggedUser.Tasks.ClosedTasks.Count);
+            Console.WriteLine("Users:InitUserData:loggedUser.TotalPoints=" + loggedUser.TotalPoints);
+            Console.WriteLine("Users:InitUserData:loggedUser.openedTasks.Count=" + loggedUser.OpenedTasks.Count);
+            Console.WriteLine("Users:InitUserData:loggedUser.closedTasks.Count=" + loggedUser.ClosedTasks.Count);
         }
     }
 }

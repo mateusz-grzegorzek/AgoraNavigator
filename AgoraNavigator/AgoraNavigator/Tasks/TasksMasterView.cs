@@ -41,14 +41,14 @@ namespace AgoraNavigator.Tasks
                     taskTitle.SetBinding(Label.TextProperty, "title");
                     Image arrow = new Image
                     {
-                        Source = "arrow.png",
+                        Source = "Arrow.png",
                         VerticalOptions = LayoutOptions.Center,
                         HorizontalOptions = LayoutOptions.End,
                         Margin = new Thickness(2,2)
                     };
                     Image task_separator = new Image
                     {
-                        Source = "task_separator.png",
+                        Source = "TasksMasterView_Task_Separator.png",
                         VerticalOptions = LayoutOptions.Start,
                         HorizontalOptions = LayoutOptions.EndAndExpand
                     };

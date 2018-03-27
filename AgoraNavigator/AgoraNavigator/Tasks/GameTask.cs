@@ -46,21 +46,29 @@ namespace AgoraNavigator.Tasks
         public static bool CloseTask(int taskId)
         {
             bool result = false;
-            GameTask task = allTasks[taskId];
-            Console.WriteLine("Users:closeTask:task.id=" + task.id);
+            GameTask closedTask = allTasks[taskId];
+            Console.WriteLine("Users:closeTask:task.id=" + closedTask.id);
             String databasePath = "/users/" + Users.loggedUser.Id + "/" + Users.loggedUser.Pin + "/tasks/";
-            String tasks = JsonConvert.SerializeObject(Users.loggedUser.Tasks);
+            UserTasksInDb userTasksInDb = new UserTasksInDb();
+            userTasksInDb.totalPoints = Users.loggedUser.TotalPoints + closedTask.scorePoints;
+            userTasksInDb.closedTasks = new List<int>();
+            foreach (GameTask task in Users.loggedUser.ClosedTasks)
+            {
+                userTasksInDb.closedTasks.Add(task.id);
+            }
+            userTasksInDb.closedTasks.Add(taskId);
+            String tasks = JsonConvert.SerializeObject(userTasksInDb);
             if(FirebaseMessagingClient.SendMessage(databasePath, tasks))
             {
-                task.taskStatus = TaskStatus.Completed;
-                Users.loggedUser.Tasks.TotalPoints += task.scorePoints;
-                Users.loggedUser.Tasks.OpenedTasks.Remove(task);
-                Users.loggedUser.Tasks.ClosedTasks.Add(task);
+                closedTask.taskStatus = TaskStatus.Completed;
+                Users.loggedUser.TotalPoints += closedTask.scorePoints;
+                Users.loggedUser.OpenedTasks.Remove(closedTask);
+                Users.loggedUser.ClosedTasks.Add(closedTask);
                 result = true;
             }
-            Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.Tasks.TotalPoints);
-            Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.Tasks.OpenedTasks.Count);
-            Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.Tasks.ClosedTasks.Count);
+            Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.TotalPoints);
+            Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.OpenedTasks.Count);
+            Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.ClosedTasks.Count);
             return result;
         }
 

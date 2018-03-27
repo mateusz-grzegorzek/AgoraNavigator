@@ -150,34 +150,31 @@
     <AndroidResource Include="Resources\drawable\Welcome.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\menu_icon.png" />
+    <AndroidResource Include="Resources\drawable\Hamburger_Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\menu_separator.png" />
+    <AndroidResource Include="Resources\drawable\Menu_Separator.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Login.png" />
+    <AndroidResource Include="Resources\drawable\Login_Background.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\entry_separator.png" />
+    <AndroidResource Include="Resources\drawable\Arrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\arrow.png" />
+    <AndroidResource Include="Resources\drawable\TasksMasterView_Task_Separator.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\task_separator.png" />
+    <AndroidResource Include="Resources\drawable\Contact_Photo_Agata_Sambor.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Contacts\AgataSambor.png" />
+    <AndroidResource Include="Resources\drawable\Contact_Photo_Karolina_Lapczyk.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Contacts\KarolinaLapczyk.png" />
+    <AndroidResource Include="Resources\drawable\Contact_Photo_Mateusz_Gierczak.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Contacts\MateuszGierczak.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Contacts\phone_icon.png" />
+    <AndroidResource Include="Resources\drawable\Contact_Phone_Icon.png" />
   </ItemGroup>
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

@@ -18,8 +18,8 @@ namespace AgoraNavigator.Tasks
         {
             if(GameTask.CloseTask(task.id))
             {
-                GamePage.totalPoints.Text = Users.loggedUser.Tasks.TotalPoints.ToString();
-                String description = task.scorePoints + " point for you. " + "You have " + Users.loggedUser.Tasks.TotalPoints
+                GamePage.totalPoints.Text = Users.loggedUser.TotalPoints.ToString();
+                String description = task.scorePoints + " point for you. " + "You have " + Users.loggedUser.TotalPoints
                             + " points totally. Check more tasks to get more points and win the competition!";
                 SimplePopup popup = new SimplePopup("Good answer!", description)
                 {
@@ -44,10 +44,10 @@ namespace AgoraNavigator.Tasks
             BackgroundColor = AgoraColor.DarkBlue;
             BarTextColor = AgoraColor.Blue;
 
-            openedTasksView = new TasksMasterView(Users.loggedUser.Tasks.OpenedTasks, true);
+            openedTasksView = new TasksMasterView(Users.loggedUser.OpenedTasks, true);
             openedTasksView.Title = "OPEN";
             this.Children.Add(openedTasksView);
-            closedTasksView = new TasksMasterView(Users.loggedUser.Tasks.ClosedTasks, false);
+            closedTasksView = new TasksMasterView(Users.loggedUser.ClosedTasks, false);
             closedTasksView.Title = "CLOSED";
             this.Children.Add(closedTasksView);
         }
