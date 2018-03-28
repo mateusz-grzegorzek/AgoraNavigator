@@ -8,11 +8,12 @@ namespace AgoraNavigator.Tasks
 {
     public class GameLoginNavPage : NavigationPage
     {
-        GameLoginPage gameLoginPage;
-        public GameLoginNavPage()
+        GameLoginPage _gameLoginPage;
+
+        public GameLoginNavPage(Action navigationCallback)
         {
-            gameLoginPage = new GameLoginPage();
-            Navigation.PushAsync(gameLoginPage);
+            _gameLoginPage = new GameLoginPage(navigationCallback);
+            Navigation.PushAsync(_gameLoginPage);
         }
     }
 
@@ -20,10 +21,12 @@ namespace AgoraNavigator.Tasks
     {
         Entry idEntry;
         Entry pinEntry;
+        private Action _navigationCallback;
 
-        public GameLoginPage()
+
+        public GameLoginPage(Action navigationCallback)
         {
-            Console.WriteLine("GameLoginPage");
+            _navigationCallback = navigationCallback;
 
             int screenHeight = CrossDevice.Hardware.ScreenHeight;
             int screenWidth = CrossDevice.Hardware.ScreenWidth;
@@ -87,7 +90,7 @@ namespace AgoraNavigator.Tasks
                         Console.WriteLine("OnLoginButtonClicked:pin=" + pin);
                         await DisplayAlert("Login", "Succes!", "Ok");
                         await Users.InitUserData(user);
-                        WelcomePage.mainPage.UserLoggedSuccessfully();
+                        _navigationCallback();
                     }
                     else
                     {

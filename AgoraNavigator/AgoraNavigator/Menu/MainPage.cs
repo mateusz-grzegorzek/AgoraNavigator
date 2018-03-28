@@ -7,6 +7,7 @@ using AgoraNavigator.Login;
 using AgoraNavigator.Contact;
 using AgoraNavigator.Info;
 using AgoraNavigator.GoogleMap;
+using AgoraNavigator.Badge;
 
 namespace AgoraNavigator.Menu
 {
@@ -16,18 +17,15 @@ namespace AgoraNavigator.Menu
         public static MapPage mapPage;
         public static SchedulePage schedulePage;
         public static TasksPage tasksPage;
-        public static GameLoginNavPage gameLoginNavPage;
         public static ContactPage contactPage;
         public static InfoPage infoPage;
 
         public MainPage()
         {
-            Console.WriteLine("MainPage");
             NavigationPage.SetHasNavigationBar(this, false);
             masterPage = new MasterPage();
             mapPage = new MapPage();
             schedulePage = new SchedulePage();
-            gameLoginNavPage = new GameLoginNavPage();
             contactPage = new ContactPage();
             infoPage = new InfoPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
@@ -35,10 +33,9 @@ namespace AgoraNavigator.Menu
             Detail = infoPage;
         }
 
-        public void UserLoggedSuccessfully()
+        public void NavigateTo(NavigationPage navigateToPage)
         {
-            tasksPage = new TasksPage();
-            Detail = tasksPage;
+            Detail = navigateToPage;
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -57,11 +54,21 @@ namespace AgoraNavigator.Menu
                     case "Tasks":
                         if (Users.isUserLogged)
                         {
-                            UserLoggedSuccessfully();
+                            NavigateToTasks();
                         }
                         else
                         {
-                            Detail = gameLoginNavPage;
+                            Detail = new GameLoginNavPage(NavigateToTasks);
+                        }
+                        break;
+                    case "Badge":
+                        if (Users.isUserLogged)
+                        {
+                            NavigateToBadge();
+                        }
+                        else
+                        {
+                            Detail = new GameLoginNavPage(NavigateToBadge);
                         }
                         break;
                     case "Contact":
@@ -76,6 +83,17 @@ namespace AgoraNavigator.Menu
                 masterPage.getListView.SelectedItem = null;
                 IsPresented = false;
             }
+        }
+
+        public void NavigateToBadge()
+        {
+            Detail = new BadgePage();
+        }
+
+        public void NavigateToTasks()
+        {
+            tasksPage = new TasksPage();
+            Detail = tasksPage;
         }
     }
 }

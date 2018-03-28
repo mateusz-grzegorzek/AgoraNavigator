@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using AgoraNavigator.GoogleMap;
 using AgoraNavigator.Contact;
 using AgoraNavigator.Info;
+using AgoraNavigator.Badge;
 
 namespace AgoraNavigator.Menu
 {
@@ -34,6 +35,12 @@ namespace AgoraNavigator.Menu
                 Title = "Tasks",
                 IconSource = "hamburger.png",
                 TargetType = typeof(TasksPage)
+            });
+            masterPageItems.Add(new MasterPageItem
+            {
+                Title = "Badge",
+                IconSource = "hamburger.png",
+                TargetType = typeof(BadgePage)
             });
             masterPageItems.Add(new MasterPageItem
             {

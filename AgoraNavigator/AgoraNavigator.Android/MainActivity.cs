@@ -21,11 +21,13 @@ namespace AgoraNavigator.Droid
             FormsGoogleMaps.Init(this, bundle);
             LoadApplication(new App());
             FirebasePushNotificationManager.ProcessIntent(this, Intent);
+            ZXing.Net.Mobile.Forms.Android.Platform.Init();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }
