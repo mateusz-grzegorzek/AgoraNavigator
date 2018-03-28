@@ -1,4 +1,5 @@
 ﻿using AgoraNavigator.Menu;
+using AgoraNavigator.Schedule;
 using AgoraNavigator.Tasks;
 using Plugin.FirebasePushNotification;
 using Plugin.FirebasePushNotification.Abstractions;
@@ -46,6 +47,10 @@ namespace AgoraNavigator
                 if(data.Keys.Contains("changePage"))
                 {
                     mainPage.SetStartedPage(data["changePage"].ToString());
+                }
+                if (data.Keys.Contains("scheduleUpdate"))
+                {
+                    SchedulePage.scheduleDaysPage.FetchScheduleAsync(true);
                 }
             }
             catch (Exception err)

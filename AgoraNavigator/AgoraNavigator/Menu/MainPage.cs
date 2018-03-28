@@ -39,7 +39,8 @@ namespace AgoraNavigator.Menu
             downloadsPage = new DownloadsPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
-            Detail = welcomePage;   
+            Detail = welcomePage;
+            SchedulePage.scheduleDaysPage.FetchScheduleAsync();
         }
 
         public void SetStartedPage(string pageName)

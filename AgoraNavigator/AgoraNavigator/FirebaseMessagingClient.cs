@@ -1,5 +1,6 @@
 ﻿using AgoraNavigator.Downloads;
 using AgoraNavigator.Login;
+using AgoraNavigator.Schedule;
 using Firebase.Database;
 using Newtonsoft.Json;
 using Plugin.DeviceInfo;
@@ -46,6 +47,7 @@ namespace AgoraNavigator
             CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(() =>
             {
                 SubscribeForTopics(false);
+                SchedulePage.scheduleDaysPage.FetchScheduleAsync();
             }));                    
         }
 
