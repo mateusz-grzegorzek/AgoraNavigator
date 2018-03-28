@@ -7,6 +7,13 @@ namespace AgoraNavigator.Downloads
     public class DownloadButton : Button
     {
         public String Url;
+        public DownloadButton()
+        {
+            BackgroundColor = AgoraColor.Blue;
+            TextColor = AgoraColor.DarkBlue;
+            FontFamily = AgoraFonts.GetPoppinsBold();
+            FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Button));
+        }
     }
 
     public class DownloadsPage : NavigationPage
@@ -15,6 +22,7 @@ namespace AgoraNavigator.Downloads
 
         public DownloadsPage()
         {
+            BarTextColor = AgoraColor.Blue;
             downloadsMasterPage = new DownloadsMasterPage();
             Navigation.PushAsync(downloadsMasterPage);
         }
@@ -28,8 +36,8 @@ namespace AgoraNavigator.Downloads
         public DownloadsMasterPage()
         {
             Title = "Downloads";
-
-            stack = new StackLayout { Spacing = 0 };
+            BackgroundColor = AgoraColor.DarkBlue;
+            stack = new StackLayout { Spacing = 5 };
             filesCounter = CrossSettings.Current.GetValueOrDefault("filesCounter", 0);
             int index = 1;
             while(index <= filesCounter)

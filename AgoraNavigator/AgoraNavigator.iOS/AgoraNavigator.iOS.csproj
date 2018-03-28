@@ -189,6 +189,36 @@
   <ItemGroup>
     <BundleResource Include="Resources\task_separator.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Contact_Separator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Contact_Phone_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Contact_Photo_Agata_Sambor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Contact_Photo_Karolina_Lapczyk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Contact_Photo_Mateusz_Gierczak.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Hamburger_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Login_Background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Menu_Separator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\TasksMasterView_Task_Separator.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />
 </Project>
