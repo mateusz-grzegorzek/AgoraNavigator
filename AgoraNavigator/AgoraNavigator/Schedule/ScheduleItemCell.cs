@@ -18,7 +18,7 @@ namespace AgoraNavigator.Schedule
                 Margin = new Thickness(10, 10)
             };
 
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
 
             Label timeLabel = new Label()

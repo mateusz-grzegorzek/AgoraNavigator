@@ -3,6 +3,7 @@ using AgoraNavigator.Tasks;
 using Plugin.FirebasePushNotification;
 using Plugin.FirebasePushNotification.Abstractions;
 using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
@@ -24,35 +25,27 @@ namespace AgoraNavigator
 
         void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationDataEventArgs e)
         {
-            Console.WriteLine("OnNotificationReceived");
-            try
-            {
-                String title = e.Data["title"].ToString();
-                Console.WriteLine("OnNotificationReceived:title:" + title);
-                if (title == "Download")
-                {
-                    String url = e.Data["url"].ToString();
-                    String fileName = e.Data["fileName"].ToString();
-                    FirebaseMessagingClient.AddUrlToDownloads(url, fileName);
-                }
-            }
-            catch(Exception err)
-            {
-                Console.WriteLine("OnNotificationReceived:" + err.ToString());
-            }
+            FirebasePushNotificationDataEventHandler(e.Data);
         }
         void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationResponseEventArgs e)
+        {
+            FirebasePushNotificationDataEventHandler(e.Data);
+        }
+
+        void FirebasePushNotificationDataEventHandler(IDictionary<string, object> data)
         {
             Console.WriteLine("OnNotificationReceived");
             try
             {
-                String title = e.Data["title"].ToString();
-                Console.WriteLine("OnNotificationReceived:title:" + title);
-                if (title == "Download")
+                if (data.Keys.Contains("download"))
                 {
-                    String url = e.Data["url"].ToString();
-                    String fileName = e.Data["fileName"].ToString();
+                    String url = data["url"].ToString();
+                    String fileName = data["fileName"].ToString();
                     FirebaseMessagingClient.AddUrlToDownloads(url, fileName);
+                }
+                if(data.Keys.Contains("changePage"))
+                {
+                    mainPage.SetStartedPage(data["changePage"].ToString());
                 }
             }
             catch (Exception err)
