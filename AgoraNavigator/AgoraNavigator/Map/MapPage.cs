@@ -8,11 +8,11 @@ namespace AgoraNavigator.GoogleMap
     {
         public static GoogleMapPage googleMapPage;
 
-        public MapPage()
+        public MapPage(double lat, double lon)
         {
             Console.WriteLine("MapPage");
             BarTextColor = AgoraColor.Blue;
-            googleMapPage = new GoogleMapPage();
+            googleMapPage = new GoogleMapPage(lat, lon);
             Navigation.PushAsync(googleMapPage);
         }
     }
@@ -25,7 +25,9 @@ namespace AgoraNavigator.GoogleMap
         Button buttonHybrid;
         Button buttonSatellite;
 
-        public GoogleMapPage()
+        double[] coords = null;
+
+        public GoogleMapPage(double lat, double lon)
         {
             Title = "Map";
             map = new Map()
@@ -39,7 +41,7 @@ namespace AgoraNavigator.GoogleMap
             map.UiSettings.RotateGesturesEnabled = true;
             map.UiSettings.CompassEnabled = true;
             map.UiSettings.ZoomControlsEnabled = false;
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(50.0655097, 19.9099141), Distance.FromMiles(0.05)));
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(lat, lon), Distance.FromMiles(0.05)));
 
             Grid grid = new Grid();
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(10, GridUnitType.Star) });
@@ -103,6 +105,6 @@ namespace AgoraNavigator.GoogleMap
             buttonStreet.BackgroundColor = AgoraColor.Blue;   
             buttonSatellite.BackgroundColor = AgoraColor.Blue;
             buttonHybrid.BackgroundColor = AgoraColor.DarkBlue;
-        }  
+        }
     }
 }

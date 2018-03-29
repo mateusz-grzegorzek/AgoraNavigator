@@ -70,30 +70,50 @@ namespace AgoraNavigator.Schedule
                 Title = "Lelum Polelum",
                 StartTime = DateTime.Parse("2018-03-10T10:00:00"),
                 EndTime = DateTime.Parse("2018-03-10T11:00:00"),
+                Description = "Event description",
+                Place = "Collegium Novum",
+                Address = "ul. Gołębia 21",
+                Coords = new double[2]{ 50.0608255, 19.9309346 }
             });
             eventsList.Add(new ScheduleItem
             {
                 Title = "Opening Ceremony",
                 StartTime = DateTime.Parse("2018-04-23T20:00:00"),
                 EndTime = DateTime.Parse("2018-04-23T23:00:00"),
+                Description = "Event description",
+                Place = "Collegium Novum",
+                Address = "ul. Gołębia 21",
+                Coords = new double[2] { 50.0608255, 19.9309346 }
             });
             eventsList.Add(new ScheduleItem
             {
                 Title = "The Pierogi Workshop",
                 StartTime = DateTime.Parse("2018-04-24T10:00:00"),
                 EndTime = DateTime.Parse("2018-04-24T11:00:00"),
+                Description = "Event description",
+                Place = "Collegium Novum",
+                Address = "ul. Gołębia 21",
+                Coords = new double[2] { 50.0608255, 19.9309346 }
             });
             eventsList.Add(new ScheduleItem
             {
                 Title = "Melanż & Drinking Presentation",
                 StartTime = DateTime.Parse("2018-04-24T12:00:00"),
                 EndTime = DateTime.Parse("2018-04-24T14:00:00"),
+                Description = "Event description",
+                Place = "Collegium Novum",
+                Address = "ul. Gołębia 21",
+                Coords = new double[2] { 50.0608255, 19.9309346 }
             });
             eventsList.Add(new ScheduleItem
             {
                 Title = "Another lecture",
                 StartTime = DateTime.Parse("2018-04-25T10:00:00"),
                 EndTime = DateTime.Parse("2018-04-25T11:00:00"),
+                Description = "Event description",
+                Place = "Collegium Novum",
+                Address = "ul. Gołębia 21",
+                Coords = new double[2] { 50.0608255, 19.9309346 }
             });
             ProcessDays(eventsList);
         }

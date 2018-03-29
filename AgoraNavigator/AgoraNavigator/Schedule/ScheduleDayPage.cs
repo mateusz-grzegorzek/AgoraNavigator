@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 
 namespace AgoraNavigator.Schedule
 {
@@ -45,7 +46,13 @@ namespace AgoraNavigator.Schedule
 
         private void OnScheduleItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            ((ListView)sender).SelectedItem = null;
+            var item = e.SelectedItem as ScheduleItemViewModel;
+
+            if (item != null)
+            {
+                ScheduleEventDetails eventDetails = new ScheduleEventDetails(item);
+                Navigation.PushAsync(eventDetails);
+            }
         }
     }
 }
