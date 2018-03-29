@@ -22,6 +22,7 @@ namespace AgoraNavigator.Menu
         public static ContactPage contactPage;
         public static InfoPage infoPage;
         public static DownloadsPage downloadsPage;
+        public static BonusInfoPage bonusInfoPage;
 
         public MainPage()
         {
@@ -37,6 +38,7 @@ namespace AgoraNavigator.Menu
             contactPage = new ContactPage();
             infoPage = new InfoPage();
             downloadsPage = new DownloadsPage();
+            bonusInfoPage = new BonusInfoPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
             Detail = welcomePage;
@@ -67,6 +69,9 @@ namespace AgoraNavigator.Menu
                     break;
                 case "DownloadsPage":
                     Detail = downloadsPage;
+                    break;
+                case "BonusInfoPage":
+                    Detail = bonusInfoPage;
                     break;
             }
         }
@@ -108,6 +113,9 @@ namespace AgoraNavigator.Menu
                         break;
                     case "Downloads":
                         Detail = downloadsPage;
+                        break;
+                    case "Bonus info":
+                        Detail = bonusInfoPage;
                         break;
                     default:
                         break;
