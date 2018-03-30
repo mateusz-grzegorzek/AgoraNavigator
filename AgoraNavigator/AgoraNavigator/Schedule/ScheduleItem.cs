@@ -19,6 +19,10 @@ namespace AgoraNavigator.Schedule
 
         public string Description { get; set; }
 
-        public double[] Coords { get; set; }
+        public double CoordX { get; set; }
+
+        public double CoordY { get; set; }
     }
 }
+
+

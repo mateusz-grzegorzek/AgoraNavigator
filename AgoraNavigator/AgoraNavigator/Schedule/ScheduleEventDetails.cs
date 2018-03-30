@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Schedule
@@ -34,7 +30,7 @@ namespace AgoraNavigator.Schedule
                     },
                     new Label()
                     {
-                        Text = item.Title,
+                        Text = item.scheduleItem.Title,
                         FontSize = 18,
                         FontFamily = AgoraFonts.GetPoppinsRegular()
                     }
@@ -49,7 +45,7 @@ namespace AgoraNavigator.Schedule
                 {
                     new Label()
                     {
-                        Text = item.Description,
+                        Text = item.scheduleItem.Description,
                         FontFamily = AgoraFonts.GetPoppinsRegular(),
                         FontSize = 18,
                         Style = Device.Styles.BodyStyle
@@ -85,14 +81,14 @@ namespace AgoraNavigator.Schedule
                         {
                             new Label()
                             {
-                                Text = item.Place,
+                                Text = item.scheduleItem.Place,
                                 TextColor = AgoraColor.Blue,
                                 FontSize = 20,
                                 FontFamily = AgoraFonts.GetPoppinsBold()
                             },
                             new Label()
                             {
-                                Text = item.Address,
+                                Text = item.scheduleItem.Address,
                                 TextColor = AgoraColor.Blue,
                                 FontSize = 20,
                                 FontFamily = AgoraFonts.GetPoppinsBold()
@@ -159,7 +155,7 @@ namespace AgoraNavigator.Schedule
         private void ShowOnMapBtn_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
-            App.mainPage.OpenMapAt(50, 50);
+            App.mainPage.OpenMapAt(item.scheduleItem.CoordX, item.scheduleItem.CoordY);
         }
     }
 }

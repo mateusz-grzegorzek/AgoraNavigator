@@ -32,7 +32,7 @@ namespace AgoraNavigator.Menu
             this.BackgroundColor = Color.FromHex("061d3f");
             masterPage = new MasterPage();
             welcomePage = new WelcomePage();
-            mapPage = new MapPage(50.0655097, 19.9099141);
+            mapPage = new MapPage(50.0656911, 19.9083581);
             schedulePage = new SchedulePage();
             gameLoginNavPage = new GameLoginNavPage();
             contactPage = new ContactPage();
@@ -82,9 +82,9 @@ namespace AgoraNavigator.Menu
             Detail = tasksPage;
         }
 
-        public void OpenMapAt(double lat, double lon)
+        public void OpenMapAt(double latitude, double longitude)
         {
-            mapPage = new MapPage(lat, lon);
+            mapPage = new MapPage(latitude, longitude);
             Detail = mapPage;
         }
 

@@ -71,9 +71,10 @@ namespace AgoraNavigator.Schedule
                 StartTime = DateTime.Parse("2018-03-10T10:00:00"),
                 EndTime = DateTime.Parse("2018-03-10T11:00:00"),
                 Description = "Event description",
-                Place = "Collegium Novum",
-                Address = "ul. Gołębia 21",
-                Coords = new double[2]{ 50.0608255, 19.9309346 }
+                Place = "Auditorium Maximum",
+                Address = "ul. Krupnicza 33",
+                CoordX = 50.0627042,
+                CoordY = 19.9230431,
             });
             eventsList.Add(new ScheduleItem
             {
@@ -81,9 +82,10 @@ namespace AgoraNavigator.Schedule
                 StartTime = DateTime.Parse("2018-04-23T20:00:00"),
                 EndTime = DateTime.Parse("2018-04-23T23:00:00"),
                 Description = "Event description",
-                Place = "Collegium Novum",
-                Address = "ul. Gołębia 21",
-                Coords = new double[2] { 50.0608255, 19.9309346 }
+                Place = "Auditorium Maximum",
+                Address = "ul. Krupnicza 33",
+                CoordX = 50.0627042,
+                CoordY = 19.9230431,
             });
             eventsList.Add(new ScheduleItem
             {
@@ -91,9 +93,10 @@ namespace AgoraNavigator.Schedule
                 StartTime = DateTime.Parse("2018-04-24T10:00:00"),
                 EndTime = DateTime.Parse("2018-04-24T11:00:00"),
                 Description = "Event description",
-                Place = "Collegium Novum",
-                Address = "ul. Gołębia 21",
-                Coords = new double[2] { 50.0608255, 19.9309346 }
+                Place = "Auditorium Maximum",
+                Address = "ul. Krupnicza 33",
+                CoordX = 50.0627042,
+                CoordY = 19.9230431,
             });
             eventsList.Add(new ScheduleItem
             {
@@ -101,9 +104,10 @@ namespace AgoraNavigator.Schedule
                 StartTime = DateTime.Parse("2018-04-24T12:00:00"),
                 EndTime = DateTime.Parse("2018-04-24T14:00:00"),
                 Description = "Event description",
-                Place = "Collegium Novum",
-                Address = "ul. Gołębia 21",
-                Coords = new double[2] { 50.0608255, 19.9309346 }
+                Place = "Auditorium Maximum",
+                Address = "ul. Krupnicza 33",
+                CoordX = 50.0627042,
+                CoordY = 19.9230431,
             });
             eventsList.Add(new ScheduleItem
             {
@@ -111,9 +115,10 @@ namespace AgoraNavigator.Schedule
                 StartTime = DateTime.Parse("2018-04-25T10:00:00"),
                 EndTime = DateTime.Parse("2018-04-25T11:00:00"),
                 Description = "Event description",
-                Place = "Collegium Novum",
-                Address = "ul. Gołębia 21",
-                Coords = new double[2] { 50.0608255, 19.9309346 }
+                Place = "Auditorium Maximum",
+                Address = "ul. Krupnicza 33",
+                CoordX = 50.0627042,
+                CoordY = 19.9230431,
             });
             ProcessDays(eventsList);
         }
@@ -125,8 +130,13 @@ namespace AgoraNavigator.Schedule
             {
                 ScheduleItem item = new ScheduleItem();
                 item.Title = CrossSettings.Current.GetValueOrDefault("Schedule_Title_" + numberOfEvents, "");
-                item.StartTime = CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, new DateTime());
-                item.EndTime = CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, new DateTime());
+                item.StartTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, ""));
+                item.EndTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, ""));
+                item.Description = CrossSettings.Current.GetValueOrDefault("Schedule_Description_" + numberOfEvents, "");
+                item.Place = CrossSettings.Current.GetValueOrDefault("Schedule_Place_" + numberOfEvents, "");
+                item.Address = CrossSettings.Current.GetValueOrDefault("Schedule_Address_" + numberOfEvents, "");
+                item.CoordX = CrossSettings.Current.GetValueOrDefault("Schedule_CoordX_" + numberOfEvents, 50.0608255);
+                item.CoordY = CrossSettings.Current.GetValueOrDefault("Schedule_CoordY_" + numberOfEvents, 19.9309346);
                 eventsList.Add(item);
                 numberOfEvents--;
 
@@ -149,13 +159,13 @@ namespace AgoraNavigator.Schedule
             {
                 foreach (ScheduleItemViewModel item in scheduleItem)
                 {
-                    if (item.StartTime < DateTime.Now)
+                    if (item.scheduleItem.StartTime < DateTime.Now)
                     {
-                        item.Color = AgoraColor.LightGray;
+                        item.scheduleItem.Color = AgoraColor.LightGray;
                     }
                     else
                     {
-                        item.Color = Color.White;
+                        item.scheduleItem.Color = Color.White;
                     }
                 }
                 days.Add(scheduleItem);
@@ -165,8 +175,13 @@ namespace AgoraNavigator.Schedule
         private void SaveEventToMemory(ScheduleItem oneEvent, int eventNumber)
         {
             CrossSettings.Current.AddOrUpdateValue("Schedule_Title_" + eventNumber, oneEvent.Title);
-            CrossSettings.Current.AddOrUpdateValue("Schedule_StartTime_" + eventNumber, oneEvent.StartTime);
-            CrossSettings.Current.AddOrUpdateValue("Schedule_EndTime_" + eventNumber, oneEvent.EndTime);
+            CrossSettings.Current.AddOrUpdateValue("Schedule_StartTime_" + eventNumber, oneEvent.StartTime.ToString());
+            CrossSettings.Current.AddOrUpdateValue("Schedule_EndTime_" + eventNumber, oneEvent.EndTime.ToString());
+            CrossSettings.Current.AddOrUpdateValue("Schedule_Description_" + eventNumber, oneEvent.Description);
+            CrossSettings.Current.AddOrUpdateValue("Schedule_Place_" + eventNumber, oneEvent.Place);
+            CrossSettings.Current.AddOrUpdateValue("Schedule_Address_" + eventNumber, oneEvent.Address);
+            CrossSettings.Current.AddOrUpdateValue("Schedule_CoordX_" + eventNumber, oneEvent.CoordX);
+            CrossSettings.Current.AddOrUpdateValue("Schedule_CoordY_" + eventNumber, oneEvent.CoordY);
             CrossSettings.Current.AddOrUpdateValue("Schedule_numberOfEvents", eventNumber);
         }
     }

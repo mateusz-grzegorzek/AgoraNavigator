@@ -46,11 +46,12 @@ namespace AgoraNavigator.Schedule
 
         private void OnScheduleItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as ScheduleItemViewModel;
+            ScheduleItemViewModel item = e.SelectedItem as ScheduleItemViewModel;
 
             if (item != null)
             {
                 ScheduleEventDetails eventDetails = new ScheduleEventDetails(item);
+                ((ListView)sender).SelectedItem = null;
                 Navigation.PushAsync(eventDetails);
             }
         }
