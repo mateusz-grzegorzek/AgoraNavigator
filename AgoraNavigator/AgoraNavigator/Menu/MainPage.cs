@@ -57,7 +57,7 @@ namespace AgoraNavigator.Menu
                     Detail = schedulePage;
                     break;
                 case "GameLoginNavPage":
-                    Detail = new GameLoginNavPage();
+                    Detail = new GameLoginNavPage(typeof(WelcomePage));
                     break;
                 case "ContactPage":
                     Detail = contactPage;
@@ -74,9 +74,14 @@ namespace AgoraNavigator.Menu
             }
         }
 
-        public void UserLoggedSuccessfully()
+        public void ShowLoginScreen(Type navigateTo)
         {
-            Navigation.PopAsync();
+            Detail = new GameLoginNavPage(navigateTo);
+        }
+
+        public void UserLoggedSuccessfully(Type navigateTo)
+        {
+            Detail = Activator.CreateInstance(navigateTo) as Page;
         }
 
         public void OpenMapAt(double latitude, double longitude)
@@ -99,10 +104,24 @@ namespace AgoraNavigator.Menu
                         Detail = schedulePage;
                         break;
                     case "Tasks":
-                        Detail = new TasksPage();
+                        if (Users.isUserLogged)
+                        {
+                            Detail = new TasksPage();
+                        }
+                        else
+                        {
+                            Detail = new GameLoginNavPage(typeof(TasksPage));
+                        }
                         break;
                     case "Badge":
-                        Detail = new BadgePage();
+                        if (Users.isUserLogged)
+                        {
+                            Detail = new BadgePage();
+                        }
+                        else
+                        {
+                            Detail = new GameLoginNavPage(typeof(BadgePage));
+                        }
                         break;
                     case "Contact":
                         Detail = contactPage;

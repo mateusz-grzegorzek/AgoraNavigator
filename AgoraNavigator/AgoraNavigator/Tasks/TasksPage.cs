@@ -12,7 +12,7 @@ namespace AgoraNavigator.Tasks
         {
             if (!Users.isUserLogged)
             {
-                Navigation.PushAsync(new GameLoginNavPage());
+                App.mainPage.ShowLoginScreen(typeof(TasksPage));
                 return;
             }
             BarBackgroundColor = AgoraColor.DarkBlue;

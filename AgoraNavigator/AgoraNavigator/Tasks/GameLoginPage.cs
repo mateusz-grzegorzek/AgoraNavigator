@@ -10,10 +10,10 @@ namespace AgoraNavigator.Tasks
     public class GameLoginNavPage : NavigationPage
     {
         public static GameLoginPage gameLoginPage;
-        public GameLoginNavPage()
+        public GameLoginNavPage(Type navigateTo)
         {
             BarTextColor = AgoraColor.Blue;
-            gameLoginPage = new GameLoginPage();
+            gameLoginPage = new GameLoginPage(navigateTo);
             Navigation.PushAsync(gameLoginPage);
         }
     }
@@ -24,10 +24,12 @@ namespace AgoraNavigator.Tasks
         Entry pinEntry;
         Label infoLabel;
         bool isLoginStarted = false;
+        Type _navigateToPage;
 
 
-        public GameLoginPage()
+        public GameLoginPage(Type navigateTo)
         {
+            _navigateToPage = navigateTo;
             infoLabel = new Label
             {
                 Text = " Login to start \nGame of Tasks",
@@ -152,7 +154,7 @@ namespace AgoraNavigator.Tasks
                         };
                         popup.SetColors();
                         await Navigation.PushPopupAsync(popup);
-                        App.mainPage.UserLoggedSuccessfully();
+                        App.mainPage.UserLoggedSuccessfully(_navigateToPage);
                     }
                     catch (Exception err)
                     {

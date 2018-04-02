@@ -14,9 +14,9 @@ namespace AgoraNavigator.Badge
 
         public BadgePage()
         {
-            if(!Users.isUserLogged)
+            if (!Users.isUserLogged)
             {
-                Navigation.PushAsync(new GameLoginNavPage());
+                App.mainPage.ShowLoginScreen(typeof(BadgePage));
                 return;
             }
 
