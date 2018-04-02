@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgoraNavigator.Login;
+using System;
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Tasks
@@ -9,10 +10,13 @@ namespace AgoraNavigator.Tasks
 
         public TasksPage()
         {
-            Console.WriteLine("TasksPage");
-            SetHasNavigationBar(this, false);
-            BarTextColor = Color.Red;
-            BackgroundColor = Color.Azure;
+            if (!Users.isUserLogged)
+            {
+                Navigation.PushAsync(new GameLoginNavPage());
+                return;
+            }
+            BarBackgroundColor = AgoraColor.DarkBlue;
+            BarTextColor = AgoraColor.Blue;
             gamePage = new GamePage();
             Console.WriteLine("Navigation.PushAsync(gameLoginPage)");
             Navigation.PushAsync(gamePage);

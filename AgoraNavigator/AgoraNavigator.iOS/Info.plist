@@ -23,9 +23,9 @@
 	<key>MinimumOSVersion</key>
 	<string>10.3</string>
 	<key>CFBundleDisplayName</key>
-	<string>AgoraApplication</string>
+	<string>Agora Navigator</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.AgoraApplication</string>
+	<string>com.AgoraNavigator.iOS</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CFBundleIconFiles</key>
@@ -54,5 +54,13 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+  <key>UIAppFonts</key>
+  <array>
+    <string>Poppins-Bold.ttf</string>
+    <string>Poppins-Light.ttf</string>
+    <string>Poppins-Medium.ttf</string>
+    <string>Poppins-Regular.ttf</string>
+    <string>Poppins-SemiBold.ttf</string>
+  </array>
 </dict>
 </plist>

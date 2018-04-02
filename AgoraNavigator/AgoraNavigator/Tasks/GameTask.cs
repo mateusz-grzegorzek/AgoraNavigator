@@ -1,20 +1,27 @@
 ﻿using AgoraNavigator.Login;
-using Plugin.FirebasePushNotification;
+using Newtonsoft.Json;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace AgoraNavigator.Tasks
 {
     public class GameTask
     {
+        public static List<GameTask> allTasks;
+
         public enum TaskType
         {
             Text = 0,
-            Button = 1,
-            PreBLE = 2
+            Button = 1
         }
 
-        public int ownerId { get; set; }
+        public enum TaskStatus
+        {
+            NotStarted = 0,
+            Checking = 1,
+            Processing = 2,
+            Completed = 3
+        }
 
         public int id { get; set; }
 
@@ -30,189 +37,212 @@ namespace AgoraNavigator.Tasks
 
         public int scorePoints { get; set; }
 
-        public bool completed { get; set; }
+        public TaskStatus taskStatus { get; set; }
 
         public bool needBluetoothAndLocation { get; set; }
 
-        public static async Task<bool> ProcessTask(GameTask task)
+        public string dbName { get; set; }
+
+        public static bool CloseTask(int taskId)
         {
-            Console.WriteLine("GameTask:ProcessTask:task.id=" + task.id);
             bool result = false;
-            switch (task.id)
+            GameTask closedTask = allTasks[taskId];
+            Console.WriteLine("Users:closeTask:task.id=" + closedTask.id);
+            String databasePath = "/users/" + Users.loggedUser.Id + "/" + Users.loggedUser.Pin + "/tasks/";
+            UserTasksInDb userTasksInDb = new UserTasksInDb();
+            userTasksInDb.totalPoints = Users.loggedUser.TotalPoints + closedTask.scorePoints;
+            userTasksInDb.closedTasks = new List<int>();
+            foreach (GameTask task in Users.loggedUser.ClosedTasks)
             {
-                case 1:
-                    result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
-                    break;
-                case 3:
-                    result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
-                    if(result)
-                    {
-                        CrossFirebasePushNotification.Current.Subscribe("AEGEE_Army");
-                        String databasePath = "tasks/3/" + Users.loggedUser.AntenaId + "/" + Users.loggedUser.Id;
-                        await FirebaseMessagingClient.SendMessage(databasePath, "1");
-                    }
-                    break;
+                userTasksInDb.closedTasks.Add(task.id);
             }
+            userTasksInDb.closedTasks.Add(taskId);
+            String tasks = JsonConvert.SerializeObject(userTasksInDb);
+            if(FirebaseMessagingClient.SendMessage(databasePath, tasks))
+            {
+                closedTask.taskStatus = TaskStatus.Completed;
+                Users.loggedUser.TotalPoints += closedTask.scorePoints;
+                Users.loggedUser.OpenedTasks.Remove(closedTask);
+                Users.loggedUser.ClosedTasks.Add(closedTask);
+                result = true;
+            }
+            Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.TotalPoints);
+            Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.OpenedTasks.Count);
+            Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.ClosedTasks.Count);
             return result;
         }
 
         public static void AddTasks()
         {
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks = new List<GameTask>();
+            allTasks.Add(new GameTask
             {
-                id = 1,
+                id = 0,
                 title = "Adventurer quest",
-                iconSource = "hamburger.png",
                 description = "Find beacon at gym",
-                taskType = TaskType.PreBLE,
+                taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 1,
-                completed = false,
-                needBluetoothAndLocation = true
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = true,
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 2,
+                id = 1,
                 title = "Gym history",
-                iconSource = "hamburger.png",
                 description = "Find how long (in km) is the river which name is the name of the gym",
                 taskType = TaskType.Text,
                 correctAnswer = "1047",
                 scorePoints = 1,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 3,
+                id = 2,
                 title = "AEGEE Army",
-                iconSource = "hamburger.png",
                 description = "Gather more than half of your antena members near beacon at gym",
-                taskType = TaskType.PreBLE,
+                taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 3,
-                completed = false,
-                needBluetoothAndLocation = true
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = true,
+                dbName = "AEGEE_Army"
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 4,
+                id = 3,
                 title = "Nearby places",
-                iconSource = "hamburger.png",
                 description = "Find in which year was founded university across the street from the gym",
                 taskType = TaskType.Text,
                 correctAnswer = "1919",
                 scorePoints = 1,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 5,
+                id = 4,
                 title = "More than one animal is?",
-                iconSource = "hamburger.png",
                 description = "Ask Agora organizer what is the name of the AEGEE-Cracow sheep",
                 taskType = TaskType.Text,
                 correctAnswer = "Mateusz",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 6,
+                id = 5,
                 title = "Plenary photo",
-                iconSource = "hamburger.png",
                 description = "Take a photo on plenary and send on Instagram with #",
                 taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 2,
-                completed = false,
-                needBluetoothAndLocation = false
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = false,
+                dbName = "Plenary_photo"
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 7,
+                id = 6,
                 title = "Redbull give you the wings",
-                iconSource = "hamburger.png",
                 description = "Take a photo with redbull and send on Instagram with #",
                 taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 2,
-                completed = false,
-                needBluetoothAndLocation = false
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = false,
+                dbName = "Redbull"
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 8,
+                id = 7,
                 title = "The first are the best",
-                iconSource = "hamburger.png",
                 description = "Be the one of first persons on morning plenary",
-                taskType = TaskType.PreBLE,
+                taskType = TaskType.Button,
                 correctAnswer = null,
                 scorePoints = 1,
-                completed = false,
-                needBluetoothAndLocation = true
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = true,
+                dbName = "First_Come_First_Served"
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 9,
+                id = 8,
                 title = "Gunnar",
-                iconSource = "hamburger.png",
                 description = "Ask Gunnar for task",
                 taskType = TaskType.Text,
                 correctAnswer = "GUNNAR",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 10,
+                id = 9,
                 title = "Randevu",
-                iconSource = "hamburger.png",
                 description = "Talk with AEGEE-Cracow president and ask him for secret password",
                 taskType = TaskType.Text,
                 correctAnswer = "Buka",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 11,
+                id = 10,
                 title = "Women WC",
-                iconSource = "hamburger.png",
                 description = "Enter code from Women's WC",
                 taskType = TaskType.Text,
                 correctAnswer = "Closed",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 12,
+                id = 11,
                 title = "Plenary code",
-                iconSource = "hamburger.png",
                 description = "Enter code from Plenary",
                 taskType = TaskType.Text,
                 correctAnswer = "Code",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
             });
-            Users.loggedUser.openedTasks.Add(new GameTask
+            allTasks.Add(new GameTask
             {
-                id = 13,
+                id = 12,
                 title = "Polish favourite program",
-                iconSource = "hamburger.png",
                 description = "Find out what Polish people watch on sunday at dinner time",
                 taskType = TaskType.Text,
                 correctAnswer = "Familiada",
                 scorePoints = 2,
-                completed = false,
+                taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false
+            });
+            allTasks.Add(new GameTask
+            {
+                id = 13,
+                title = "Selfie with friends!",
+                description = "Take a photo with your friends, send it on Facebook participants group and tag your friends",
+                taskType = TaskType.Button,
+                scorePoints = 2,
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = false,
+                dbName = "Selfie"
+            });
+            allTasks.Add(new GameTask
+            {
+                id = 13,
+                title = "I need a dollar dollar...",
+                description = "Lend from AEGEEans five different currency in banknote or coin and show them to local organizer",
+                taskType = TaskType.Button,
+                scorePoints = 3,
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = false,
+                dbName = "Dollar"
             });
         }
     }

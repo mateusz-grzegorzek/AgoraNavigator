@@ -8,34 +8,81 @@ using AgoraNavigator.Contact;
 using AgoraNavigator.Info;
 using AgoraNavigator.GoogleMap;
 using AgoraNavigator.Badge;
+using AgoraNavigator.Downloads;
 
 namespace AgoraNavigator.Menu
 {
     public class MainPage : MasterDetailPage
     {
         public static MasterPage masterPage;
+        public static WelcomePage welcomePage;
         public static MapPage mapPage;
         public static SchedulePage schedulePage;
         public static TasksPage tasksPage;
         public static ContactPage contactPage;
         public static InfoPage infoPage;
+        public static DownloadsPage downloadsPage;
+        public static BonusInfoPage bonusInfoPage;
 
         public MainPage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetTitleIcon(this, "Hamburger_Icon.png");
+            this.BackgroundColor = Color.FromHex("061d3f");
             masterPage = new MasterPage();
-            mapPage = new MapPage();
+            welcomePage = new WelcomePage();
+            mapPage = new MapPage(50.0656911, 19.9083581);
             schedulePage = new SchedulePage();
             contactPage = new ContactPage();
             infoPage = new InfoPage();
+            downloadsPage = new DownloadsPage();
+            bonusInfoPage = new BonusInfoPage();
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
-            Detail = infoPage;
+            Detail = welcomePage;
+            SchedulePage.scheduleDaysPage.FetchScheduleAsync();
         }
 
-        public void NavigateTo(NavigationPage navigateToPage)
+        public void SetStartedPage(string pageName)
         {
-            Detail = navigateToPage;
+            switch(pageName)
+            {
+                case "WelcomePage":
+                    Detail = welcomePage;
+                    break;
+                case "MapPage":
+                    Detail = mapPage;
+                    break;
+                case "SchedulePage":
+                    Detail = schedulePage;
+                    break;
+                case "GameLoginNavPage":
+                    Detail = new GameLoginNavPage();
+                    break;
+                case "ContactPage":
+                    Detail = contactPage;
+                    break;
+                case "InfoPage":
+                    Detail = infoPage;
+                    break;
+                case "DownloadsPage":
+                    Detail = downloadsPage;
+                    break;
+                case "BonusInfoPage":
+                    Detail = bonusInfoPage;
+                    break;
+            }
+        }
+
+        public void UserLoggedSuccessfully()
+        {
+            Navigation.PopAsync();
+        }
+
+        public void OpenMapAt(double latitude, double longitude)
+        {
+            mapPage = new MapPage(latitude, longitude);
+            Detail = mapPage;
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -52,24 +99,10 @@ namespace AgoraNavigator.Menu
                         Detail = schedulePage;
                         break;
                     case "Tasks":
-                        if (Users.isUserLogged)
-                        {
-                            NavigateToTasks();
-                        }
-                        else
-                        {
-                            Detail = new GameLoginNavPage(NavigateToTasks);
-                        }
+                        Detail = new TasksPage();
                         break;
                     case "Badge":
-                        if (Users.isUserLogged)
-                        {
-                            NavigateToBadge();
-                        }
-                        else
-                        {
-                            Detail = new GameLoginNavPage(NavigateToBadge);
-                        }
+                        Detail = new BadgePage();
                         break;
                     case "Contact":
                         Detail = contactPage;
@@ -77,23 +110,18 @@ namespace AgoraNavigator.Menu
                     case "Important info":
                         Detail = infoPage;
                         break;
+                    case "Downloads":
+                        Detail = downloadsPage;
+                        break;
+                    case "Bonus info":
+                        Detail = bonusInfoPage;
+                        break;
                     default:
                         break;
                 }
                 masterPage.getListView.SelectedItem = null;
                 IsPresented = false;
             }
-        }
-
-        public void NavigateToBadge()
-        {
-            Detail = new BadgePage();
-        }
-
-        public void NavigateToTasks()
-        {
-            tasksPage = new TasksPage();
-            Detail = tasksPage;
         }
     }
 }

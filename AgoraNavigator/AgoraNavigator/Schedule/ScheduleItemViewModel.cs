@@ -1,30 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AgoraNavigator.Domain.Schedule;
+﻿using Xamarin.Forms;
 
 namespace AgoraNavigator.Schedule
 {
-    class ScheduleItemViewModel
+    public class ScheduleItemViewModel
     {
-        public ScheduleItemViewModel()
-        {
-
-        }
+        public ScheduleItem scheduleItem;
 
         public ScheduleItemViewModel(ScheduleItem item)
         {
-            Title = item.Title;
-            Presenter = item.Presenter;
-            StartTime = item.StartTime;
+            scheduleItem = item;
         }
 
-        public string Title { get; set; }
+        public ScheduleItemViewModel(ScheduleItemViewModel viewItem)
+        {
+            scheduleItem = viewItem.scheduleItem;
+        }
 
-        public string Presenter { get; set; }
+        public string TimeText => scheduleItem.StartTime.ToShortTimeString() + " - " + scheduleItem.EndTime.ToShortTimeString();
 
-        public DateTime StartTime { get; set; }
+        public string Title => scheduleItem.Title;
 
-        public string StartTimeText => StartTime.ToShortTimeString();
+        public Color Color => scheduleItem.Color;
+
     }
 }

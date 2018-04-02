@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace AgoraNavigator.Schedule
 {
@@ -11,32 +8,52 @@ namespace AgoraNavigator.Schedule
         {
             StackLayout cellWrapper = new StackLayout()
             {
-                Orientation = StackOrientation.Horizontal
-            };
-            StackLayout eventDescriptionWrapper = new StackLayout()
-            {
-                Orientation = StackOrientation.Vertical
+                Orientation = StackOrientation.Horizontal,
             };
 
-            Label titleLabel = new Label()
+            Grid grid = new Grid
             {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Margin = new Thickness(10, 10)
             };
-            Label presenterLabel = new Label();
+
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
+
             Label timeLabel = new Label()
             {
+                FontFamily = AgoraFonts.GetPoppinsBold(),
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = AgoraColor.Blue,
+                HorizontalTextAlignment = TextAlignment.Start,
+                HorizontalOptions = LayoutOptions.StartAndExpand
+            };
+            Label titleLabel = new Label()
+            {
+                FontFamily = AgoraFonts.GetPoppinsRegular(),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = AgoraColor.Dark,
+                HorizontalTextAlignment = TextAlignment.Start,
+                HorizontalOptions = LayoutOptions.StartAndExpand
+            };
+            Image arrow = new Image
+            {
+                Source = "Arrow.png",
+                HorizontalOptions = LayoutOptions.End
             };
 
+            timeLabel.SetBinding(Label.TextProperty, "TimeText");
             titleLabel.SetBinding(Label.TextProperty, "Title");
-            presenterLabel.SetBinding(Label.TextProperty, "Presenter");
-            timeLabel.SetBinding(Label.TextProperty, "StartTimeText");
 
-            eventDescriptionWrapper.Children.Add(titleLabel);
-            eventDescriptionWrapper.Children.Add(presenterLabel);
+            grid.Children.Add(timeLabel, 0, 0);
+            grid.Children.Add(titleLabel, 0, 1);
 
-            cellWrapper.Children.Add(timeLabel);
-            cellWrapper.Children.Add(eventDescriptionWrapper);
+            Grid.SetRowSpan(arrow, 2);
+            grid.Children.Add(arrow, 1, 2, 0, 2);
+
+            cellWrapper.Children.Add(grid);
+            cellWrapper.SetBinding(VisualElement.BackgroundColorProperty, "Color");
 
             View = cellWrapper;
         }

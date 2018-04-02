@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
 
 namespace AgoraNavigator.Schedule
 {
@@ -19,6 +19,10 @@ namespace AgoraNavigator.Schedule
 
         public DateTime Date { get; set; }
 
-        public string DayName => Date.ToString("M");
+        public string DayName => Date.ToString("dddd", new CultureInfo("en-US"));
+
+        public string Day => Date.ToString("d MMMM", new CultureInfo("en-US"));
+
+        public IEnumerable<ScheduleItemViewModel> Items => this;
     }
 }

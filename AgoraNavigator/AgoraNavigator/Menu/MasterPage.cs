@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using AgoraNavigator.GoogleMap;
 using AgoraNavigator.Contact;
 using AgoraNavigator.Info;
+using AgoraNavigator.Downloads;
 using AgoraNavigator.Badge;
 
 namespace AgoraNavigator.Menu
@@ -17,42 +18,46 @@ namespace AgoraNavigator.Menu
 
         public MasterPage()
         {
-            var masterPageItems = new List<MasterPageItem>();
+            List<MasterPageItem> masterPageItems = new List<MasterPageItem>();
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Map",
-                IconSource = "hamburger.png",
                 TargetType = typeof(MapPage)
             });
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Schedule",
-                IconSource = "hamburger.png",
                 TargetType = typeof(SchedulePage)
             });
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Tasks",
-                IconSource = "hamburger.png",
                 TargetType = typeof(TasksPage)
             });
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Badge",
-                IconSource = "hamburger.png",
                 TargetType = typeof(BadgePage)
             });
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Contact",
-                IconSource = "hamburger.png",
                 TargetType = typeof(ContactPage)
             });
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Important info",
-                IconSource = "hamburger.png",
                 TargetType = typeof(InfoPage)
+            });
+            masterPageItems.Add(new MasterPageItem
+            {
+                Title = "Downloads",
+                TargetType = typeof(DownloadsPage)
+            });
+            masterPageItems.Add(new MasterPageItem
+            {
+                Title = "Bonus info",
+                TargetType = typeof(BonusInfoPage)
             });
 
             listView = new ListView
@@ -60,29 +65,44 @@ namespace AgoraNavigator.Menu
                 ItemsSource = masterPageItems,
                 ItemTemplate = new DataTemplate(() =>
                 {
-                    var grid = new Grid { Padding = new Thickness(5, 10) };
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+                    Grid grid = new Grid
+                    {
+                        Padding = new Thickness(1, 1),
+                    };
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150)});
 
-                    var image = new Image();
-                    image.SetBinding(Image.SourceProperty, "IconSource");
-                    var label = new Label { VerticalOptions = LayoutOptions.FillAndExpand };
-                    label.SetBinding(Label.TextProperty, "Title");
+                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3, GridUnitType.Star) });
+                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
-                    grid.Children.Add(image);
-                    grid.Children.Add(label, 1, 0);
+                    Image icon = new Image
+                    {
+                        Source = "Hamburger_Icon.png",
+                        HorizontalOptions = LayoutOptions.End,
+                        Margin = new Thickness(4, 4)
+                    };
+                    Label menuOption = new Label
+                    {
+                        VerticalOptions = LayoutOptions.Center
+                    };
+                    menuOption.SetBinding(Label.TextProperty, "Title");
+                    menuOption.FontFamily = AgoraFonts.GetPoppinsMedium();
+                    menuOption.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
+                    menuOption.TextColor = AgoraColor.DarkBlue;
+                    Image separator = new Image { Source = "Menu_Separator.png" };
 
+                    grid.Children.Add(menuOption);
+                    grid.Children.Add(separator, 0, 1);
                     return new ViewCell { View = grid };
                 }),
                 SeparatorVisibility = SeparatorVisibility.None
             };
 
-            Icon = "hamburger.png";
+            Icon = new FileImageSource() { File = "Hamburger_Icon.png" };
             Title = "Agora Navigator";
-            BackgroundColor = Color.Orange;
-            Padding = new Thickness(0, 40, 0, 0);
+            BackgroundColor = AgoraColor.Blue;
+            Padding = new Thickness(20, 40, 0, 0);
 
-            var stack = new StackLayout();
+            StackLayout stack = new StackLayout();
             stack.Children.Add(listView);
             Content = stack;
         }

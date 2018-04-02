@@ -1,6 +1,10 @@
 ﻿using AgoraNavigator.Login;
 using AgoraNavigator.Menu;
+using AgoraNavigator.Popup;
+using Rg.Plugins.Popup.Extensions;
+using Rg.Plugins.Popup.Services;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Tasks
@@ -10,26 +14,42 @@ namespace AgoraNavigator.Tasks
         public static TasksMasterView closedTasksView;
         public static TasksMasterView openedTasksView;
 
-        public async void closeTask(GameTask task)
+        public async Task closeTask(GameTask task)
         {
-            await DisplayAlert("Task", "Succes!", "Ok");
-            await Users.closeTask(task);
-            GamePage.totalPointsLabel.Text = "Total points: " + Users.loggedUser.TotalPoints.ToString();
-            await MainPage.tasksPage.Navigation.PopAsync();
+            if(GameTask.CloseTask(task.id))
+            {
+                GamePage.totalPoints.Text = Users.loggedUser.TotalPoints.ToString();
+                String description = task.scorePoints + " point for you. " + "You have " + Users.loggedUser.TotalPoints
+                            + " points totally. Check more tasks to get more points and win the competition!";
+                SimplePopup popup = new SimplePopup("Good answer!", description)
+                {
+                    ColorBackground = Color.Green,
+                    ColorBody = Color.White,
+                    ColorTitle = Color.White,
+                };
+                popup.SetColors();
+                popup.buttonOk.Clicked += async (object sender, EventArgs e) =>
+                {
+                    await PopupNavigation.RemovePageAsync(popup);
+                    await MainPage.tasksPage.Navigation.PopAsync();
+                };
+                await Navigation.PushPopupAsync(popup);
+            }    
         }
 
         public TasksMasterPage()
         {
             Console.WriteLine("TasksMasterPage");
             Title = "Tasks";
-            BackgroundColor = Color.AliceBlue;
+            BackgroundColor = AgoraColor.DarkBlue;
+            BarTextColor = AgoraColor.Blue;
 
-            closedTasksView = new TasksMasterView(Users.loggedUser.closedTasks);
-            closedTasksView.Title = "Closed";
-            this.Children.Add(closedTasksView);
-            openedTasksView = new TasksMasterView(Users.loggedUser.openedTasks);
-            openedTasksView.Title = "Open";
+            openedTasksView = new TasksMasterView(Users.loggedUser.OpenedTasks, true);
+            openedTasksView.Title = "OPEN";
             this.Children.Add(openedTasksView);
+            closedTasksView = new TasksMasterView(Users.loggedUser.ClosedTasks, false);
+            closedTasksView.Title = "CLOSED";
+            this.Children.Add(closedTasksView);
         }
     }
 }
