@@ -34,6 +34,7 @@ namespace AgoraNavigator.iOS
             }
             Messaging.SharedInstance.Delegate = (IMessagingDelegate)this;
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
+            ZXing.Net.Mobile.Forms.iOS.Platform.Init();
             LoadApplication(new App());
             
             return base.FinishedLaunching(app, options);

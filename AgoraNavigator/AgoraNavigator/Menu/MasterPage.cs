@@ -6,6 +6,7 @@ using AgoraNavigator.GoogleMap;
 using AgoraNavigator.Contact;
 using AgoraNavigator.Info;
 using AgoraNavigator.Downloads;
+using AgoraNavigator.Badge;
 
 namespace AgoraNavigator.Menu
 {
@@ -32,6 +33,11 @@ namespace AgoraNavigator.Menu
             {
                 Title = "Tasks",
                 TargetType = typeof(TasksPage)
+            });
+            masterPageItems.Add(new MasterPageItem
+            {
+                Title = "Badge",
+                TargetType = typeof(BadgePage)
             });
             masterPageItems.Add(new MasterPageItem
             {

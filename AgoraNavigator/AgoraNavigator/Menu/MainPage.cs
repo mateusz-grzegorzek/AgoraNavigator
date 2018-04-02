@@ -7,6 +7,7 @@ using AgoraNavigator.Login;
 using AgoraNavigator.Contact;
 using AgoraNavigator.Info;
 using AgoraNavigator.GoogleMap;
+using AgoraNavigator.Badge;
 using AgoraNavigator.Downloads;
 
 namespace AgoraNavigator.Menu
@@ -18,7 +19,6 @@ namespace AgoraNavigator.Menu
         public static MapPage mapPage;
         public static SchedulePage schedulePage;
         public static TasksPage tasksPage;
-        public static GameLoginNavPage gameLoginNavPage;
         public static ContactPage contactPage;
         public static InfoPage infoPage;
         public static DownloadsPage downloadsPage;
@@ -26,7 +26,6 @@ namespace AgoraNavigator.Menu
 
         public MainPage()
         {
-            Console.WriteLine("MainPage");
             NavigationPage.SetHasNavigationBar(this, false);
             NavigationPage.SetTitleIcon(this, "Hamburger_Icon.png");
             this.BackgroundColor = Color.FromHex("061d3f");
@@ -34,7 +33,6 @@ namespace AgoraNavigator.Menu
             welcomePage = new WelcomePage();
             mapPage = new MapPage(50.0656911, 19.9083581);
             schedulePage = new SchedulePage();
-            gameLoginNavPage = new GameLoginNavPage();
             contactPage = new ContactPage();
             infoPage = new InfoPage();
             downloadsPage = new DownloadsPage();
@@ -59,7 +57,7 @@ namespace AgoraNavigator.Menu
                     Detail = schedulePage;
                     break;
                 case "GameLoginNavPage":
-                    Detail = gameLoginNavPage;
+                    Detail = new GameLoginNavPage(typeof(WelcomePage));
                     break;
                 case "ContactPage":
                     Detail = contactPage;
@@ -76,10 +74,14 @@ namespace AgoraNavigator.Menu
             }
         }
 
-        public void UserLoggedSuccessfully()
+        public void ShowLoginScreen(Type navigateTo)
         {
-            tasksPage = new TasksPage();
-            Detail = tasksPage;
+            Detail = new GameLoginNavPage(navigateTo);
+        }
+
+        public void UserLoggedSuccessfully(Type navigateTo)
+        {
+            Detail = Activator.CreateInstance(navigateTo) as Page;
         }
 
         public void OpenMapAt(double latitude, double longitude)
@@ -104,11 +106,21 @@ namespace AgoraNavigator.Menu
                     case "Tasks":
                         if (Users.isUserLogged)
                         {
-                            UserLoggedSuccessfully();
+                            Detail = new TasksPage();
                         }
                         else
                         {
-                            Detail = gameLoginNavPage;
+                            Detail = new GameLoginNavPage(typeof(TasksPage));
+                        }
+                        break;
+                    case "Badge":
+                        if (Users.isUserLogged)
+                        {
+                            Detail = new BadgePage();
+                        }
+                        else
+                        {
+                            Detail = new GameLoginNavPage(typeof(BadgePage));
                         }
                         break;
                     case "Contact":
