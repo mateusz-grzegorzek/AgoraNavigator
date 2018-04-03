@@ -13,8 +13,8 @@ using AgoraNavigator.Downloads;
 namespace AgoraNavigator.Menu
 {
     public class MainPage : MasterDetailPage
-    {
-        public static MasterPage masterPage;
+    {  
+        MasterPage masterPage;
         public static WelcomePage welcomePage;
         public static MapPage mapPage;
         public static SchedulePage schedulePage;
@@ -86,8 +86,7 @@ namespace AgoraNavigator.Menu
 
         public void OpenMapAt(double latitude, double longitude)
         {
-            mapPage = new MapPage(latitude, longitude);
-            Detail = mapPage;
+            Detail = new MapPage(latitude, longitude);
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)

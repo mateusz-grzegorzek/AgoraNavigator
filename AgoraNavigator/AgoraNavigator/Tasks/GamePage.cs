@@ -72,7 +72,6 @@ namespace AgoraNavigator.Tasks
 
                     Label userIdLabel = new Label
                     {
-                        VerticalOptions = LayoutOptions.FillAndExpand,
                         Text = "ID: ",
                         TextColor = AgoraColor.Blue,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
@@ -80,7 +79,6 @@ namespace AgoraNavigator.Tasks
                     };
                     Label userId = new Label
                     {
-                        VerticalOptions = LayoutOptions.FillAndExpand,
                         TextColor = AgoraColor.Blue,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
                         FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
@@ -88,7 +86,6 @@ namespace AgoraNavigator.Tasks
                     userId.SetBinding(Label.TextProperty, "userId");
                     Label totalPoints = new Label
                     {
-                        VerticalOptions = LayoutOptions.FillAndExpand,
                         TextColor = Color.White,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
                         HorizontalTextAlignment = TextAlignment.End,
@@ -105,11 +102,7 @@ namespace AgoraNavigator.Tasks
                 SeparatorVisibility = SeparatorVisibility.None
             };
 
-            AbsoluteLayout layout = new AbsoluteLayout
-            {
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand
-            };
+            AbsoluteLayout layout = new AbsoluteLayout();
 
             AbsoluteLayout.SetLayoutBounds(totalPointsLabel,   new Rectangle(.35, .10, .60, .06));
             AbsoluteLayout.SetLayoutBounds(totalPoints,        new Rectangle(.85, .10, .10, .06));

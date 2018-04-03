@@ -47,7 +47,7 @@ namespace AgoraNavigator.Tasks
         {
             bool result = false;
             GameTask closedTask = allTasks[taskId];
-            Console.WriteLine("Users:closeTask:task.id=" + closedTask.id);
+            Console.WriteLine("GameTask:closeTask:task.id=" + closedTask.id);
             String databasePath = "/users/" + Users.loggedUser.Id + "/" + Users.loggedUser.Pin + "/tasks/";
             UserTasksInDb userTasksInDb = new UserTasksInDb();
             userTasksInDb.totalPoints = Users.loggedUser.TotalPoints + closedTask.scorePoints;
@@ -66,9 +66,9 @@ namespace AgoraNavigator.Tasks
                 Users.loggedUser.ClosedTasks.Add(closedTask);
                 result = true;
             }
-            Console.WriteLine("Users:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.TotalPoints);
-            Console.WriteLine("Users:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.OpenedTasks.Count);
-            Console.WriteLine("Users:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.ClosedTasks.Count);
+            Console.WriteLine("GameTask:closeTask:loggedUser.TotalPoints=" + Users.loggedUser.TotalPoints);
+            Console.WriteLine("GameTask:closeTask:loggedUser.openedTasks.Count=" + Users.loggedUser.OpenedTasks.Count);
+            Console.WriteLine("GameTask:closeTask:loggedUser.closedTasks.Count=" + Users.loggedUser.ClosedTasks.Count);
             return result;
         }
 

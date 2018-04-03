@@ -16,18 +16,12 @@ namespace AgoraNavigator.Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
+            Forms.SetFlags("FastRenderers_Experimental");
             Forms.Init(this, bundle);
             FormsGoogleMaps.Init(this, bundle);
             LoadApplication(new App());
             FirebasePushNotificationManager.ProcessIntent(this, Intent);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
-        }
-
-        protected override void OnNewIntent(Intent intent)
-        {
-            FirebasePushNotificationManager.ProcessIntent(this, intent);
-            base.OnNewIntent(intent);
         }
 
         protected override void OnNewIntent(Intent intent)

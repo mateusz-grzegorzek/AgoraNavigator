@@ -102,9 +102,7 @@ namespace AgoraNavigator.Menu
             BackgroundColor = AgoraColor.Blue;
             Padding = new Thickness(20, 40, 0, 0);
 
-            StackLayout stack = new StackLayout();
-            stack.Children.Add(listView);
-            Content = stack;
+            Content = listView;
         }
     }
 }

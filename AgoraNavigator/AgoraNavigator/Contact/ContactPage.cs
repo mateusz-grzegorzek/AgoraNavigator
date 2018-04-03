@@ -67,8 +67,6 @@ namespace AgoraNavigator.Contact
                 {
                     Grid grid = new Grid
                     {
-                        VerticalOptions = LayoutOptions.FillAndExpand,
-                        HorizontalOptions = LayoutOptions.FillAndExpand,
                         Margin = new Thickness(5, 0)
                     };
 

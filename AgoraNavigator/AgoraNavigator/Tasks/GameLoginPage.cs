@@ -86,11 +86,7 @@ namespace AgoraNavigator.Tasks
             };
             loginButton.Clicked += OnLoginButtonClicked;
 
-            AbsoluteLayout layout = new AbsoluteLayout
-            {
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand
-            };
+            AbsoluteLayout layout = new AbsoluteLayout();
 
             AbsoluteLayout.SetLayoutBounds(infoLabel,  new Rectangle(.5, .45, .50, .2));
             AbsoluteLayout.SetLayoutBounds(idLabel,    new Rectangle(.5, .55, .50, .1));
@@ -112,6 +108,7 @@ namespace AgoraNavigator.Tasks
             layout.Children.Add(pinLabel);
             layout.Children.Add(pinEntry);
             layout.Children.Add(loginButton);
+            CompressedLayout.SetIsHeadless(layout, true);
             Content = layout;
             BackgroundImage = "Login_Background.png";
             Title = "Game of Tasks - Login";

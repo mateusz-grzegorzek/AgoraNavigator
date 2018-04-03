@@ -24,8 +24,6 @@ namespace AgoraNavigator.Tasks
 
             Grid grid = new Grid
             {
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
                 Padding = 0,
                 RowSpacing = 0
             };
@@ -47,8 +45,6 @@ namespace AgoraNavigator.Tasks
                 BackgroundColor = AgoraColor.Blue,
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
             };
             Label descriptionLabel = new Label
             {
@@ -57,8 +53,6 @@ namespace AgoraNavigator.Tasks
                 BackgroundColor = AgoraColor.Blue,
                 FontFamily = AgoraFonts.GetPoppinsMedium(),
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
             };
 
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }); // 0 - Field above Title

@@ -31,7 +31,7 @@ namespace AgoraNavigator.Tasks
                 popup.buttonOk.Clicked += async (object sender, EventArgs e) =>
                 {
                     await PopupNavigation.RemovePageAsync(popup);
-                    await MainPage.tasksPage.Navigation.PopAsync();
+                    await App.mainPage.Detail.Navigation.PopAsync();
                 };
                 await Navigation.PushPopupAsync(popup);
             }    

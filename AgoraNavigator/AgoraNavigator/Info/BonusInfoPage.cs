@@ -210,6 +210,7 @@ namespace AgoraNavigator.Info
                 stackLayout.Children.Add(phraseStackLayout);
             }
 
+            CompressedLayout.SetIsHeadless(stackLayout, true);
             Content = new ScrollView { Content = stackLayout };
         }
     }

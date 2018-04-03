@@ -29,10 +29,7 @@
         HeightRequest="200"
         WidthRequest="300"
         Padding ="0">
-         <AbsoluteLayout
-            x:Name="layout"
-            VerticalOptions="FillAndExpand"
-            HorizontalOptions="FillAndExpand">
-        </AbsoluteLayout>
+        <AbsoluteLayout
+            x:Name="layout"/>
     </Frame>
 </pages:PopupPage>

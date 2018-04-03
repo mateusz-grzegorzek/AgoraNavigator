@@ -13,7 +13,6 @@ namespace AgoraNavigator.Schedule
 
             Grid grid = new Grid
             {
-                VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Margin = new Thickness(10, 10)
             };

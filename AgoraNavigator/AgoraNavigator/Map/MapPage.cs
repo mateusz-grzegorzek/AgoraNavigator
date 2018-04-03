@@ -32,8 +32,6 @@ namespace AgoraNavigator.GoogleMap
             {
                 IsIndoorEnabled = true,
                 MapType = MapType.Hybrid,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand
             };
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(latitude, longitude), Distance.FromMiles(0.05)));
             map.UiSettings.MyLocationButtonEnabled = true;

@@ -38,11 +38,7 @@ namespace AgoraNavigator.Badge
                 return;
             }
 
-            _barcode = new ZXingBarcodeImageView
-            {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-            };
+            _barcode = new ZXingBarcodeImageView();
             _barcode.BarcodeFormat = ZXing.BarcodeFormat.CODE_39;
             _barcode.BarcodeOptions.Width = 300;
             _barcode.BarcodeOptions.Height = 150;

@@ -41,6 +41,7 @@ namespace AgoraNavigator.Schedule
             stack.Children.Add(dayNameLabel);
             stack.Children.Add(dayLabel);
             stack.Children.Add(scheduleItemsListView);
+            CompressedLayout.SetIsHeadless(stack, true);
             Content = stack;
         }
 
