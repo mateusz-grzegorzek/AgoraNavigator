@@ -70,6 +70,7 @@
     <AndroidAsset Include="Assets\Poppins-Medium.ttf" />
     <AndroidAsset Include="Assets\Poppins-Regular.ttf" />
     <AndroidAsset Include="Assets\Poppins-SemiBold.ttf" />
+    <AndroidAsset Include="Assets\Font-Awesome.ttf" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +195,15 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\schedulePin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\mapPin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\pinTestIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\mapPinSelected.png" />
   </ItemGroup>
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

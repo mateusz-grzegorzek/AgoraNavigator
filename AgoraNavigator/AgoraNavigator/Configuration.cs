@@ -29,5 +29,9 @@ namespace AgoraNavigator
         {
             return "Poppins-Bold.ttf#Poppins-Bold";
         }
+        public static string GetFontAwesome()
+        {
+            return "Font-Awesome.ttf#Font-Awesome";
+        }
     }
 }

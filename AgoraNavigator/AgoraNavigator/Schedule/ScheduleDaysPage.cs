@@ -129,9 +129,9 @@ namespace AgoraNavigator.Schedule
             while (numberOfEvents != 0)
             {
                 ScheduleItem item = new ScheduleItem();
-                item.Title = CrossSettings.Current.GetValueOrDefault("Schedule_Title_" + numberOfEvents, "");
-                item.StartTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, ""));
-                item.EndTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, ""));
+                item.Title = CrossSettings.Current.GetValueOrDefault("Schedule_Title_" + numberOfEvents.ToString(), "");
+                item.StartTime = DateTime.Parse("2018-04-25T11:00:00"/*CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, "")*/);
+                item.EndTime = DateTime.Parse("2018-04-25T11:00:00"/*CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, "")*/);
                 item.Description = CrossSettings.Current.GetValueOrDefault("Schedule_Description_" + numberOfEvents, "");
                 item.Place = CrossSettings.Current.GetValueOrDefault("Schedule_Place_" + numberOfEvents, "");
                 item.Address = CrossSettings.Current.GetValueOrDefault("Schedule_Address_" + numberOfEvents, "");

@@ -18,6 +18,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Info\BonusInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Info\InfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Local Notifications\INotification.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Map\CustomPinView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Map\CustomPinWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Popup\SimplePopup.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>SimplePopup.xaml</DependentUpon>
@@ -59,8 +61,5 @@
     <Page Include="$(MSBuildThisFileDirectory)Schedule\View1.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Map\" />
   </ItemGroup>
 </Project>
