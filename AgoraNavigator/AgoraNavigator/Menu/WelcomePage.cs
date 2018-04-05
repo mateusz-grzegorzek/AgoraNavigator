@@ -19,7 +19,15 @@ namespace AgoraNavigator.Menu
         public WelcomeMasterPage()
         {
             Title = "Hello dear AEGEEan!";
-            BackgroundImage = "Welcome.png";
+            Image backgroundImage = new Image
+            {
+                Source = "Welcome.png",
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand
+            };
+            StackLayout stackLayout = new StackLayout();
+            stackLayout.Children.Add(backgroundImage);
+            Content = stackLayout;
         }
     }
 }
