@@ -48,17 +48,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksMasterView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tasks\TasksPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INetworkInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Popup\SimplePopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <Page Include="$(MSBuildThisFileDirectory)Schedule\SchedulePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Schedule\View1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Map\" />

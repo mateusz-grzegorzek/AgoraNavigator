@@ -21,14 +21,7 @@ namespace AgoraNavigator
 
         public static bool IsNetworkAvailable()
         {
-            bool result = false;
-            NetworkInfo netInfo = new NetworkInfo();
-            if(NetworkReachability.NotReachable != netInfo.InternetReachability && 
-                NetworkReachability.Unknown != netInfo.InternetReachability)
-            {
-                result = true;
-            }
-            return result;
+            return DependencyService.Get<INetworkInfo>().IsNetworkAvailable();
         }
 
         public static void TokenRefresh(String token)
@@ -44,14 +37,10 @@ namespace AgoraNavigator
             Console.WriteLine("InitFirebaseMessagingClientAsync:firebaseToken=" + firebaseToken);
             firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
             SubscribeForTopics(false);
-            CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(() =>
-            {
-                SubscribeForTopics(false);
-                SchedulePage.scheduleDaysPage.FetchScheduleAsync();
-            }));                    
+            DependencyService.Get<INetworkInfo>().WhenStatusChanged();
         }
 
-        private static void SubscribeForTopics(bool tokenChanged)
+        public static void SubscribeForTopics(bool tokenChanged)
         {
             if (tokenChanged || (IsNetworkAvailable() && !isRegistered))
             {
