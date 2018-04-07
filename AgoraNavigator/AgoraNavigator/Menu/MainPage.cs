@@ -23,12 +23,13 @@ namespace AgoraNavigator.Menu
         public static InfoPage infoPage;
         public static DownloadsPage downloadsPage;
         public static BonusInfoPage bonusInfoPage;
+        public static BadgePage badgePage;
 
         public MainPage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
             NavigationPage.SetTitleIcon(this, "Hamburger_Icon.png");
-            this.BackgroundColor = Color.FromHex("061d3f");
+            BackgroundColor = Color.FromHex("061d3f");
             masterPage = new MasterPage();
             welcomePage = new WelcomePage();
             mapPage = new MapPage(50.0656911, 19.9083581);
@@ -37,9 +38,11 @@ namespace AgoraNavigator.Menu
             infoPage = new InfoPage();
             downloadsPage = new DownloadsPage();
             bonusInfoPage = new BonusInfoPage();
+            
             masterPage.getListView.ItemSelected += OnItemSelected;
             Master = masterPage;
             Detail = welcomePage;
+
             SchedulePage.scheduleDaysPage.FetchScheduleAsync();
             DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
         }
@@ -80,7 +83,7 @@ namespace AgoraNavigator.Menu
             Detail = new GameLoginNavPage(navigateTo);
         }
 
-        public void UserLoggedSuccessfully(Type navigateTo)
+        public void NavigateTo(Type navigateTo)
         {
             Detail = Activator.CreateInstance(navigateTo) as Page;
         }

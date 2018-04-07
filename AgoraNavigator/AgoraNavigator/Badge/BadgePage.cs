@@ -1,8 +1,5 @@
 ﻿using AgoraNavigator.Login;
-using AgoraNavigator.Tasks;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 using ZXing.Net.Mobile.Forms;
 
@@ -19,7 +16,6 @@ namespace AgoraNavigator.Badge
                 App.mainPage.ShowLoginScreen(typeof(BadgePage));
                 return;
             }
-
             barCodeMasterPage = new BadgeMasterPage();
             Navigation.PushAsync(barCodeMasterPage);
         }
@@ -27,48 +23,55 @@ namespace AgoraNavigator.Badge
 
     public class BadgeMasterPage : ContentPage
     {
-        ZXingBarcodeImageView _barcode;
-        Label _idLabel;
-
         public BadgeMasterPage()
         {
             Title = "Badge";
-            if(!Users.isUserLogged)
+            if (!Users.isUserLogged)
             {
                 return;
             }
+            Appearing += OnAppearing;
+        }
 
-            _barcode = new ZXingBarcodeImageView();
-            _barcode.BarcodeFormat = ZXing.BarcodeFormat.CODE_39;
-            _barcode.BarcodeOptions.Width = 300;
-            _barcode.BarcodeOptions.Height = 150;
-            _barcode.BarcodeOptions.Margin = 10;
+        public void OnAppearing(object sender, EventArgs e)
+        {
+            ZXingBarcodeImageView barcode = new ZXingBarcodeImageView
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.Center
+            };
+            barcode.BarcodeFormat = ZXing.BarcodeFormat.CODE_39;
+            barcode.BarcodeOptions.Width = 1000;
+            barcode.BarcodeOptions.Height = 500;
+            barcode.BarcodeOptions.Margin = 10;
 
             string barcodeValue = BuildBarcodeValue();
-            _barcode.BarcodeValue = barcodeValue;
+            barcode.BarcodeValue = barcodeValue;
 
-            _idLabel = new Label();
-            _idLabel.HorizontalTextAlignment = TextAlignment.Center;
-            _idLabel.Text = barcodeValue;
+            Label idLabel = new Label();
+            idLabel.HorizontalTextAlignment = TextAlignment.Center;
+            idLabel.Text = barcodeValue;
+            idLabel.FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label));
 
-            Content = new StackLayout
+            Frame frame = new Frame();
+            frame.Content = barcode;
+
+            StackLayout stack = new StackLayout();
+            stack.Children.Add(idLabel);
+
+            StackLayout layout = new StackLayout()
             {
-                Children = {
-               _barcode,
-               _idLabel
-            }
+                VerticalOptions = LayoutOptions.Center,
             };
+            layout.Children.Add(frame);
+            layout.Children.Add(stack);
+
+            Content = layout;
         }
 
         private string BuildBarcodeValue()
         {
-            string id = Users.loggedUser.Id
-                 .ToString()
-                 .PadLeft(7, '0');
-
-            string value = id.Substring(0, 3) + "-" + id.Substring(3, 4);
-
-            return value;
+            return "220-" + Users.loggedUser.Id.ToString();
         }
     }
 }
