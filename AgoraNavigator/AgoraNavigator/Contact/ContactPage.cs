@@ -49,14 +49,14 @@ namespace AgoraNavigator.Contact
                 Photo = "Contact_Photo_Karolina_Lapczyk.png",
                 Name = "Karolina Lapczyk",
                 Position = "Main Cordinator",
-                PhoneNumber = "+48 123 456 789"
+                PhoneNumber = "+48123456789"
             });
             contactsList.Add(new Contact
             {
                 Photo = "Contact_Photo_Mateusz_Gierczak.png",
                 Name = "Mateusz Gierczak",
                 Position = "Sleep Responsible",
-                PhoneNumber = "+48 789 555 123"
+                PhoneNumber = "+48789555123"
             });
 
             contactslistView = new ListView

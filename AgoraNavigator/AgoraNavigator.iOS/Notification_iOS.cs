@@ -7,12 +7,11 @@ using Foundation;
 using UIKit;
 using UserNotifications;
 
-[assembly: Xamarin.Forms.Dependency(typeof(AgoraNavigator.iOS.Notification_IOS))]
+[assembly: Xamarin.Forms.Dependency(typeof(AgoraNavigator.iOS.Notification_iOS))]
 namespace AgoraNavigator.iOS
 {
-    class Notification_IOS : INotification
+    class Notification_iOS : INotification
     {
-        public Notification_IOS() { }
 
         public void Notify(string title, string msg)
         {

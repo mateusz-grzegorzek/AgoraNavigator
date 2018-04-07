@@ -7,7 +7,7 @@ using UserNotifications;
 namespace AgoraNavigator.iOS
 {
     [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IUNUserNotificationCenterDelegate, IMessagingDelegate
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {

@@ -1,13 +1,8 @@
-﻿using AgoraNavigator.Downloads;
-using AgoraNavigator.Login;
-using AgoraNavigator.Schedule;
-using Firebase.Database;
+﻿using Firebase.Database;
 using Newtonsoft.Json;
-using Plugin.DeviceInfo;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -21,14 +16,7 @@ namespace AgoraNavigator
 
         public static bool IsNetworkAvailable()
         {
-            bool result = false;
-            NetworkInfo netInfo = new NetworkInfo();
-            if(NetworkReachability.NotReachable != netInfo.InternetReachability && 
-                NetworkReachability.Unknown != netInfo.InternetReachability)
-            {
-                result = true;
-            }
-            return result;
+            return DependencyService.Get<INetworkInfo>().IsNetworkAvailable();
         }
 
         public static void TokenRefresh(String token)
@@ -44,15 +32,10 @@ namespace AgoraNavigator
             Console.WriteLine("InitFirebaseMessagingClientAsync:firebaseToken=" + firebaseToken);
             firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
             SubscribeForTopics(false);
-            CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(() =>
-            {
-                SubscribeForTopics(false);
-                SchedulePage.scheduleDaysPage.FetchScheduleAsync();
-                DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
-            }));                    
+            DependencyService.Get<INetworkInfo>().WhenStatusChanged();
         }
 
-        private static void SubscribeForTopics(bool tokenChanged)
+        public static void SubscribeForTopics(bool tokenChanged)
         {
             if (tokenChanged || (IsNetworkAvailable() && !isRegistered))
             {
