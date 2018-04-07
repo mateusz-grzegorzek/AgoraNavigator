@@ -7,6 +7,7 @@ using Xamarin.Forms.Platform.Android;
 using Plugin.FirebasePushNotification;
 using Android.Content;
 using Xamarin;
+using ZXing.Mobile;
 
 namespace AgoraNavigator.Droid
 {
@@ -22,6 +23,7 @@ namespace AgoraNavigator.Droid
             LoadApplication(new App());
             FirebasePushNotificationManager.ProcessIntent(this, Intent);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
+            MobileBarcodeScanner.Initialize(Application);
         }
 
         protected override void OnNewIntent(Intent intent)
