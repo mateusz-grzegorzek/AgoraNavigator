@@ -51,7 +51,7 @@ namespace AgoraNavigator.Schedule
                     scheduleUpToDate = true;
                     userInformedAboutScheduleOutOfDate = false;
                 }
-                catch (Exception)
+                catch (Exception err)
                 {
                     if(!userInformedAboutScheduleOutOfDate)
                     {
