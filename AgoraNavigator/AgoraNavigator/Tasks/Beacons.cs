@@ -9,9 +9,9 @@ namespace AgoraNavigator.Tasks
 {
     class Beacons
     {
-        static public Guid beaconFHNJ = new Guid("00000000-0000-0000-0000-e69696ad6edd");
+        static public Guid beaconIJHf = new Guid("00000000-0000-0000-0000-e69696ad6edd");
         static public Guid beaconUQwa = new Guid("00000000-0000-0000-0000-e372a211aec2");
-        static public Guid beaconIJHf = new Guid("00000000-0000-0000-0000-d3ca630b17c0");
+        static public Guid beaconFHNJ = new Guid("00000000-0000-0000-0000-d3ca630b17c0");
         static IAdapter adapter;
         static bool result;
         static Guid guid;

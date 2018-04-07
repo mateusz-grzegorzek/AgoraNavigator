@@ -67,7 +67,7 @@ namespace AgoraNavigator.Tasks
                 {
                     Grid grid = new Grid { Padding = new Thickness(1, 1) };
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50) });
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100) });
 
                     Label userIdLabel = new Label

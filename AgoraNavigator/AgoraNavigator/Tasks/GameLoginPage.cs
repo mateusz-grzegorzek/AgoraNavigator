@@ -4,9 +4,9 @@ using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace AgoraNavigator.Tasks
 {
@@ -55,11 +55,13 @@ namespace AgoraNavigator.Tasks
             {
                 TextColor = Color.White,
                 Keyboard = Keyboard.Numeric,
-                HorizontalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Start,
                 PlaceholderColor = Color.LightGray,
-                Placeholder = "000-0000",
+                Text = "220-",
+                Placeholder = "XXX-XXXX",
+                HorizontalOptions = LayoutOptions.Center
             };
-            idEntry.TextChanged += OnIDTextChanged;
+            idEntry.TextChanged += OnIdTextChanged;
 
             Label pinLabel = new Label
             {
@@ -69,15 +71,16 @@ namespace AgoraNavigator.Tasks
                 TextColor = Color.White,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
-            
+
             pinEntry = new Entry
             {
                 TextColor = Color.White,
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Center,
                 PlaceholderColor = Color.LightGray,
-                Placeholder = "PIN",
-                IsPassword = true
+                Placeholder = "XXXX",
+                IsPassword = true,
+                HorizontalOptions = LayoutOptions.Center
             };
             pinEntry.TextChanged += OnPinTextChanged;
 
@@ -87,6 +90,7 @@ namespace AgoraNavigator.Tasks
                 BackgroundColor = AgoraColor.Blue,
                 TextColor = AgoraColor.DarkBlue,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
+                HeightRequest = 100,
             };
             loginButton.Clicked += OnLoginButtonClicked;
 
@@ -96,9 +100,13 @@ namespace AgoraNavigator.Tasks
                 Text = "SCAN CODE",
                 BackgroundColor = AgoraColor.Blue,
                 TextColor = AgoraColor.DarkBlue,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                HeightRequest = 100,
+                WidthRequest = 150
             };
-            scanButton.Clicked += async (sender, e) => {
+            scanButton.Clicked += async (sender, e) =>
+            {
                 var scanner = new ZXing.Mobile.MobileBarcodeScanner();
                 var result = await scanner.Scan(new ZXing.Mobile.MobileBarcodeScanningOptions()
                 {
@@ -114,36 +122,49 @@ namespace AgoraNavigator.Tasks
             StackLayout layout = new StackLayout()
             {
                 VerticalOptions = LayoutOptions.EndAndExpand,
-                Margin = new Thickness(20, 5)
+                Margin = new Thickness(10, 10)
             };
 
-            StackLayout buttonsLayout = new StackLayout()
-            {
-                Orientation = StackOrientation.Horizontal,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                Spacing = 10
-            };
+            Grid loginOptionsGrid = new Grid();
 
-            buttonsLayout.Children.Add(loginButton);
-            buttonsLayout.Children.Add(scanButton);
+            loginOptionsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(5, GridUnitType.Star) });
+            loginOptionsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(4, GridUnitType.Star) });
+
+            StackLayout loginUsingIdAndPinLayout = new StackLayout();
+
+            loginUsingIdAndPinLayout.Children.Add(idLabel);
+            loginUsingIdAndPinLayout.Children.Add(idEntry);
+            loginUsingIdAndPinLayout.Children.Add(pinLabel);
+            loginUsingIdAndPinLayout.Children.Add(pinEntry);
+            loginUsingIdAndPinLayout.Children.Add(loginButton);
+
+            loginOptionsGrid.Children.Add(loginUsingIdAndPinLayout, 0, 0);
+            loginOptionsGrid.Children.Add(scanButton, 1, 0);
 
             layout.Children.Add(infoLabel);
-            layout.Children.Add(idLabel);
-            layout.Children.Add(idEntry);
-            layout.Children.Add(pinLabel);
-            layout.Children.Add(pinEntry);
-            layout.Children.Add(buttonsLayout);
+            layout.Children.Add(loginOptionsGrid);
 
-            Content = layout;
-            BackgroundImage = "Login_Background.png";
             Title = "Login";
+            BackgroundColor = AgoraColor.DarkBlue;
+            Image backgroundImage = new Image()
+            {
+                Source = "Login_Background.png"
+            };
+            Content = new AbsoluteLayout
+            {
+                Children =
+                {
+                    {backgroundImage, new Rectangle (0, 0, 1, 1), AbsoluteLayoutFlags.All},
+                    {layout, new Rectangle (0, 0, 1, 1), AbsoluteLayoutFlags.All}
+                }
+            };
         }
 
-        private async System.Threading.Tasks.Task LoginUsingCodeAsync(string code)
+        private async Task LoginUsingCodeAsync(string code)
         {
-            if(!ValidateCode(code))
+            if (!ValidateCode(code))
             {
+                await Task.Delay(1000); /* adding delay, so app can return from scanning mode */
                 SimplePopup popup = new SimplePopup("Scanning failed!", "Please scan the square-shaped code which you received.")
                 {
                     ColorBackground = Color.Red,
@@ -152,19 +173,22 @@ namespace AgoraNavigator.Tasks
                 };
                 popup.SetColors();
                 await Navigation.PushPopupAsync(popup);
-                return;
+                App.mainPage.ShowLoginScreen(typeof(TasksPage));
             }
-            string[] codeParts = code.Split('-');
+            else
+            {
+                string[] codeParts = code.Split('-');
 
-            string participantId = codeParts[0] + codeParts[1];
-            string participantPin = codeParts[2];
+                string participantId = codeParts[0];
+                string participantPin = codeParts[1];
 
-            await HandleLoginAsync(participantId, participantPin);
+                await HandleLoginAsync(participantId, participantPin);
+            }
         }
 
         private bool ValidateCode(string code)
         {
-            return new Regex(@"\d{3}-\d{4}-\d{4}")
+            return new Regex(@"\d{4}-\d{4}")
                 .Match(code)
                 .Success;
         }
@@ -182,16 +206,21 @@ namespace AgoraNavigator.Tasks
             }
         }
 
-        private void OnIDTextChanged(object sender, TextChangedEventArgs e)
+        private void OnIdTextChanged(object sender, TextChangedEventArgs e)
         {
             var entry = (Entry)sender;
 
-            if (entry.Text.Length > 7)
+            if(entry.Text.Length < 4)
             {
-                string entryText = entry.Text;
-                entry.TextChanged -= OnIDTextChanged;
+                entry.TextChanged -= OnIdTextChanged;
                 entry.Text = e.OldTextValue;
-                entry.TextChanged += OnIDTextChanged;
+                entry.TextChanged += OnIdTextChanged;
+            }
+            if (entry.Text.Length > 8)
+            {
+                entry.TextChanged -= OnIdTextChanged;
+                entry.Text = e.OldTextValue;
+                entry.TextChanged += OnIdTextChanged;
             }
         }
 
@@ -204,7 +233,7 @@ namespace AgoraNavigator.Tasks
                 if (idEntry.Text != null && pinEntry.Text != null)
                 {
                     Console.WriteLine("OnLoginButtonClicked:idEntry=" + idEntry.Text + ", pinEntry=" + pinEntry.Text);
-                    String id = idEntry.Text;
+                    String id = idEntry.Text.Substring(4, 4);
                     String pin = pinEntry.Text;
                     await HandleLoginAsync(id, pin);
                 }
@@ -223,7 +252,7 @@ namespace AgoraNavigator.Tasks
             }
         }
 
-        private async System.Threading.Tasks.Task HandleLoginAsync(string id, string pin)
+        private async Task HandleLoginAsync(string id, string pin)
         {
             try
             {
@@ -238,7 +267,7 @@ namespace AgoraNavigator.Tasks
                 };
                 popup.SetColors();
                 await Navigation.PushPopupAsync(popup);
-                App.mainPage.UserLoggedSuccessfully(_navigateToPage);
+                App.mainPage.NavigateTo(_navigateToPage);
             }
             catch (Exception err)
             {
@@ -253,6 +282,7 @@ namespace AgoraNavigator.Tasks
                 await Navigation.PushPopupAsync(popup);
                 infoLabel.Text = "Login failed :(";
                 isLoginStarted = false;
+                App.mainPage.NavigateTo(_navigateToPage);
             }
         }
     }

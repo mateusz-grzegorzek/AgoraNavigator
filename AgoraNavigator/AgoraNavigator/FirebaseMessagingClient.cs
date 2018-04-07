@@ -48,6 +48,7 @@ namespace AgoraNavigator
             {
                 SubscribeForTopics(false);
                 SchedulePage.scheduleDaysPage.FetchScheduleAsync();
+                DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
             }));                    
         }
 
@@ -59,12 +60,7 @@ namespace AgoraNavigator
                 String databasePath = "/register/";
                 if(SendMessage(databasePath, JsonConvert.SerializeObject(firebaseToken)))
                 {
-                    CrossFirebasePushNotification.Current.Subscribe("Agora_News");
-                    CrossFirebasePushNotification.Current.Subscribe("Agora_Integration");
-                    if (Users.isUserLogged)
-                    {
-                        CrossFirebasePushNotification.Current.Subscribe("User_" + Users.loggedUser.Id);
-                    }
+                    CrossFirebasePushNotification.Current.Subscribe("Agora");
                     isRegistered = true;
                 }
                 else
@@ -100,14 +96,6 @@ namespace AgoraNavigator
         public static async Task<T> SendSingleQuery<T>(String path)
         {
             return await firebaseClient.Child(path).OnceSingleAsync<T>();
-        }
-
-        public static void AddUrlToDownloads(String url, String fileName)
-        {
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                DownloadsPage.downloadsMasterPage.AddNewFile(url, fileName);
-            });
         }
     }
 }
