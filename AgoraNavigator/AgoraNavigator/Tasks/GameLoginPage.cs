@@ -55,9 +55,10 @@ namespace AgoraNavigator.Tasks
             {
                 TextColor = Color.White,
                 Keyboard = Keyboard.Numeric,
-                HorizontalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Start,
                 PlaceholderColor = Color.LightGray,
-                Placeholder = "XXXX",
+                Text = "220-",
+                Placeholder = "XXX-XXXX",
                 HorizontalOptions = LayoutOptions.Center
             };
             idEntry.TextChanged += OnIdTextChanged;
@@ -89,7 +90,7 @@ namespace AgoraNavigator.Tasks
                 BackgroundColor = AgoraColor.Blue,
                 TextColor = AgoraColor.DarkBlue,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                HeightRequest = 80,
+                HeightRequest = 100,
             };
             loginButton.Clicked += OnLoginButtonClicked;
 
@@ -99,8 +100,10 @@ namespace AgoraNavigator.Tasks
                 Text = "SCAN CODE",
                 BackgroundColor = AgoraColor.Blue,
                 TextColor = AgoraColor.DarkBlue,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                HeightRequest = 80,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                HeightRequest = 100,
+                WidthRequest = 150
             };
             scanButton.Clicked += async (sender, e) =>
             {
@@ -119,26 +122,27 @@ namespace AgoraNavigator.Tasks
             StackLayout layout = new StackLayout()
             {
                 VerticalOptions = LayoutOptions.EndAndExpand,
-                Margin = new Thickness(5, 5)
+                Margin = new Thickness(10, 10)
             };
 
-            StackLayout buttonsLayout = new StackLayout()
-            {
-                Orientation = StackOrientation.Horizontal,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                Spacing = 10
-            };
+            Grid loginOptionsGrid = new Grid();
 
-            buttonsLayout.Children.Add(loginButton);
-            buttonsLayout.Children.Add(scanButton);
+            loginOptionsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(5, GridUnitType.Star) });
+            loginOptionsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(4, GridUnitType.Star) });
+
+            StackLayout loginUsingIdAndPinLayout = new StackLayout();
+
+            loginUsingIdAndPinLayout.Children.Add(idLabel);
+            loginUsingIdAndPinLayout.Children.Add(idEntry);
+            loginUsingIdAndPinLayout.Children.Add(pinLabel);
+            loginUsingIdAndPinLayout.Children.Add(pinEntry);
+            loginUsingIdAndPinLayout.Children.Add(loginButton);
+
+            loginOptionsGrid.Children.Add(loginUsingIdAndPinLayout, 0, 0);
+            loginOptionsGrid.Children.Add(scanButton, 1, 0);
 
             layout.Children.Add(infoLabel);
-            layout.Children.Add(idLabel);
-            layout.Children.Add(idEntry);
-            layout.Children.Add(pinLabel);
-            layout.Children.Add(pinEntry);
-            layout.Children.Add(buttonsLayout);
+            layout.Children.Add(loginOptionsGrid);
 
             Title = "Login";
             BackgroundColor = AgoraColor.DarkBlue;
@@ -206,9 +210,14 @@ namespace AgoraNavigator.Tasks
         {
             var entry = (Entry)sender;
 
-            if (entry.Text.Length > 4)
+            if(entry.Text.Length < 4)
             {
-                string entryText = entry.Text;
+                entry.TextChanged -= OnIdTextChanged;
+                entry.Text = e.OldTextValue;
+                entry.TextChanged += OnIdTextChanged;
+            }
+            if (entry.Text.Length > 8)
+            {
                 entry.TextChanged -= OnIdTextChanged;
                 entry.Text = e.OldTextValue;
                 entry.TextChanged += OnIdTextChanged;
@@ -224,7 +233,7 @@ namespace AgoraNavigator.Tasks
                 if (idEntry.Text != null && pinEntry.Text != null)
                 {
                     Console.WriteLine("OnLoginButtonClicked:idEntry=" + idEntry.Text + ", pinEntry=" + pinEntry.Text);
-                    String id = idEntry.Text;
+                    String id = idEntry.Text.Substring(4, 4);
                     String pin = pinEntry.Text;
                     await HandleLoginAsync(id, pin);
                 }
