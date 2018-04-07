@@ -19,15 +19,15 @@ namespace AgoraNavigator
     {
         public static string GetPoppinsRegular()
         {
-            return "Poppins-Regular.ttf#Poppins-Regular";
+            return Device.RuntimePlatform == Device.iOS ? "Poppins-Regular" : "Poppins-Regular.ttf#Poppins-Regular";
         }
         public static string GetPoppinsMedium()
         {
-            return "Poppins-Medium.ttf#Poppins-Medium";
+            return Device.RuntimePlatform == Device.iOS ? "Poppins-Medium" : "Poppins-Medium.ttf#Poppins-Medium";
         }
         public static string GetPoppinsBold()
         {
-            return "Poppins-Bold.ttf#Poppins-Bold";
+            return Device.RuntimePlatform == Device.iOS ? "Poppins-Bold" : "Poppins-Bold.ttf#Poppins-Bold";
         }
     }
 }
