@@ -1,13 +1,8 @@
-﻿using AgoraNavigator.Downloads;
-using AgoraNavigator.Login;
-using AgoraNavigator.Schedule;
-using Firebase.Database;
+﻿using Firebase.Database;
 using Newtonsoft.Json;
-using Plugin.DeviceInfo;
 using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 

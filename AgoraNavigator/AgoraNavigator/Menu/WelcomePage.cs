@@ -27,6 +27,7 @@ namespace AgoraNavigator.Menu
             };
             StackLayout stackLayout = new StackLayout();
             stackLayout.Children.Add(backgroundImage);
+            BackgroundColor = AgoraColor.DarkBlue;
             Content = stackLayout;
         }
     }
