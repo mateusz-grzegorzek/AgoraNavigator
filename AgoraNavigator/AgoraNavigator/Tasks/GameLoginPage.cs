@@ -3,7 +3,10 @@ using AgoraNavigator.Popup;
 using Newtonsoft.Json.Linq;
 using Rg.Plugins.Popup.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace AgoraNavigator.Tasks
 {
@@ -32,7 +35,7 @@ namespace AgoraNavigator.Tasks
             _navigateToPage = navigateTo;
             infoLabel = new Label
             {
-                Text = " Login to start \nGame of Tasks",
+                Text = "Login to use\nall cool features!",
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 TextColor = AgoraColor.Blue,
@@ -41,9 +44,9 @@ namespace AgoraNavigator.Tasks
 
             Label idLabel = new Label
             {
-                Text = "Enter your ID:",
-                FontFamily = AgoraFonts.GetPoppinsMedium(),
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                Text = "Participant ID",
+                FontFamily = AgoraFonts.GetPoppinsRegular(),
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextColor = Color.White,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
@@ -52,78 +55,172 @@ namespace AgoraNavigator.Tasks
             {
                 TextColor = Color.White,
                 Keyboard = Keyboard.Numeric,
-                HorizontalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Start,
                 PlaceholderColor = Color.LightGray,
-                Placeholder = "ID"
+                Text = "220-",
+                Placeholder = "XXX-XXXX",
+                HorizontalOptions = LayoutOptions.Center
             };
-            idEntry.TextChanged += OnEntryTextChanged;
+            idEntry.TextChanged += OnIdTextChanged;
 
             Label pinLabel = new Label
             {
-                Text = "Enter your PIN:",
-                FontFamily = AgoraFonts.GetPoppinsMedium(),
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                Text = "PIN Number",
+                FontFamily = AgoraFonts.GetPoppinsRegular(),
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextColor = Color.White,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
-            
+
             pinEntry = new Entry
             {
                 TextColor = Color.White,
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Center,
                 PlaceholderColor = Color.LightGray,
-                Placeholder = "PIN",
-                IsPassword = true
+                Placeholder = "XXXX",
+                IsPassword = true,
+                HorizontalOptions = LayoutOptions.Center
             };
-            pinEntry.TextChanged += OnEntryTextChanged;
+            pinEntry.TextChanged += OnPinTextChanged;
 
             Button loginButton = new Button
             {
                 Text = "LOGIN",
                 BackgroundColor = AgoraColor.Blue,
-                TextColor = AgoraColor.DarkBlue
+                TextColor = AgoraColor.DarkBlue,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                HeightRequest = 100,
             };
             loginButton.Clicked += OnLoginButtonClicked;
 
-            AbsoluteLayout layout = new AbsoluteLayout();
 
-            AbsoluteLayout.SetLayoutBounds(infoLabel,  new Rectangle(.5, .45, .50, .2));
-            AbsoluteLayout.SetLayoutBounds(idLabel,    new Rectangle(.5, .55, .50, .1));
-            AbsoluteLayout.SetLayoutBounds(idEntry,    new Rectangle(.5, .60, .50, .08));
-            AbsoluteLayout.SetLayoutBounds(pinLabel,   new Rectangle(.5, .70, .50, .1));
-            AbsoluteLayout.SetLayoutBounds(pinEntry,   new Rectangle(.5, .75, .50, .08));
-            AbsoluteLayout.SetLayoutBounds(loginButton,new Rectangle(.5, .95, .45, .15));
+            Button scanButton = new Button
+            {
+                Text = "SCAN CODE",
+                BackgroundColor = AgoraColor.Blue,
+                TextColor = AgoraColor.DarkBlue,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                HeightRequest = 100,
+                WidthRequest = 150
+            };
+            scanButton.Clicked += async (sender, e) =>
+            {
+                var scanner = new ZXing.Mobile.MobileBarcodeScanner();
+                var result = await scanner.Scan(new ZXing.Mobile.MobileBarcodeScanningOptions()
+                {
+                    PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.AZTEC }
+                });
 
-            AbsoluteLayout.SetLayoutFlags(infoLabel, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(idLabel, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(idEntry, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(pinLabel, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(pinEntry, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(loginButton, AbsoluteLayoutFlags.All);
+                if (result != null)
+                {
+                    await LoginUsingCodeAsync(result.Text);
+                }
+            };
+
+            StackLayout layout = new StackLayout()
+            {
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                Margin = new Thickness(10, 10)
+            };
+
+            Grid loginOptionsGrid = new Grid();
+
+            loginOptionsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(5, GridUnitType.Star) });
+            loginOptionsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(4, GridUnitType.Star) });
+
+            StackLayout loginUsingIdAndPinLayout = new StackLayout();
+
+            loginUsingIdAndPinLayout.Children.Add(idLabel);
+            loginUsingIdAndPinLayout.Children.Add(idEntry);
+            loginUsingIdAndPinLayout.Children.Add(pinLabel);
+            loginUsingIdAndPinLayout.Children.Add(pinEntry);
+            loginUsingIdAndPinLayout.Children.Add(loginButton);
+
+            loginOptionsGrid.Children.Add(loginUsingIdAndPinLayout, 0, 0);
+            loginOptionsGrid.Children.Add(scanButton, 1, 0);
 
             layout.Children.Add(infoLabel);
-            layout.Children.Add(idLabel);
-            layout.Children.Add(idEntry);
-            layout.Children.Add(pinLabel);
-            layout.Children.Add(pinEntry);
-            layout.Children.Add(loginButton);
-            CompressedLayout.SetIsHeadless(layout, true);
-            Content = layout;
-            BackgroundImage = "Login_Background.png";
-            Title = "Game of Tasks - Login";
+            layout.Children.Add(loginOptionsGrid);
+
+            Title = "Login";
+            BackgroundColor = AgoraColor.DarkBlue;
+            Image backgroundImage = new Image()
+            {
+                Source = "Login_Background.png"
+            };
+            Content = new AbsoluteLayout
+            {
+                Children =
+                {
+                    {backgroundImage, new Rectangle (0, 0, 1, 1), AbsoluteLayoutFlags.All},
+                    {layout, new Rectangle (0, 0, 1, 1), AbsoluteLayoutFlags.All}
+                }
+            };
         }
 
-        private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
+        private async Task LoginUsingCodeAsync(string code)
+        {
+            if (!ValidateCode(code))
+            {
+                await Task.Delay(1000); /* adding delay, so app can return from scanning mode */
+                SimplePopup popup = new SimplePopup("Scanning failed!", "Please scan the square-shaped code which you received.")
+                {
+                    ColorBackground = Color.Red,
+                    ColorBody = Color.White,
+                    ColorTitle = Color.White,
+                };
+                popup.SetColors();
+                await Navigation.PushPopupAsync(popup);
+                App.mainPage.ShowLoginScreen(typeof(TasksPage));
+            }
+            else
+            {
+                string[] codeParts = code.Split('-');
+
+                string participantId = codeParts[0];
+                string participantPin = codeParts[1];
+
+                await HandleLoginAsync(participantId, participantPin);
+            }
+        }
+
+        private bool ValidateCode(string code)
+        {
+            return new Regex(@"\d{4}-\d{4}")
+                .Match(code)
+                .Success;
+        }
+
+        private void OnPinTextChanged(object sender, TextChangedEventArgs e)
         {
             var entry = (Entry)sender;
 
             if (entry.Text.Length > 4)
             {
                 string entryText = entry.Text;
-                entry.TextChanged -= OnEntryTextChanged;
+                entry.TextChanged -= OnPinTextChanged;
                 entry.Text = e.OldTextValue;
-                entry.TextChanged += OnEntryTextChanged;
+                entry.TextChanged += OnPinTextChanged;
+            }
+        }
+
+        private void OnIdTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var entry = (Entry)sender;
+
+            if(entry.Text.Length < 4)
+            {
+                entry.TextChanged -= OnIdTextChanged;
+                entry.Text = e.OldTextValue;
+                entry.TextChanged += OnIdTextChanged;
+            }
+            if (entry.Text.Length > 8)
+            {
+                entry.TextChanged -= OnIdTextChanged;
+                entry.Text = e.OldTextValue;
+                entry.TextChanged += OnIdTextChanged;
             }
         }
 
@@ -136,37 +233,9 @@ namespace AgoraNavigator.Tasks
                 if (idEntry.Text != null && pinEntry.Text != null)
                 {
                     Console.WriteLine("OnLoginButtonClicked:idEntry=" + idEntry.Text + ", pinEntry=" + pinEntry.Text);
-                    String id = idEntry.Text;
+                    String id = idEntry.Text.Substring(4, 4);
                     String pin = pinEntry.Text;
-                    try
-                    {
-                        String databasePath = "/users/" + id + "/" + pin;
-                        JObject userInfo = await FirebaseMessagingClient.SendSingleQuery<JObject>(databasePath);
-                        Users.InitUserData(Convert.ToInt32(id), Convert.ToInt32(pin), userInfo);
-                        SimplePopup popup = new SimplePopup("Login succes!", "Let's start Game of Tasks!")
-                        {
-                            ColorBackground = Color.Green,
-                            ColorBody = Color.White,
-                            ColorTitle = Color.White,
-                        };
-                        popup.SetColors();
-                        await Navigation.PushPopupAsync(popup);
-                        App.mainPage.UserLoggedSuccessfully(_navigateToPage);
-                    }
-                    catch (Exception err)
-                    {
-                        Console.WriteLine("OnLoginButtonClicked:err=" + err.ToString());
-                        SimplePopup popup = new SimplePopup("Login failed!", "Check your internet connection, ID and PIN number and try again")
-                        {
-                            ColorBackground = Color.Red,
-                            ColorBody = Color.White,
-                            ColorTitle = Color.White,
-                        };
-                        popup.SetColors();
-                        await Navigation.PushPopupAsync(popup);
-                        infoLabel.Text = "Login failed.";
-                        isLoginStarted = false;
-                    }
+                    await HandleLoginAsync(id, pin);
                 }
                 else
                 {
@@ -181,6 +250,40 @@ namespace AgoraNavigator.Tasks
                     isLoginStarted = false;
                 }
             }
-        }      
+        }
+
+        private async Task HandleLoginAsync(string id, string pin)
+        {
+            try
+            {
+                String databasePath = "/users/" + id + "/" + pin;
+                JObject userInfo = await FirebaseMessagingClient.SendSingleQuery<JObject>(databasePath);
+                Users.InitUserData(Convert.ToInt32(id), Convert.ToInt32(pin), userInfo);
+                SimplePopup popup = new SimplePopup("Login successful!", "Start the Game of Tasks or use your virtual badge!")
+                {
+                    ColorBackground = Color.Green,
+                    ColorBody = Color.White,
+                    ColorTitle = Color.White,
+                };
+                popup.SetColors();
+                await Navigation.PushPopupAsync(popup);
+                App.mainPage.NavigateTo(_navigateToPage);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("OnLoginButtonClicked:err=" + err.ToString());
+                SimplePopup popup = new SimplePopup("Login failed!", "Check your internet connection, ID and PIN number and try again")
+                {
+                    ColorBackground = Color.Red,
+                    ColorBody = Color.White,
+                    ColorTitle = Color.White,
+                };
+                popup.SetColors();
+                await Navigation.PushPopupAsync(popup);
+                infoLabel.Text = "Login failed :(";
+                isLoginStarted = false;
+                App.mainPage.NavigateTo(_navigateToPage);
+            }
+        }
     }
 }

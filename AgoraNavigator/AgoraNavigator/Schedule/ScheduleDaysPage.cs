@@ -51,8 +51,9 @@ namespace AgoraNavigator.Schedule
                     scheduleUpToDate = true;
                     userInformedAboutScheduleOutOfDate = false;
                 }
-                catch (Exception)
+                catch (Exception err)
                 {
+                    Console.WriteLine(err.ToString());
                     if(!userInformedAboutScheduleOutOfDate)
                     {
                         DependencyService.Get<INotification>().Notify("No internet connection", "Schedule may be out of date, turn on the internet for updates");
