@@ -1,18 +1,31 @@
 ﻿using System;
 using Xamarin.Forms;
 using Plugin.Settings;
+using Firebase.Database;
+using System.Collections.Generic;
+using AgoraNavigator.Popup;
+using Rg.Plugins.Popup.Extensions;
 
 namespace AgoraNavigator.Downloads
 {
+    public class DownloadFile
+    {
+        public string Url { get; set; }
+
+        public string FileName { get; set; }
+    }
+
     public class DownloadButton : Button
     {
         public String Url;
+
         public DownloadButton()
         {
             BackgroundColor = AgoraColor.Blue;
             TextColor = AgoraColor.DarkBlue;
             FontFamily = AgoraFonts.GetPoppinsBold();
             FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Button));
+            Clicked += DownloadsPage.downloadsMasterPage.OnOpenButtonClickedAsync;
         }
     }
 
@@ -30,57 +43,87 @@ namespace AgoraNavigator.Downloads
 
     public class DownloadsMasterPage : ContentPage
     {
-        private StackLayout stack;
+        private const string downloadsScheduleKey = "downloads";
         private int filesCounter;
+        bool downloadsUpToDate = false;
+        bool downloadsLoaded = false;
 
         public DownloadsMasterPage()
         {
             Title = "Downloads";
             BackgroundColor = AgoraColor.DarkBlue;
-            stack = new StackLayout { Spacing = 5 };
-            filesCounter = CrossSettings.Current.GetValueOrDefault("filesCounter", 0);
-            int index = 1;
-            while(index <= filesCounter)
-            {
-                DownloadButton openButton = new DownloadButton();
-                openButton.Text = CrossSettings.Current.GetValueOrDefault("filesCounter:Text:" + index, "").ToString();
-                openButton.Url = CrossSettings.Current.GetValueOrDefault("filesCounter:Url:" + index, "").ToString();
-                openButton.Clicked += OnOpenButtonClicked;
-                index++;
-                stack.Children.Add(openButton);
-            }
-            Content = new ScrollView { Content = stack };
+            Appearing += OnAppearing;
         }
 
-        public void AddNewFile(String url, String fileName)
+        public void OnAppearing(object sender, EventArgs e)
         {
-            bool isAlready = false;
-            DownloadButton openButton = new DownloadButton();
-            openButton.Text = "Open " + fileName;
-            openButton.Url = url;
-            openButton.Clicked += OnOpenButtonClicked;
-            foreach (View view in stack.Children)
+            if(!downloadsLoaded)
             {
-                DownloadButton button = (DownloadButton)view;
-                if(button.Url == url)
+                ProcessDownloads();
+                downloadsLoaded = true;
+            }
+        }
+
+        private void ProcessDownloads()
+        {
+            StackLayout stack = new StackLayout { Spacing = 5 };
+            filesCounter = CrossSettings.Current.GetValueOrDefault("Downloads:filesCounter", 0);
+            int index = 1;
+            while (index <= filesCounter)
+            {
+                DownloadButton button = new DownloadButton();
+                button.Text = CrossSettings.Current.GetValueOrDefault("Downloads:Text:" + index, "");
+                button.Url = CrossSettings.Current.GetValueOrDefault("Downloads:Url:" + index, "");
+                index++;
+                stack.Children.Add(button);
+            }
+            Content = stack;
+        }
+
+        public async void OnOpenButtonClickedAsync(object sender, EventArgs e)
+        {
+            if (FirebaseMessagingClient.IsNetworkAvailable())
+            {
+                DownloadButton button = (DownloadButton)sender;
+                Device.OpenUri(new Uri(button.Url));
+            }
+            else
+            {
+                SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to download file!")
                 {
-                    isAlready = true;
+                    ColorBackground = Color.Red,
+                    ColorBody = Color.White,
+                    ColorTitle = Color.White,
+                };
+                popup.SetColors();
+                await Navigation.PushPopupAsync(popup);
+            }
+        }
+
+        public async void FetchDownloadFilesAsync(bool forceUpdate = false)
+        {
+            if (!downloadsUpToDate || forceUpdate)
+            {
+                try
+                {
+                    IReadOnlyCollection<FirebaseObject<DownloadFile>> downloadFiles = await FirebaseMessagingClient.SendQuery<DownloadFile>(downloadsScheduleKey);
+                    filesCounter = 0;
+                    foreach (FirebaseObject<DownloadFile> downloadFile in downloadFiles)
+                    {
+                        DownloadFile file = downloadFile.Object;
+                        CrossSettings.Current.AddOrUpdateValue("Downloads:filesCounter", ++filesCounter);
+                        CrossSettings.Current.AddOrUpdateValue("Downloads:Text:" + filesCounter, file.FileName);
+                        CrossSettings.Current.AddOrUpdateValue("Downloads:Url:" + filesCounter, file.Url);
+                    }
+                    ProcessDownloads();
+                    downloadsUpToDate = true;
+                }
+                catch (Exception)
+                {
+
                 }
             }
-            if(!isAlready)
-            {
-                stack.Children.Add(openButton);
-                filesCounter = CrossSettings.Current.GetValueOrDefault("filesCounter", 0);
-                CrossSettings.Current.AddOrUpdateValue("filesCounter", ++filesCounter);
-                CrossSettings.Current.AddOrUpdateValue("filesCounter:Text:" + filesCounter, openButton.Text);
-                CrossSettings.Current.AddOrUpdateValue("filesCounter:Url:" + filesCounter, openButton.Url);
-            }   
-        }
 
-        public void OnOpenButtonClicked(object sender, EventArgs e)
-        {
-            DownloadButton button = (DownloadButton)sender;
-            Device.OpenUri(new Uri(button.Url));
         }
     }
 }

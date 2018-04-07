@@ -1,4 +1,5 @@
-﻿using AgoraNavigator.Menu;
+﻿using AgoraNavigator.Downloads;
+using AgoraNavigator.Menu;
 using AgoraNavigator.Schedule;
 using AgoraNavigator.Tasks;
 using Plugin.FirebasePushNotification;
@@ -18,10 +19,15 @@ namespace AgoraNavigator
             Console.WriteLine("Application started:firebaseToken="+ FirebaseMessagingClient.firebaseToken);
             GameTask.AddTasks();
             FirebaseMessagingClient.InitFirebaseMessagingClientAsync();
-            CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandler;
-            CrossFirebasePushNotification.Current.OnNotificationOpened += FirebasePushNotificationDataEventHandler;
+            
             mainPage = new MainPage();
             MainPage = mainPage;
+        }
+
+        protected override void OnStart()
+        {
+            CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandler;
+            CrossFirebasePushNotification.Current.OnNotificationOpened += FirebasePushNotificationDataEventHandler;
         }
 
         void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationDataEventArgs e)
@@ -38,12 +44,6 @@ namespace AgoraNavigator
             Console.WriteLine("OnNotificationReceived");
             try
             {
-                if (data.Keys.Contains("download"))
-                {
-                    String url = data["url"].ToString();
-                    String fileName = data["fileName"].ToString();
-                    FirebaseMessagingClient.AddUrlToDownloads(url, fileName);
-                }
                 if(data.Keys.Contains("changePage"))
                 {
                     mainPage.SetStartedPage(data["changePage"].ToString());
@@ -51,6 +51,10 @@ namespace AgoraNavigator
                 if (data.Keys.Contains("scheduleUpdate"))
                 {
                     SchedulePage.scheduleDaysPage.FetchScheduleAsync(true);
+                }
+                if (data.Keys.Contains("downloadUpdate"))
+                {
+                    DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync(true);
                 }
             }
             catch (Exception err)
