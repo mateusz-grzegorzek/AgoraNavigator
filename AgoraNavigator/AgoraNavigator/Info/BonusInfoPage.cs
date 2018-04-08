@@ -110,8 +110,6 @@ namespace AgoraNavigator.Info
             List<PhraseStackLayout> phraseStackLayoutTopicList4 = new List<PhraseStackLayout>();
             phraseStackLayoutTopicList4.Add(new PhraseStackLayout("Airport - ", "Lotnisko"));
             phraseStackLayoutTopicList4.Add(new PhraseStackLayout("Train - ", "Pociąg"));
-            phraseStackLayoutTopicList4.Add(new PhraseStackLayout("Airport  - ", "Lotnisko"));
-            phraseStackLayoutTopicList4.Add(new PhraseStackLayout("Train station - ", "Dworzec kolejowy"));
             phraseStackLayoutTopicList4.Add(new PhraseStackLayout("Train station - ", "Dworzec kolejowy"));
             phraseStackLayoutTopicList4.Add(new PhraseStackLayout("Bus station - ", "Dworzec autobusowy"));
             phraseStackLayoutTopicList4.Add(new PhraseStackLayout("One ticket to ... - ", "Bilet do …"));

@@ -46,11 +46,6 @@ namespace AgoraNavigator.Menu
             });
             masterPageItems.Add(new MasterPageItem
             {
-                Title = "Important info",
-                TargetType = typeof(InfoPage)
-            });
-            masterPageItems.Add(new MasterPageItem
-            {
                 Title = "Downloads",
                 TargetType = typeof(DownloadsPage)
             });
