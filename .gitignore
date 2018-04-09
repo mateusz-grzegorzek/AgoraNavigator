@@ -3,3 +3,6 @@ obj/
 .vs/
 *.user
 *.designer.cs
+
+# Mac system related files
+.DS_Store
