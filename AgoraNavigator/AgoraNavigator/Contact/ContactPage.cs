@@ -49,14 +49,42 @@ namespace AgoraNavigator.Contact
                 Photo = "Contact_Photo_Karolina_Lapczyk.png",
                 Name = "Karolina Lapczyk",
                 Position = "Main Cordinator",
-                PhoneNumber = "+48123456789"
+                PhoneNumber = "+48512088789"
             });
             contactsList.Add(new Contact
             {
-                Photo = "Contact_Photo_Mateusz_Gierczak.png",
-                Name = "Mateusz Gierczak",
-                Position = "Sleep Responsible",
-                PhoneNumber = "+48789555123"
+                Photo = "Contact_Photo_Katarzyna_Szubartowska.png",
+                Name = "Kasia Szubartowska",
+                Position = "Incoming",
+                PhoneNumber = "+48662612656"
+            });
+            contactsList.Add(new Contact
+            {
+                Photo = "Contact_112.png",
+                Name = "Emergency number",
+                Position = "",
+                PhoneNumber = "112"
+            });
+            contactsList.Add(new Contact
+            {
+                Photo = "Contact_997.png",
+                Name = "Police",
+                Position = "",
+                PhoneNumber = "997"
+            });
+            contactsList.Add(new Contact
+            {
+                Photo = "Contact_998.png",
+                Name = "Fire brigade",
+                Position = "",
+                PhoneNumber = "998"
+            });
+            contactsList.Add(new Contact
+            {
+                Photo = "Contact_999.png",
+                Name = "Police",
+                Position = "",
+                PhoneNumber = "999"
             });
 
             contactslistView = new ListView
@@ -156,8 +184,10 @@ namespace AgoraNavigator.Contact
 
         private void OnContactItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Contact item = (Contact)((ListView)sender).SelectedItem;
+            ListView listView = (ListView)sender;
+            Contact item = (Contact)(listView).SelectedItem;
             Device.OpenUri(new Uri("tel:" + item.PhoneNumber));
+            listView.SelectedItem = null;
         }
     }
 }

@@ -6,6 +6,7 @@ using Plugin.FirebasePushNotification;
 using Plugin.FirebasePushNotification.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
@@ -19,7 +20,6 @@ namespace AgoraNavigator
             Console.WriteLine("Application started:firebaseToken="+ FirebaseMessagingClient.firebaseToken);
             GameTask.AddTasks();
             FirebaseMessagingClient.InitFirebaseMessagingClientAsync();
-            
             mainPage = new MainPage();
             MainPage = mainPage;
         }

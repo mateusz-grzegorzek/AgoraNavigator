@@ -12,9 +12,7 @@ namespace AgoraNavigator.Menu
 {
     public class MasterPage : ContentPage
     {
-        public ListView getListView { get { return listView; } }
-
-        ListView listView;
+        public ListView listView;
 
         public MasterPage()
         {
@@ -43,11 +41,6 @@ namespace AgoraNavigator.Menu
             {
                 Title = "Contact",
                 TargetType = typeof(ContactPage)
-            });
-            masterPageItems.Add(new MasterPageItem
-            {
-                Title = "Important info",
-                TargetType = typeof(InfoPage)
             });
             masterPageItems.Add(new MasterPageItem
             {

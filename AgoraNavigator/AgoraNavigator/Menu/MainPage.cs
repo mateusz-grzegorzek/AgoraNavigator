@@ -20,7 +20,6 @@ namespace AgoraNavigator.Menu
         public static SchedulePage schedulePage;
         public static TasksPage tasksPage;
         public static ContactPage contactPage;
-        public static InfoPage infoPage;
         public static DownloadsPage downloadsPage;
         public static BonusInfoPage bonusInfoPage;
         public static BadgePage badgePage;
@@ -35,11 +34,10 @@ namespace AgoraNavigator.Menu
             mapPage = new MapPage(50.0656911, 19.9083581);
             schedulePage = new SchedulePage();
             contactPage = new ContactPage();
-            infoPage = new InfoPage();
             downloadsPage = new DownloadsPage();
             bonusInfoPage = new BonusInfoPage();
             
-            masterPage.getListView.ItemSelected += OnItemSelected;
+            masterPage.listView.ItemSelected += OnItemSelected;
             Master = masterPage;
             Detail = welcomePage;
 
@@ -65,9 +63,6 @@ namespace AgoraNavigator.Menu
                     break;
                 case "ContactPage":
                     Detail = contactPage;
-                    break;
-                case "InfoPage":
-                    Detail = infoPage;
                     break;
                 case "DownloadsPage":
                     Detail = downloadsPage;
@@ -129,9 +124,6 @@ namespace AgoraNavigator.Menu
                     case "Contact":
                         Detail = contactPage;
                         break;
-                    case "Important info":
-                        Detail = infoPage;
-                        break;
                     case "Downloads":
                         Detail = downloadsPage;
                         break;
@@ -141,7 +133,7 @@ namespace AgoraNavigator.Menu
                     default:
                         break;
                 }
-                masterPage.getListView.SelectedItem = null;
+                masterPage.listView.SelectedItem = null;
                 IsPresented = false;
             }
         }

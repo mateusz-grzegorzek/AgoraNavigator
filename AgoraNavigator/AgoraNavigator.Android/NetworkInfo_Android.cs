@@ -1,4 +1,5 @@
-﻿using AgoraNavigator.Schedule;
+﻿using AgoraNavigator.Downloads;
+using AgoraNavigator.Schedule;
 using Plugin.DeviceInfo;
 using System;
 using System.Reactive.Linq;
@@ -27,6 +28,7 @@ namespace AgoraNavigator.Droid
             {
                 FirebaseMessagingClient.SubscribeForTopics(false);
                 SchedulePage.scheduleDaysPage.FetchScheduleAsync();
+                DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
             }));
         }
     }
