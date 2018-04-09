@@ -10,15 +10,17 @@ namespace AgoraNavigator.Tasks
 
         public TasksPage()
         {
+            Console.WriteLine("TasksPage");
             if (!Users.isUserLogged)
             {
+                Console.WriteLine("TasksPage:User not logged in!");
                 App.mainPage.ShowLoginScreen(typeof(TasksPage));
                 return;
             }
             BarBackgroundColor = AgoraColor.DarkBlue;
             BarTextColor = AgoraColor.Blue;
             gamePage = new GamePage();
-            Console.WriteLine("Navigation.PushAsync(gameLoginPage)");
+            Console.WriteLine("Navigation.PushAsync(gamePage)");
             Navigation.PushAsync(gamePage);
         }
     }
