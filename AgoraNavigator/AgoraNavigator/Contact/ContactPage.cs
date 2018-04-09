@@ -184,10 +184,17 @@ namespace AgoraNavigator.Contact
 
         private void OnContactItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            ListView listView = (ListView)sender;
-            Contact item = (Contact)(listView).SelectedItem;
-            Device.OpenUri(new Uri("tel:" + item.PhoneNumber));
-            listView.SelectedItem = null;
+            try
+            {
+                ListView listView = (ListView)sender;
+                Contact item = (Contact)(listView).SelectedItem;
+                Device.OpenUri(new Uri("tel:" + item.PhoneNumber));
+                listView.SelectedItem = null;
+            }
+            catch(Exception err)
+            {
+                Console.WriteLine(err.ToString());
+            }
         }
     }
 }

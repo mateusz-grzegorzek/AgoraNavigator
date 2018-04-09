@@ -282,7 +282,6 @@ namespace AgoraNavigator.Tasks
                 await Navigation.PushPopupAsync(popup);
                 infoLabel.Text = "Login failed :(";
                 isLoginStarted = false;
-                App.mainPage.NavigateTo(_navigateToPage);
             }
         }
     }
