@@ -37,7 +37,7 @@ namespace AgoraNavigator.Menu
             downloadsPage = new DownloadsPage();
             bonusInfoPage = new BonusInfoPage();
             
-            masterPage.getListView.ItemSelected += OnItemSelected;
+            masterPage.listView.ItemSelected += OnItemSelected;
             Master = masterPage;
             Detail = welcomePage;
 
@@ -133,7 +133,7 @@ namespace AgoraNavigator.Menu
                     default:
                         break;
                 }
-                masterPage.getListView.SelectedItem = null;
+                masterPage.listView.SelectedItem = null;
                 IsPresented = false;
             }
         }

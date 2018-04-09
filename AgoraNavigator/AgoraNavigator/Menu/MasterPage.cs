@@ -12,9 +12,7 @@ namespace AgoraNavigator.Menu
 {
     public class MasterPage : ContentPage
     {
-        public ListView getListView { get { return listView; } }
-
-        ListView listView;
+        public ListView listView;
 
         public MasterPage()
         {

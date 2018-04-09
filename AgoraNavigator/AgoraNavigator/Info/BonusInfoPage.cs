@@ -60,6 +60,7 @@ namespace AgoraNavigator.Info
         {
             audioFileName = _audioFileName;
             Source = "Speaker_Icon.png";
+            VerticalOptions = LayoutOptions.Start;
 
             TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += OnTapGestureRecognizerTapped;
@@ -107,36 +108,42 @@ namespace AgoraNavigator.Info
 
     public class BonusInfoMasterPage : ContentPage
     {
-        Grid grid;
-        int rowNumber = 0;
+        StackLayout layout;
 
-        public void AddPhraseToGrid(string engText, string polText)
+        public void AddPhraseToLayout(string engText, string polText, bool audioEnabled = true)
         {
+            Grid grid = new Grid
+            {
+                Margin = new Thickness(0, 0),
+                RowSpacing = 5
+            };
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
             PhraseStackLayout phraseStackLayout = new PhraseStackLayout(engText, polText);
-            SpeakerImage speakerImage = new SpeakerImage("Czesc.mp3");
+            
             Image separator = new Image
             {
                 Source = "Contact_Separator.png",
-                VerticalOptions = LayoutOptions.End
+                VerticalOptions = LayoutOptions.End,
             };
             Grid.SetColumnSpan(separator, 2);
-            grid.Children.Add(phraseStackLayout, 0, rowNumber);
-            grid.Children.Add(speakerImage, 1, rowNumber);
-            grid.Children.Add(separator, 0, 2, rowNumber, rowNumber+1);
-            rowNumber++;
+            grid.Children.Add(phraseStackLayout, 0, 0);
+            if(audioEnabled)
+            {
+                SpeakerImage speakerImage = new SpeakerImage("Czesc.mp3");
+                grid.Children.Add(speakerImage, 1, 0);
+            }
+            grid.Children.Add(separator, 0, 2, 0, 1);
+            layout.Children.Add(grid);
         }
 
         public BonusInfoMasterPage()
         {
             Title = "Bonus info";
-
-            grid = new Grid
+            layout = new StackLayout
             {
-                Margin = new Thickness(10, 5),
-                RowSpacing = 5            
+                Margin = new Thickness(10, 5)
             };
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(6, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             Label topLabel = new Label
             {
@@ -146,86 +153,86 @@ namespace AgoraNavigator.Info
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Button)),
                 HorizontalOptions = LayoutOptions.Center
             };
-            grid.Children.Add(topLabel, 0, rowNumber++);
+            layout.Children.Add(topLabel);
 
             TopicLabel topicLabel1 = new TopicLabel("Polite phrases");
-            grid.Children.Add(topicLabel1, 0, rowNumber++);
+            layout.Children.Add(topicLabel1);
 
-            AddPhraseToGrid("Please - ", "Proszę");
-            AddPhraseToGrid("Thank you - ", "Dziękuję ");
-            AddPhraseToGrid("I’m sorry - ", "Przepraszam");
-            AddPhraseToGrid("Good morning - ", "Dzień dobry");
-            AddPhraseToGrid("Good evening - ", "Dobry wieczór");
-            AddPhraseToGrid("Good night - ", "Dobranoc");
-            AddPhraseToGrid("Hi/Bye - ", "Cześć");
-            AddPhraseToGrid("See you/Goodbye - ", "Do widzenia");
-            AddPhraseToGrid("Yes - ", "Tak ");
-            AddPhraseToGrid("No - ", "Nie ");
+            AddPhraseToLayout("Please - ", "Proszę");
+            AddPhraseToLayout("Thank you - ", "Dziękuję ");
+            AddPhraseToLayout("I’m sorry - ", "Przepraszam");
+            AddPhraseToLayout("Good morning - ", "Dzień dobry");
+            AddPhraseToLayout("Good evening - ", "Dobry wieczór");
+            AddPhraseToLayout("Good night - ", "Dobranoc");
+            AddPhraseToLayout("Hi/Bye - ", "Cześć");
+            AddPhraseToLayout("See you/Goodbye - ", "Do widzenia");
+            AddPhraseToLayout("Yes - ", "Tak ");
+            AddPhraseToLayout("No - ", "Nie ");
 
             TopicLabel topicLabel2 = new TopicLabel("Dining out");
-            grid.Children.Add(topicLabel2, 0, rowNumber++);
+            layout.Children.Add(topicLabel2);
 
-            AddPhraseToGrid("Restaurant - ", "Restauracja");
-            AddPhraseToGrid("Dinner - ", "Obiad");
-            AddPhraseToGrid("Wine - ", "Wino");
-            AddPhraseToGrid("Beer - ", "Piwo");
-            AddPhraseToGrid("Vegetarian dish - ", "Danie wegetarianskie");
-            AddPhraseToGrid("Can we have the bill please? - ", "Proszę o rachunek");
+            AddPhraseToLayout("Restaurant - ", "Restauracja");
+            AddPhraseToLayout("Dinner - ", "Obiad");
+            AddPhraseToLayout("Wine - ", "Wino");
+            AddPhraseToLayout("Beer - ", "Piwo");
+            AddPhraseToLayout("Vegetarian dish - ", "Danie wegetarianskie");
+            AddPhraseToLayout("Can we have the bill please? - ", "Proszę o rachunek");
 
             TopicLabel topicLabel3 = new TopicLabel("Shopping");
-            grid.Children.Add(topicLabel3, 0, rowNumber++);
+            layout.Children.Add(topicLabel3);
 
-            AddPhraseToGrid("Price  - ", "Cena");
-            AddPhraseToGrid("Do you accept credit cards? - ", "Czy mogę zaplacić kartą?");
-            AddPhraseToGrid("How much for this? - ", "Ile to kosztuje?");
+            AddPhraseToLayout("Price  - ", "Cena");
+            AddPhraseToLayout("Do you accept credit cards? - ", "Czy mogę zaplacić kartą?");
+            AddPhraseToLayout("How much for this? - ", "Ile to kosztuje?");
 
             TopicLabel topicLabel4 = new TopicLabel("Travelling");
-            grid.Children.Add(topicLabel4, 0, rowNumber++);
+            layout.Children.Add(topicLabel4);
 
-            AddPhraseToGrid("Airport - ", "Lotnisko");
-            AddPhraseToGrid("Train - ", "Pociąg");
-            AddPhraseToGrid("Train station - ", "Dworzec kolejowy");
-            AddPhraseToGrid("Bus station - ", "Dworzec autobusowy");
-            AddPhraseToGrid("One ticket to ... - ", "Bilet do …");
+            AddPhraseToLayout("Airport - ", "Lotnisko");
+            AddPhraseToLayout("Train - ", "Pociąg");
+            AddPhraseToLayout("Train station - ", "Dworzec kolejowy");
+            AddPhraseToLayout("Bus station - ", "Dworzec autobusowy");
+            AddPhraseToLayout("One ticket to ... - ", "Bilet do …");
 
             TopicLabel topicLabel5 = new TopicLabel("Directions");
-            grid.Children.Add(topicLabel5, 0, rowNumber++);
+            layout.Children.Add(topicLabel5);
 
-            AddPhraseToGrid("Street  - ", "Ulica");
-            AddPhraseToGrid("Square  - ", "Plac");
-            AddPhraseToGrid("How can I get to ... - ", "Jak moge dojść do ...");
-            AddPhraseToGrid("Right/left  - ", "Prawo/lewo");
+            AddPhraseToLayout("Street  - ", "Ulica");
+            AddPhraseToLayout("Square  - ", "Plac");
+            AddPhraseToLayout("How can I get to ... - ", "Jak moge dojść do ...");
+            AddPhraseToLayout("Right/left  - ", "Prawo/lewo");
 
             TopicLabel topicLabel6 = new TopicLabel("Nightlife");
-            grid.Children.Add(topicLabel6, 0, rowNumber++);
+            layout.Children.Add(topicLabel6);
 
-            AddPhraseToGrid("Cheers! - ", "Na zdrowie!");
-            AddPhraseToGrid("One beer please - ", "Jedno piwo proszę");
-            AddPhraseToGrid("Can I smoke here? - ", "Czy można tu palić?");     
-            AddPhraseToGrid("Where are the toilets? - ", "Gdzie jest toaleta?");
-            AddPhraseToGrid("My name is ... - ", "Mam na imię ...");
+            AddPhraseToLayout("Cheers! - ", "Na zdrowie!");
+            AddPhraseToLayout("One beer please - ", "Jedno piwo proszę");
+            AddPhraseToLayout("Can I smoke here? - ", "Czy można tu palić?");     
+            AddPhraseToLayout("Where are the toilets? - ", "Gdzie jest toaleta?");
+            AddPhraseToLayout("My name is ... - ", "Mam na imię ...");
 
             TopicLabel topicLabel7 = new TopicLabel("Intresting facts about Kraków");
-            grid.Children.Add(topicLabel7, 0, rowNumber++);
+            layout.Children.Add(topicLabel7);
 
-            AddPhraseToGrid("- ", "Poland's currency is zloty (PLN). It is divided into one hundred smaller units called grosz.");
-            AddPhraseToGrid("- ", "According to Polish legend, the city is protected by a mighty dragon.");
-            AddPhraseToGrid("- ", "Krakow’s historical city centre is a UNESCO world heritage site.");
-            AddPhraseToGrid(
+            AddPhraseToLayout("- ", "Poland's currency is zloty (PLN). It is divided into one hundred smaller units called grosz.", false);
+            AddPhraseToLayout("- ", "According to Polish legend, the city is protected by a mighty dragon.", false);
+            AddPhraseToLayout("- ", "Krakow’s historical city centre is a UNESCO world heritage site.", false);
+            AddPhraseToLayout(
                 "- ", "Big head sculpture It’s behind the Sukiennice at Rynek. " +
                 "For locals it’s often meeting point. What exactly this sculpture presents? " +
                 "It’s Eros Bendato, head of love god. Why has he band on his eyes? " +
-                "Maybe because the love is blind…?");
-            AddPhraseToGrid(
+                "Maybe because the love is blind…?", false);
+            AddPhraseToLayout(
                 "- ", "In Wawel Castle, there is an exhibition of one painting." +
                 " It is the original painting by Leonardo da Vinci “Lady with an Ermine.” " +
                 "Only five other cities in the world can boast a painting by da Vinci, " +
-                "so don’t even think about letting this opportunity pass by.");
-            AddPhraseToGrid(
+                "so don’t even think about letting this opportunity pass by.", false);
+            AddPhraseToLayout(
                 "- ", "Krakow has its analog of the Tower of Pisa—the tower of the Town Hall. " +
-                "Although it leaned from its base by only 55 cm, because of the high height of the 70-meter tower, the deviation is well marked.");
+                "Although it leaned from its base by only 55 cm, because of the high height of the 70-meter tower, the deviation is well marked.", false);
 
-            Content = new ScrollView { Content = grid };
+            Content = new ScrollView { Content = layout };
         }
     }
 }

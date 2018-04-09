@@ -204,13 +204,7 @@
     <BundleResource Include="Resources\Contact_Phone_Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\Contact_Photo_Agata_Sambor.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BundleResource Include="Resources\Contact_Photo_Karolina_Lapczyk.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Contact_Photo_Mateusz_Gierczak.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Hamburger_Icon.png" />
@@ -232,6 +226,21 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Speaker_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\112.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\997.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\998.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\999.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Contact_Photo_Katarzyna_Szubartowska.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />

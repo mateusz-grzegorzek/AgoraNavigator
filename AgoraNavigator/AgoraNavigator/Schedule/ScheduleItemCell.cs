@@ -39,7 +39,8 @@ namespace AgoraNavigator.Schedule
             Image arrow = new Image
             {
                 Source = "Arrow.png",
-                HorizontalOptions = LayoutOptions.End
+                HorizontalOptions = LayoutOptions.End,
+                Margin = new Thickness(10, 10)
             };
 
             timeLabel.SetBinding(Label.TextProperty, "TimeText");
