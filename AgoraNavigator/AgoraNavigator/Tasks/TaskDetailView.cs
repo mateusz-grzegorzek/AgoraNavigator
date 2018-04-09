@@ -139,16 +139,17 @@ namespace AgoraNavigator.Tasks
                 
                 if (FirebaseMessagingClient.IsNetworkAvailable())
                 {
+                    string userAnswer = "";
                     switch (actualTask.taskType)
                     {
                         case TaskType.Text:
                             if(answerEntry.Text != null)
                             {
-                                answerEntry.Text = answerEntry.Text.ToLower();
+                                userAnswer = answerEntry.Text.ToLower();
                             }
-                            Console.WriteLine("answerEntry.Text=" + answerEntry.Text);
+                            Console.WriteLine("answerEntry.Text=" + userAnswer);
                             Console.WriteLine("actualTask.correctAnswer" + actualTask.correctAnswer);
-                            if (actualTask.correctAnswer == answerEntry.Text)
+                            if (actualTask.correctAnswer == userAnswer)
                             {
                                 Console.WriteLine("Yeah! Correct answer!");
                                 await GamePage.tasksMasterPage.closeTask(actualTask);
@@ -169,13 +170,13 @@ namespace AgoraNavigator.Tasks
                         case TaskType.LongText:
                             if (answerEntry.Text != null)
                             {
-                                answerEntry.Text = answerEntry.Text.ToLower();
+                                userAnswer = answerEntry.Text.ToLower();
                             }
-                            Console.WriteLine("answerEntry.LongText=" + answerEntry.Text);
+                            Console.WriteLine("answerEntry.LongText=" + userAnswer);
                             int correctAnswers = 0;
                             foreach(string answer in actualTask.correctAnswers)
                             {
-                                if(answerEntry.Text.Contains(answer))
+                                if(userAnswer.Contains(answer))
                                 {
                                     correctAnswers++;
                                 }
