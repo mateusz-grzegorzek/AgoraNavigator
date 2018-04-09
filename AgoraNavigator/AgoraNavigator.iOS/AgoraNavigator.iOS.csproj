@@ -218,6 +218,7 @@
     <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-736h.png" />
     <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-667h.png" />
     <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-568h%402x~iphone.png" />
+  </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Speaker_Icon.png" />
   </ItemGroup>
