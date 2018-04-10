@@ -19,6 +19,11 @@ namespace AgoraNavigator.Menu
             List<MasterPageItem> masterPageItems = new List<MasterPageItem>();
             masterPageItems.Add(new MasterPageItem
             {
+                Title = "Welcome",
+                TargetType = typeof(WelcomePage)
+            });
+            masterPageItems.Add(new MasterPageItem
+            {
                 Title = "Map",
                 TargetType = typeof(MapPage)
             });
