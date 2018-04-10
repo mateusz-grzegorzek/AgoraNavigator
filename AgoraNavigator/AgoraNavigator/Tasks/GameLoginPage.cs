@@ -57,7 +57,7 @@ namespace AgoraNavigator.Tasks
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Start,
                 PlaceholderColor = Color.LightGray,
-                Text = "220-",
+                Text = "220-0000",
                 Placeholder = "XXX-XXXX",
                 HorizontalOptions = LayoutOptions.Center
             };
@@ -75,6 +75,7 @@ namespace AgoraNavigator.Tasks
             pinEntry = new Entry
             {
                 TextColor = Color.White,
+                Text = "0000",
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Center,
                 PlaceholderColor = Color.LightGray,
@@ -165,13 +166,7 @@ namespace AgoraNavigator.Tasks
             if (!ValidateCode(code))
             {
                 await Task.Delay(1000); /* adding delay, so app can return from scanning mode */
-                SimplePopup popup = new SimplePopup("Scanning failed!", "Please scan the square-shaped code which you received.")
-                {
-                    ColorBackground = Color.Red,
-                    ColorBody = Color.White,
-                    ColorTitle = Color.White,
-                };
-                popup.SetColors();
+                SimplePopup popup = new SimplePopup("Scanning failed!", "Please scan the square-shaped code which you received.", false);
                 await Navigation.PushPopupAsync(popup);
                 App.mainPage.ShowLoginScreen(typeof(TasksPage));
             }
@@ -239,13 +234,7 @@ namespace AgoraNavigator.Tasks
                 }
                 else
                 {
-                    SimplePopup popup = new SimplePopup("Login failed!", "Wrong ID or PIN number!")
-                    {
-                        ColorBackground = Color.Red,
-                        ColorBody = Color.White,
-                        ColorTitle = Color.White,
-                    };
-                    popup.SetColors();
+                    SimplePopup popup = new SimplePopup("Login failed!", "Wrong ID or PIN number!", false);
                     await Navigation.PushPopupAsync(popup);
                     isLoginStarted = false;
                 }
@@ -259,26 +248,14 @@ namespace AgoraNavigator.Tasks
                 String databasePath = "/users/" + id + "/" + pin;
                 JObject userInfo = await FirebaseMessagingClient.SendSingleQuery<JObject>(databasePath);
                 Users.InitUserData(Convert.ToInt32(id), Convert.ToInt32(pin), userInfo);
-                SimplePopup popup = new SimplePopup("Login successful!", "Start the Game of Tasks or use your virtual badge!")
-                {
-                    ColorBackground = Color.Green,
-                    ColorBody = Color.White,
-                    ColorTitle = Color.White,
-                };
-                popup.SetColors();
+                SimplePopup popup = new SimplePopup("Login successful!", "Start the Game of Tasks or use your virtual badge!", true);
                 await Navigation.PushPopupAsync(popup);
                 App.mainPage.NavigateTo(_navigateToPage);
             }
             catch (Exception err)
             {
                 Console.WriteLine("OnLoginButtonClicked:err=" + err.ToString());
-                SimplePopup popup = new SimplePopup("Login failed!", "Check your internet connection, ID and PIN number and try again")
-                {
-                    ColorBackground = Color.Red,
-                    ColorBody = Color.White,
-                    ColorTitle = Color.White,
-                };
-                popup.SetColors();
+                SimplePopup popup = new SimplePopup("Login failed!", "Check your internet connection, ID and PIN number and try again", false);
                 await Navigation.PushPopupAsync(popup);
                 infoLabel.Text = "Login failed :(";
                 isLoginStarted = false;

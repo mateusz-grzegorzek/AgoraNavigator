@@ -1,6 +1,7 @@
 ﻿using AgoraNavigator.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Plugin.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,18 +35,6 @@ namespace AgoraNavigator.Login
         public static User loggedUser;
         public static bool isUserLogged;
 
-        public static void InitDefaultUser()
-        {
-            loggedUser = new User();
-            loggedUser.Id = 1;
-            loggedUser.Pin = 1234;
-            loggedUser.AntenaId = 1;
-            loggedUser.TotalPoints = 0;
-            loggedUser.ClosedTasks = new ObservableCollection<GameTask>();
-            loggedUser.OpenedTasks = new ObservableCollection<GameTask>(GameTask.allTasks);
-            isUserLogged = true;
-        }
-
         public static void InitUserData(int userId, int pin, JObject userInfo)
         {
             loggedUser = new User();
@@ -65,9 +54,10 @@ namespace AgoraNavigator.Login
                     if(closedTasks.Contains(task.id))
                     {
                         task.taskStatus = GameTask.TaskStatus.Completed;
+                        task.unlocked = true;
                         loggedUser.ClosedTasks.Add(task);
                     }
-                    else
+                    else if(task.unlocked)
                     {
                         loggedUser.OpenedTasks.Add(task);
                     }
@@ -77,7 +67,8 @@ namespace AgoraNavigator.Login
             {
                 loggedUser.TotalPoints = 0;
                 loggedUser.ClosedTasks = new ObservableCollection<GameTask>();
-                loggedUser.OpenedTasks = new ObservableCollection<GameTask>(GameTask.allTasks);
+                loggedUser.OpenedTasks = new ObservableCollection<GameTask>();
+                GameTask.ReloadOpenedTasks();
             }
             
             isUserLogged = true;
@@ -86,6 +77,6 @@ namespace AgoraNavigator.Login
             Console.WriteLine("Users:InitUserData:loggedUser.TotalPoints=" + loggedUser.TotalPoints);
             Console.WriteLine("Users:InitUserData:loggedUser.openedTasks.Count=" + loggedUser.OpenedTasks.Count);
             Console.WriteLine("Users:InitUserData:loggedUser.closedTasks.Count=" + loggedUser.ClosedTasks.Count);
-        }
+        } 
     }
 }

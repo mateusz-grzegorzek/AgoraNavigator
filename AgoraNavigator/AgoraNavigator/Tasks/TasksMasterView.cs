@@ -25,11 +25,8 @@ namespace AgoraNavigator.Tasks
                         Padding = new Thickness(10, 2),
                         RowSpacing = 10
                     };
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(5, GridUnitType.Star) });
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
 
                     Label taskTitle = new Label
                     {
@@ -52,13 +49,14 @@ namespace AgoraNavigator.Tasks
                         VerticalOptions = LayoutOptions.Start,
                         HorizontalOptions = LayoutOptions.EndAndExpand
                     };
-                    Grid.SetColumnSpan(task_separator, 2);
+                    
                     grid.Children.Add(taskTitle);
                     if(isOpenTasks)
                     {
                         grid.Children.Add(arrow, 1, 0);
                     }
-                    grid.Children.Add(task_separator, 0, 2, 1, 2);
+                    Grid.SetColumnSpan(task_separator, 2);
+                    grid.Children.Add(task_separator, 0, 2, 0, 1);
                     
                     return new ViewCell { View = grid };
                 }),
@@ -90,13 +88,7 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!")
-                        {
-                            ColorBackground = Color.Red,
-                            ColorBody = Color.White,
-                            ColorTitle = Color.White,
-                        };
-                        popup.SetColors();
+                        SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!", false);
                         await Navigation.PushPopupAsync(popup);
                     }
                 }

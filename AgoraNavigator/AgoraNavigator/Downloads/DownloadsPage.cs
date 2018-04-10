@@ -89,13 +89,7 @@ namespace AgoraNavigator.Downloads
             }
             else
             {
-                SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to download file!")
-                {
-                    ColorBackground = Color.Red,
-                    ColorBody = Color.White,
-                    ColorTitle = Color.White,
-                };
-                popup.SetColors();
+                SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to download file!", false);     
                 await Navigation.PushPopupAsync(popup);
             }
         }

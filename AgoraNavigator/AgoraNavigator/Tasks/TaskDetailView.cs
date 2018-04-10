@@ -22,22 +22,19 @@ namespace AgoraNavigator.Tasks
             BackgroundColor = AgoraColor.DarkBlue;
             actualTask = task;
 
-            Grid grid = new Grid
+            StackLayout layout = new StackLayout
             {
-                Padding = 0,
-                RowSpacing = 0
-            };
-
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(11, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-
-            BoxView boxView = new BoxView
-            {
+                Margin = new Thickness(0, 0),
                 BackgroundColor = AgoraColor.Blue
             };
+
+            StackLayout layoutTop = new StackLayout
+            {
+                Margin = new Thickness(20, 20),
+                BackgroundColor = AgoraColor.Blue
+            };
+            layout.Children.Add(layoutTop);
+
             Label titleLabel = new Label
             {
                 Text = task.title,
@@ -54,30 +51,31 @@ namespace AgoraNavigator.Tasks
                 FontFamily = AgoraFonts.GetPoppinsMedium(),
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
             };
+            layoutTop.Children.Add(titleLabel);
+            layoutTop.Children.Add(descriptionLabel);
 
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }); // 0 - Field above Title
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3, GridUnitType.Star) }); // 1 - Title
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(5, GridUnitType.Star) }); // 2 - Description
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(4, GridUnitType.Star) }); // 3 - Field bet Desc and Answer Label
+            Grid gridBottom = new Grid
+            {
+                Margin = new Thickness(10, 30),
+            };
 
-            Grid.SetRowSpan(boxView, 3);
-            Grid.SetColumnSpan(boxView, 5);
-            Grid.SetColumnSpan(titleLabel, 3);
-            Grid.SetColumnSpan(descriptionLabel, 3);
+            gridBottom.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridBottom.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(4, GridUnitType.Star) });
+            gridBottom.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-            grid.Children.Add(boxView, 0, 5, 0, 3);
-            grid.Children.Add(titleLabel, 1, 4, 1, 2);
-            grid.Children.Add(descriptionLabel, 1, 4, 2, 3);
+            gridBottom.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            gridBottom.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            gridBottom.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
 
             answerButton = new Button
             {
                 BackgroundColor = AgoraColor.Blue,
                 TextColor = AgoraColor.DarkBlue,
                 FontFamily = AgoraFonts.GetPoppinsBold(),
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
             };
             answerButton.Clicked += OnAnswerButtonClick;
-            if (task.taskType == TaskType.Text)
+            if ((task.taskType == TaskType.Text) || (task.taskType == TaskType.LongText))
             {
                 answerButton.Text = "SEND ANSWER";
                 Label answerLabel = new Label
@@ -93,25 +91,15 @@ namespace AgoraNavigator.Tasks
                     TextColor = Color.White,
                     FontFamily = AgoraFonts.GetPoppinsMedium(),
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    VerticalOptions = LayoutOptions.End,                    
+                    VerticalOptions = LayoutOptions.End,
                     HorizontalTextAlignment = TextAlignment.Center,
                     PlaceholderColor = Color.LightGray,
                     Placeholder = "Answer"
                 };
 
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3, GridUnitType.Star) }); // 4 - Answer Label
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3, GridUnitType.Star) }); // 5 - Entry
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }); // 6 - Field bet Entry and Button
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(4, GridUnitType.Star) }); // 7 - Answer Button
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(8, GridUnitType.Star) }); // 8 - Rest field
-
-                BoxView boxView1 = new BoxView
-                {
-                    BackgroundColor = Color.Red
-                };
-                grid.Children.Add(answerLabel, 2, 4);
-                grid.Children.Add(answerEntry, 2, 5);
-                grid.Children.Add(answerButton, 2, 7);
+                gridBottom.Children.Add(answerLabel, 1, 0);
+                gridBottom.Children.Add(answerEntry, 1, 1);
+                gridBottom.Children.Add(answerButton, 1, 2);
             }
             else
             {
@@ -124,53 +112,84 @@ namespace AgoraNavigator.Tasks
                 {
                     answerButton.Text = "CHECK TASK";
                 }
-                    
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(4, GridUnitType.Star) }); // 6 - Answer Button
-                grid.Children.Add(answerButton, 2, 4);
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(8, GridUnitType.Star) }); // 7 - Rest field              
+
+                gridBottom.Children.Add(answerButton, 1, 2);
             }
-            Content = grid;
+            Content = new StackLayout
+            {
+                Margin = new Thickness(0, 0),
+                Children =
+                {
+                    layout,
+                    gridBottom
+                }
+            };
         }
 
         public async void OnAnswerButtonClick(object sender, EventArgs e)
         {
             Console.WriteLine("OnAnswerButtonClick");
-            if ((actualTask.taskStatus == GameTask.TaskStatus.NotStarted) || 
+            if ((actualTask.taskStatus == GameTask.TaskStatus.NotStarted) ||
                 (actualTask.taskStatus == GameTask.TaskStatus.Processing))
             {
-                if(actualTask.taskStatus == GameTask.TaskStatus.NotStarted)
+                if (actualTask.taskStatus == GameTask.TaskStatus.NotStarted)
                 {
                     actualTask.taskStatus = GameTask.TaskStatus.Checking;
                 }
-                
+
                 if (FirebaseMessagingClient.IsNetworkAvailable())
                 {
+                    string userAnswer = "";
                     switch (actualTask.taskType)
                     {
                         case TaskType.Text:
-                            Console.WriteLine("answerEntry.Text=" + answerEntry.Text);
+                            if (answerEntry.Text != null)
+                            {
+                                userAnswer = answerEntry.Text.ToLower();
+                            }
+                            Console.WriteLine("answerEntry.Text=" + userAnswer);
                             Console.WriteLine("actualTask.correctAnswer" + actualTask.correctAnswer);
-                            if (actualTask.correctAnswer == answerEntry.Text)
+                            if (actualTask.correctAnswer == userAnswer)
                             {
                                 Console.WriteLine("Yeah! Correct answer!");
                                 await GamePage.tasksMasterPage.closeTask(actualTask);
                             }
                             else
                             {
-                                SimplePopup popup = new SimplePopup("Bad answer!", "Try one more time!")
+                                SimplePopup popup = new SimplePopup("Bad answer!", "Try one more time!", false);
+                                await Navigation.PushPopupAsync(popup);
+                                actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
+                            }
+                            break;
+                        case TaskType.LongText:
+                            if (answerEntry.Text != null)
+                            {
+                                userAnswer = answerEntry.Text.ToLower();
+                            }
+                            Console.WriteLine("answerEntry.LongText=" + userAnswer);
+                            int correctAnswers = 0;
+                            foreach (string answer in actualTask.correctAnswers)
+                            {
+                                if (userAnswer.Contains(answer))
                                 {
-                                    ColorBackground = Color.Red,
-                                    ColorBody = Color.White,
-                                    ColorTitle = Color.White,
-                                };
-                                popup.SetColors();
+                                    correctAnswers++;
+                                }
+                            }
+                            if (correctAnswers >= actualTask.minimumCorrectAnswers)
+                            {
+                                Console.WriteLine("Yeah! Correct answer!");
+                                await GamePage.tasksMasterPage.closeTask(actualTask);
+                            }
+                            else
+                            {
+                                SimplePopup popup = new SimplePopup("Bad answer!", "Try one more time!", false);
                                 await Navigation.PushPopupAsync(popup);
                                 actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                             }
                             break;
                         case TaskType.Button:
                             bool result;
-                            if(actualTask.title == "Adventurer quest")
+                            if (actualTask.title == "Adventurer quest")
                             {
                                 result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
                                 if (result)
@@ -179,22 +198,16 @@ namespace AgoraNavigator.Tasks
                                 }
                                 else
                                 {
-                                    SimplePopup popup = new SimplePopup("You're not near beacon!", "Come closer to beacon to complete this task!")
-                                    {
-                                        ColorBackground = Color.Red,
-                                        ColorBody = Color.White,
-                                        ColorTitle = Color.White,
-                                    };
-                                    popup.SetColors();
+                                    SimplePopup popup = new SimplePopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
                                     await Navigation.PushPopupAsync(popup);
                                     actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                                 }
                             }
-                            else if (actualTask.taskStatus == GameTask.TaskStatus.Checking && 
+                            else if (actualTask.taskStatus == GameTask.TaskStatus.Checking &&
                                 (actualTask.title == "The first are the best" || actualTask.title == "AEGEE Army"))
                             {
                                 result = await StartTask();
-                                if(result)
+                                if (result)
                                 {
                                     actualTask.taskStatus = GameTask.TaskStatus.Processing;
                                     answerButton.Text = "CHECK TASK";
@@ -208,50 +221,32 @@ namespace AgoraNavigator.Tasks
                                 {
                                     await GamePage.tasksMasterPage.closeTask(actualTask);
                                 }
-                                else if(processResult == null)
+                                else if (processResult == null)
                                 {
-                                    SimplePopup popup = new SimplePopup("Task isn't completed yet.", "If you already completed it, please try again after some time.")
-                                    {
-                                        ColorBackground = Color.Red,
-                                        ColorBody = Color.White,
-                                        ColorTitle = Color.White,
-                                    };
-                                    popup.SetColors();
+                                    SimplePopup popup = new SimplePopup("Task isn't completed yet.", "If you already completed it, please try again after some time.", false);
                                     await Navigation.PushPopupAsync(popup);
-                                    if ((actualTask.title != "AEGEE Army") && (actualTask.title != "The first are the best")) 
+                                    if ((actualTask.title != "AEGEE Army") && (actualTask.title != "The first are the best"))
                                     {
                                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                                     }
                                 }
                                 else
                                 {
-                                    if(actualTask.title == "The first are the best")
+                                    if (actualTask.title == "The first are the best")
                                     {
-                                        SimplePopup popup = new SimplePopup("Sorry you're late :(", "Try once again next time!")
-                                        {
-                                            ColorBackground = Color.Red,
-                                            ColorBody = Color.White,
-                                            ColorTitle = Color.White,
-                                        };
-                                        popup.SetColors();
+                                        SimplePopup popup = new SimplePopup("Sorry you're late :(", "Try once again next time!", false);
                                         await Navigation.PushPopupAsync(popup);
                                         answerButton.Text = "START TASK";
                                         ForceLayout();
                                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                                     }
-                                    else if(actualTask.title == "AEGEE Army")
+                                    else if (actualTask.title == "AEGEE Army")
                                     {
-                                        SimplePopup popup = new SimplePopup("Too few friends :(", "Gather more friends and try once again!")
-                                        {
-                                            ColorBackground = Color.Red,
-                                            ColorBody = Color.White,
-                                            ColorTitle = Color.White,
-                                        };
-                                        popup.SetColors();
+                                        SimplePopup popup = new SimplePopup("Too few friends :(", "Gather more friends and try once again!", false);
                                         await Navigation.PushPopupAsync(popup);
-                                    } 
+                                    }
                                 }
-                            } 
+                            }
                             break;
                         default:
                             Console.WriteLine("Error!");
@@ -260,17 +255,11 @@ namespace AgoraNavigator.Tasks
                 }
                 else
                 {
-                    SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to complete task!")
-                    {
-                        ColorBackground = Color.Red,
-                        ColorBody = Color.White,
-                        ColorTitle = Color.White,
-                    };
-                    popup.SetColors();
+                    SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to complete task!", false);
                     await Navigation.PushPopupAsync(popup);
                     actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                 }
-            }              
+            }
         }
 
         public async Task<bool> StartTask()
@@ -289,13 +278,8 @@ namespace AgoraNavigator.Tasks
                         databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.AntenaId + "/" + Users.loggedUser.Id;
                         if (FirebaseMessagingClient.SendMessage(databasePath, "1"))
                         {
-                            SimplePopup popup = new SimplePopup("You're near beacon!", "Great! Now wait for your friends!")
-                            {
-                                ColorBackground = Color.Green,
-                                ColorBody = Color.White,
-                                ColorTitle = Color.White,
-                            };
-                            popup.SetColors();
+                            SimplePopup popup = new SimplePopup("You're near beacon!", "Great! Now wait for your friends!", true);
+
                             await Navigation.PushPopupAsync(popup);
                             result = true;
 
@@ -313,26 +297,14 @@ namespace AgoraNavigator.Tasks
                         }
                         else
                         {
-                            SimplePopup popup = new SimplePopup("No internet connection", "You need internet connection to complete this task!")
-                            {
-                                ColorBackground = Color.Green,
-                                ColorBody = Color.White,
-                                ColorTitle = Color.White,
-                            };
-                            popup.SetColors();
+                            SimplePopup popup = new SimplePopup("No internet connection", "You need internet connection to complete this task!", false);
                             await Navigation.PushPopupAsync(popup);
                             actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                         }
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("You're not near beacon!", "Come closer to beacon to complete this task!")
-                        {
-                            ColorBackground = Color.Red,
-                            ColorBody = Color.White,
-                            ColorTitle = Color.White,
-                        };
-                        popup.SetColors();
+                        SimplePopup popup = new SimplePopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
                         await Navigation.PushPopupAsync(popup);
                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                     }
@@ -342,13 +314,7 @@ namespace AgoraNavigator.Tasks
                     databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.Id;
                     if (FirebaseMessagingClient.SendMessage(databasePath, "1"))
                     {
-                        SimplePopup popup = new SimplePopup("Great!", "Now check if you were first!")
-                        {
-                            ColorBackground = Color.Green,
-                            ColorBody = Color.White,
-                            ColorTitle = Color.White,
-                        };
-                        popup.SetColors();
+                        SimplePopup popup = new SimplePopup("Great!", "Now check if you were first!", true);
                         await Navigation.PushPopupAsync(popup);
                         result = true;
 
@@ -365,13 +331,7 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("No internet connection", "You need internet connection to complete this task!")
-                        {
-                            ColorBackground = Color.Green,
-                            ColorBody = Color.White,
-                            ColorTitle = Color.White,
-                        };
-                        popup.SetColors();
+                        SimplePopup popup = new SimplePopup("No internet connection", "You need internet connection to complete this task!", false);
                         await Navigation.PushPopupAsync(popup);
                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                     }
@@ -387,7 +347,7 @@ namespace AgoraNavigator.Tasks
             {
                 result = await FirebaseMessagingClient.SendSingleQuery<bool>(tasksPath + actualTask.dbName + "/" + Users.loggedUser.Id);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 result = null;
             }
