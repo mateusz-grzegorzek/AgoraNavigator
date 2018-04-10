@@ -20,19 +20,9 @@ namespace AgoraNavigator.Tasks
                 GamePage.totalPoints.Text = Users.loggedUser.TotalPoints.ToString();
                 String description = task.scorePoints + " point for you. " + "You have " + Users.loggedUser.TotalPoints
                             + " points totally. Check more tasks to get more points and win the competition!";
-                SimplePopup popup = new SimplePopup("Good answer!", description)
-                {
-                    ColorBackground = Color.Green,
-                    ColorBody = Color.White,
-                    ColorTitle = Color.White,
-                };
-                popup.SetColors();
-                popup.buttonOk.Clicked += async (object sender, EventArgs e) =>
-                {
-                    await PopupNavigation.RemovePageAsync(popup);
-                    await App.mainPage.Detail.Navigation.PopAsync();
-                };
+                SimplePopup popup = new SimplePopup("Good answer!", description, true);                
                 await Navigation.PushPopupAsync(popup);
+                await App.mainPage.Detail.Navigation.PopAsync();
             }    
         }
 

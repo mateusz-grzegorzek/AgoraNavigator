@@ -1,5 +1,6 @@
 ﻿using AgoraNavigator.Login;
 using Newtonsoft.Json;
+using Plugin.Settings;
 using System;
 using System.Collections.Generic;
 
@@ -48,6 +49,8 @@ namespace AgoraNavigator.Tasks
 
         public string dbName { get; set; }
 
+        public bool unlocked { get; set; }
+
         public static bool CloseTask(int taskId)
         {
             bool result = false;
@@ -79,7 +82,7 @@ namespace AgoraNavigator.Tasks
             return result;
         }
 
-        public static void AddTasks()
+        public static void InitTasks()
         {
             allTasks = new List<GameTask>();
             allTasks.Add(new GameTask
@@ -92,6 +95,7 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = true,
+                unlocked = true
             });
             allTasks.Add(new GameTask
             {
@@ -102,7 +106,8 @@ namespace AgoraNavigator.Tasks
                 correctAnswer = "1047",
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
-                needBluetoothAndLocation = false
+                needBluetoothAndLocation = false,
+                unlocked = true
             });
             allTasks.Add(new GameTask
             {
@@ -114,7 +119,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 3,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = true,
-                dbName = "AEGEE_Army"
+                dbName = "AEGEE_Army",
+                unlocked = true
             });
             allTasks.Add(new GameTask
             {
@@ -125,7 +131,8 @@ namespace AgoraNavigator.Tasks
                 correctAnswer = "1919",
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
-                needBluetoothAndLocation = false
+                needBluetoothAndLocation = false,
+                unlocked = true
             });
             allTasks.Add(new GameTask
             {
@@ -136,7 +143,8 @@ namespace AgoraNavigator.Tasks
                 correctAnswer = "mateusz",
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
-                needBluetoothAndLocation = false
+                needBluetoothAndLocation = false,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -148,7 +156,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                dbName = "Plenary_photo"
+                dbName = "Plenary_photo",
+                unlocked = true
             });
             allTasks.Add(new GameTask
             {
@@ -160,7 +169,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                dbName = "Redbull"
+                dbName = "Redbull",
+                unlocked = true
             });
             allTasks.Add(new GameTask
             {
@@ -172,7 +182,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = true,
-                dbName = "First_Come_First_Served"
+                dbName = "First_Come_First_Served",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -183,7 +194,8 @@ namespace AgoraNavigator.Tasks
                 correctAnswer = "GUNNAR",
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
-                needBluetoothAndLocation = false
+                needBluetoothAndLocation = false,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -194,7 +206,8 @@ namespace AgoraNavigator.Tasks
                 correctAnswer = "buka",
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
-                needBluetoothAndLocation = false
+                needBluetoothAndLocation = false,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -205,7 +218,8 @@ namespace AgoraNavigator.Tasks
                 correctAnswer = "closed",
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
-                needBluetoothAndLocation = false
+                needBluetoothAndLocation = false,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -216,7 +230,8 @@ namespace AgoraNavigator.Tasks
                 correctAnswer = "code",
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
-                needBluetoothAndLocation = false
+                needBluetoothAndLocation = false,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -227,7 +242,8 @@ namespace AgoraNavigator.Tasks
                 correctAnswer = "familiada",
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
-                needBluetoothAndLocation = false
+                needBluetoothAndLocation = false,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -238,7 +254,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                dbName = "Selfie"
+                dbName = "Selfie",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -249,7 +266,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 3,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                dbName = "Dollar"
+                dbName = "Dollar",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -266,7 +284,8 @@ namespace AgoraNavigator.Tasks
                     "twice",
                     "two"
                 },
-                minimumCorrectAnswers = 1
+                minimumCorrectAnswers = 1,
+                unlocked = true
             });
             allTasks.Add(new GameTask
             {
@@ -282,7 +301,8 @@ namespace AgoraNavigator.Tasks
                     "2006",
                     "warsaw"
                 },
-                minimumCorrectAnswers = 2
+                minimumCorrectAnswers = 2,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -293,7 +313,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "65"
+                correctAnswer = "65",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -304,7 +325,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "aegee-enschede"
+                correctAnswer = "aegee-enschede",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -315,7 +337,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "1207"
+                correctAnswer = "1207",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -326,7 +349,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "16"
+                correctAnswer = "16",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -337,7 +361,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "400"
+                correctAnswer = "400",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -348,7 +373,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "polar bear"
+                correctAnswer = "polar bear",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -359,7 +385,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "aegee.tv"
+                correctAnswer = "aegee.tv",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -375,7 +402,8 @@ namespace AgoraNavigator.Tasks
                     "lindt",
                     "chocolate"
                 },
-                minimumCorrectAnswers = 2
+                minimumCorrectAnswers = 2,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -386,7 +414,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "enlightened despotism"
+                correctAnswer = "enlightened despotism",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -397,7 +426,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "christoph strohm"
+                correctAnswer = "christoph strohm",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -414,7 +444,8 @@ namespace AgoraNavigator.Tasks
                     "president",
                     "outside"
                 },
-                minimumCorrectAnswers = 2
+                minimumCorrectAnswers = 2,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -431,7 +462,8 @@ namespace AgoraNavigator.Tasks
                     "gender",
                     "woman"
                 },
-                minimumCorrectAnswers = 2
+                minimumCorrectAnswers = 2,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -447,7 +479,8 @@ namespace AgoraNavigator.Tasks
                     "museum",
                     "underwear"
                 },
-                minimumCorrectAnswers = 2
+                minimumCorrectAnswers = 2,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -458,7 +491,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "chickens"
+                correctAnswer = "chickens",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -469,7 +503,8 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                correctAnswer = "aegee-enschede"
+                correctAnswer = "aegee-enschede",
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -484,7 +519,8 @@ namespace AgoraNavigator.Tasks
                 {
                     "30"
                 },
-                minimumCorrectAnswers = 1
+                minimumCorrectAnswers = 1,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -499,7 +535,8 @@ namespace AgoraNavigator.Tasks
                 {
                     "dance"
                 },
-                minimumCorrectAnswers = 1
+                minimumCorrectAnswers = 1,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -515,7 +552,8 @@ namespace AgoraNavigator.Tasks
                     "train",
                     "constanta"
                 },
-                minimumCorrectAnswers = 2
+                minimumCorrectAnswers = 2,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -531,7 +569,8 @@ namespace AgoraNavigator.Tasks
                     "five",
                     "hotel"
                 },
-                minimumCorrectAnswers = 2
+                minimumCorrectAnswers = 2,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -547,7 +586,8 @@ namespace AgoraNavigator.Tasks
                     "outside",
                     "tents"
                 },
-                minimumCorrectAnswers = 2
+                minimumCorrectAnswers = 2,
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -563,8 +603,68 @@ namespace AgoraNavigator.Tasks
                     "sex",
                     "camera"
                 },
-                minimumCorrectAnswers = 2
+                minimumCorrectAnswers = 2,
+                unlocked = false
             });
+            InitUnlockedTasks();
+        }
+
+        private static void InitUnlockedTasks()
+        {
+            int numberOfNewUnlockedTasks = CrossSettings.Current.GetValueOrDefault("Tasks:numberOfNewUnlockedTasks", 0);
+            for (int index = 0; index < numberOfNewUnlockedTasks; index++)
+            {
+                int taskId = CrossSettings.Current.GetValueOrDefault("Tasks:numberOfNewUnlockedTasks:" + index, 0);
+                allTasks[taskId].unlocked = true;
+            }
+        }
+
+        private static bool UnlockTask(int index, int taskId)
+        {
+            bool result = false;
+            if (!allTasks[taskId].unlocked)
+            {
+                CrossSettings.Current.AddOrUpdateValue("Tasks:numberOfNewUnlockedTasks:" + index, taskId);
+                allTasks[taskId].unlocked = true;
+                result = true;
+            }
+            return result;
+        }
+
+        public static bool UnlockTasks(int index, int taskSetId)
+        {
+            bool result = false;
+            switch(taskSetId)
+            {
+                case 0:
+                    result |= UnlockTask(index, 4);
+                    result |= UnlockTask(index + 1, 12);
+                    result |= UnlockTask(index + 2, 16);
+                    break;
+                case 1:
+                    result |= UnlockTask(index, 7);
+                    result |= UnlockTask(index + 1, 17);
+                    result |= UnlockTask(index + 2, 18);
+                    break;
+                case 2:
+                    result |= UnlockTask(index, 8);
+                    result |= UnlockTask(index + 1, 19);
+                    result |= UnlockTask(index + 2, 20);
+                    break;
+            }            
+            return result;
+        }
+
+        public static void ReloadOpenedTasks()
+        {
+            Users.loggedUser.OpenedTasks.Clear();
+            foreach (GameTask task in allTasks)
+            {
+                if (task.unlocked && (task.taskStatus == TaskStatus.NotStarted))
+                {
+                    Users.loggedUser.OpenedTasks.Add(task);
+                }
+            }
         }
     }
 }

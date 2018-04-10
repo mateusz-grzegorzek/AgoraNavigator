@@ -8,71 +8,65 @@ namespace AgoraNavigator.Popup
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SimplePopup : Rg.Plugins.Popup.Pages.PopupPage
     {
-        private Label labelTitle;
-        private Label labelBody;
-        public Button buttonOk;
-
-        public Color ColorBackground = Color.White;
-        public Color ColorTitle = Color.Black;
-        public Color ColorBody = Color.Black;
-        public Color ColorButtonBackground = Color.White;
-        public Color ColorButtonBorder = Color.Black;
-        public Color ColorButtonText = Color.Black;
-
-        public SimplePopup(string title, string body)
+        public SimplePopup(string title, string body, bool succes)
         {
             InitializeComponent();
 
-            labelTitle = new Label
+            Label labelTitle = new Label
             {
                 Text = title,
+                TextColor = Color.White,
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                VerticalTextAlignment = TextAlignment.Start,
-                HorizontalTextAlignment = TextAlignment.Center
+                HorizontalOptions = LayoutOptions.Center
             };
-            labelBody = new Label
+
+            Label labelBody = new Label
             {
                 Text = body,
+                TextColor = Color.White,
                 FontFamily = AgoraFonts.GetPoppinsMedium(),
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 HorizontalOptions = LayoutOptions.Center,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center
             };
 
-            buttonOk = new Button
+            Button buttonOk = new Button
             {
                 Text = "OK",
+                TextColor = Color.Black,
+                BorderColor = Color.Black,
+                BackgroundColor = Color.White,
                 FontFamily = AgoraFonts.GetPoppinsMedium(),
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                VerticalOptions = LayoutOptions.End
+                HorizontalOptions = LayoutOptions.Center,
+                WidthRequest = 120
             };
             buttonOk.Clicked += buttonOk_Clicked;
 
-            AbsoluteLayout.SetLayoutBounds(labelTitle, new Rectangle(.5,.05, .9, .25));
-            AbsoluteLayout.SetLayoutBounds(labelBody,  new Rectangle(.5,.45, .9, .50));
-            AbsoluteLayout.SetLayoutBounds(buttonOk,   new Rectangle(.5,.95,.45, .25));
+            Grid grid = new Grid
+            {
+                Margin = new Thickness(10, 10),
+                RowSpacing = 5
+            };
 
-            AbsoluteLayout.SetLayoutFlags(labelTitle, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(labelBody, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(buttonOk, AbsoluteLayoutFlags.All);
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
 
-            layout.Children.Add(labelTitle);
-            layout.Children.Add(labelBody);
-            layout.Children.Add(buttonOk);
-        }
+            grid.Children.Add(labelTitle, 0, 0);
+            grid.Children.Add(labelBody, 0, 1);
+            grid.Children.Add(buttonOk, 0, 2);
 
-        public void SetColors()
-        {
-            layout.BackgroundColor = ColorBackground;
+            if(succes)
+            {
+                frame.BackgroundColor = Color.Green;
+            }
+            else
+            {
+                frame.BackgroundColor = Color.Red;
+            }
 
-            labelTitle.TextColor = ColorTitle;
-            labelBody.TextColor = ColorBody;
-
-            buttonOk.TextColor = ColorButtonText;
-            buttonOk.BackgroundColor = ColorButtonBackground;
-            buttonOk.BorderColor = ColorButtonBorder;
+            frame.Content = grid;
         }
 
         private async void buttonOk_Clicked(object sender, EventArgs e)

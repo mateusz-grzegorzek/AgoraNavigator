@@ -88,13 +88,7 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!")
-                        {
-                            ColorBackground = Color.Red,
-                            ColorBody = Color.White,
-                            ColorTitle = Color.White,
-                        };
-                        popup.SetColors();
+                        SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!", false);
                         await Navigation.PushPopupAsync(popup);
                     }
                 }

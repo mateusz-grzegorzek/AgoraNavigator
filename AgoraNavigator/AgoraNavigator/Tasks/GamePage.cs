@@ -1,10 +1,14 @@
 ﻿using AgoraNavigator.Login;
+using AgoraNavigator.Menu;
+using AgoraNavigator.Popup;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Plugin.Permissions.Abstractions;
+using Rg.Plugins.Popup.Extensions;
 
 namespace AgoraNavigator.Tasks
 {
@@ -20,6 +24,7 @@ namespace AgoraNavigator.Tasks
         public static Label totalPoints;
         private const string databaseTopScorersKey = "tasks/TOP_Scorers";
         private ListView topScorersListView;
+        private bool isScanNewTasksButtonClick = false;
 
         public GamePage()
         {
@@ -28,11 +33,11 @@ namespace AgoraNavigator.Tasks
             Title = "Game of Tasks";
             Label totalPointsLabel = new Label
             {
-                Text = "Your Total Points: " ,
+                Text = "Your Total Points: ",
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 TextColor = AgoraColor.Blue,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                VerticalTextAlignment = TextAlignment.Center
+                HorizontalOptions = LayoutOptions.Center
             };
             totalPoints = new Label
             {
@@ -40,7 +45,7 @@ namespace AgoraNavigator.Tasks
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 TextColor = Color.White,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                VerticalTextAlignment = TextAlignment.Center
+                HorizontalOptions = LayoutOptions.Center
             };
 
             Button goToTasksButton = new Button
@@ -49,9 +54,21 @@ namespace AgoraNavigator.Tasks
                 BackgroundColor = AgoraColor.Blue,
                 TextColor = AgoraColor.DarkBlue,
                 FontFamily = AgoraFonts.GetPoppinsBold(),
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                HorizontalOptions = LayoutOptions.Center
             };
             goToTasksButton.Clicked += OnGoToTasksButtonClick;
+
+            Button scanNewTasksButton = new Button
+            {
+                Text = "SCAN BEACON FOR NEW TASKS",
+                BackgroundColor = AgoraColor.Blue,
+                TextColor = AgoraColor.DarkBlue,
+                FontFamily = AgoraFonts.GetPoppinsBold(),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                HorizontalOptions = LayoutOptions.Center
+            };
+            scanNewTasksButton.Clicked += OnScanNewTasksButtonClick;
 
             Label bestPlayersLabel = new Label
             {
@@ -59,7 +76,7 @@ namespace AgoraNavigator.Tasks
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 TextColor = AgoraColor.Blue,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                VerticalTextAlignment = TextAlignment.Center
+                HorizontalOptions = LayoutOptions.Center
             };
 
             topScorersListView = new ListView
@@ -103,25 +120,39 @@ namespace AgoraNavigator.Tasks
                 SeparatorVisibility = SeparatorVisibility.None
             };
 
-            AbsoluteLayout layout = new AbsoluteLayout();
+            StackLayout totalPointsLayout = new StackLayout
+            {
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.Center,
+                Margin = new Thickness(10, 20)
+            };
+            totalPointsLayout.Children.Add(totalPointsLabel);
+            totalPointsLayout.Children.Add(totalPoints);
 
-            AbsoluteLayout.SetLayoutBounds(totalPointsLabel,   new Rectangle(.35, .10, .60, .06));
-            AbsoluteLayout.SetLayoutBounds(totalPoints,        new Rectangle(.85, .10, .10, .06));
-            AbsoluteLayout.SetLayoutBounds(goToTasksButton,    new Rectangle(.50, .25, .60, .15));
-            AbsoluteLayout.SetLayoutBounds(bestPlayersLabel,   new Rectangle(.50, .45, .50, .06));
-            AbsoluteLayout.SetLayoutBounds(topScorersListView, new Rectangle(.50, .75, .60, .30));
+            Grid gridLayout = new Grid();
 
-            AbsoluteLayout.SetLayoutFlags(totalPointsLabel, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(totalPoints, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(goToTasksButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(bestPlayersLabel, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutFlags(topScorersListView, AbsoluteLayoutFlags.All);
+            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(5, GridUnitType.Star) });
+            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-            layout.Children.Add(totalPointsLabel);
-            layout.Children.Add(totalPoints);
-            layout.Children.Add(goToTasksButton);
-            layout.Children.Add(bestPlayersLabel);
-            layout.Children.Add(topScorersListView);
+            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
+            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
+            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
+            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+
+            gridLayout.Children.Add(scanNewTasksButton, 1, 0);
+            gridLayout.Children.Add(goToTasksButton, 1, 1);
+            gridLayout.Children.Add(bestPlayersLabel, 1, 2);
+            gridLayout.Children.Add(topScorersListView, 1, 3);
+
+            StackLayout layout = new StackLayout
+            {
+                Margin = new Thickness(0, 0),
+                Spacing = 5
+            };
+
+            layout.Children.Add(totalPointsLayout);
+            layout.Children.Add(gridLayout);
 
             Content = layout;
             Appearing += OnPageAppearing;
@@ -140,8 +171,8 @@ namespace AgoraNavigator.Tasks
             try
             {
                 String items = await FirebaseMessagingClient.SendSingleQuery<String>(databaseTopScorersKey);
-                JArray array = JsonConvert.DeserializeObject< JArray>(items);
-                ObservableCollection<TopScorers> topScorers = new ObservableCollection<TopScorers>(); 
+                JArray array = JsonConvert.DeserializeObject<JArray>(items);
+                ObservableCollection<TopScorers> topScorers = new ObservableCollection<TopScorers>();
                 foreach (JToken token in array)
                 {
                     int userId = int.Parse(token["userId"].ToString());
@@ -155,9 +186,9 @@ namespace AgoraNavigator.Tasks
                     topScorers.Add(topScorer);
                 }
                 topScorersListView.ItemsSource = topScorers;
-                
+
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Console.WriteLine(err.ToString());
             }
@@ -166,6 +197,37 @@ namespace AgoraNavigator.Tasks
         async public void OnGoToTasksButtonClick(object sender, EventArgs e)
         {
             await Navigation.PushAsync(tasksMasterPage);
+        }
+
+        async public void OnScanNewTasksButtonClick(object sender, EventArgs e)
+        {
+            if (!isScanNewTasksButtonClick)
+            {
+                isScanNewTasksButtonClick = true;
+                bool permissionGranted = await Permissions.GetRuntimePermission(Permission.Location);
+                Console.WriteLine("TasksMasterView:OnTaskTitleClick:permissionGranted=" + permissionGranted);
+                if (Beacons.IsBluetoothOn() && permissionGranted)
+                {
+                    bool result = await Beacons.ScanBeaconForNewTasks();
+                    if (result)
+                    {
+                        SimplePopup popup = new SimplePopup("New task's founded!", "Go to tasks and solved them all!", true);
+                        await Navigation.PushPopupAsync(popup);
+                        GameTask.ReloadOpenedTasks();
+                    }
+                    else
+                    {
+                        SimplePopup popup = new SimplePopup("No new task's...", "Keep looking!", false);
+                        await Navigation.PushPopupAsync(popup);
+                    }
+                }
+                else
+                {
+                    SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start scanning!", false);
+                    await Navigation.PushPopupAsync(popup);
+                }
+                isScanNewTasksButtonClick = false;
+            }
         }
     }
 }
