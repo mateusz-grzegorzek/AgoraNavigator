@@ -94,6 +94,9 @@ namespace AgoraNavigator.Menu
             {
                 switch (item.Title)
                 {
+                    case "Welcome":
+                        Detail = welcomePage;
+                        break;
                     case "Map":
                         GoogleMapPage.map.MyLocationEnabled = await Permissions.GetRuntimePermission(Permission.Location);
                         Detail = mapPage;
