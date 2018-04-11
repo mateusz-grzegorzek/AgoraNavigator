@@ -191,7 +191,7 @@ namespace AgoraNavigator.Tasks
                             bool result;
                             if (actualTask.title == "Adventurer quest")
                             {
-                                result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
+                                result = await Beacons.ScanForBeacon(Beacons.beaconFHNj);
                                 if (result)
                                 {
                                     await GamePage.tasksMasterPage.closeTask(actualTask);
@@ -271,7 +271,7 @@ namespace AgoraNavigator.Tasks
             switch (actualTask.title)
             {
                 case "AEGEE Army":
-                    result = await Beacons.ScanForBeacon(Beacons.beaconFHNJ);
+                    result = await Beacons.ScanForBeacon(Beacons.beaconFHNj);
                     if (result)
                     {
                         CrossFirebasePushNotification.Current.Subscribe("AEGEE_Army_" + Users.loggedUser.AntenaId);
@@ -345,7 +345,8 @@ namespace AgoraNavigator.Tasks
             bool? result = false;
             try
             {
-                result = await FirebaseMessagingClient.SendSingleQuery<bool>(tasksPath + actualTask.dbName + "/" + Users.loggedUser.Id);
+                String idDbPath = Users.loggedUser.Id.ToString().PadLeft(4, '0');
+                result = await FirebaseMessagingClient.SendSingleQuery<bool>(tasksPath + actualTask.dbName + "/" + idDbPath);
             }
             catch (Exception)
             {
