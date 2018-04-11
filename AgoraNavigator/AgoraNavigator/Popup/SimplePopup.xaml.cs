@@ -49,8 +49,8 @@ namespace AgoraNavigator.Popup
                 RowSpacing = 5
             };
 
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
 
             grid.Children.Add(labelTitle, 0, 0);
