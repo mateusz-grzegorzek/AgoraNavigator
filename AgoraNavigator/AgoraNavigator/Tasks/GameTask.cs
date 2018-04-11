@@ -132,7 +132,7 @@ namespace AgoraNavigator.Tasks
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                unlocked = true
+                unlocked = false
             });
             allTasks.Add(new GameTask
             {
@@ -302,7 +302,7 @@ namespace AgoraNavigator.Tasks
                     "warsaw"
                 },
                 minimumCorrectAnswers = 2,
-                unlocked = false
+                unlocked = true
             });
             allTasks.Add(new GameTask
             {
@@ -314,7 +314,7 @@ namespace AgoraNavigator.Tasks
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
                 correctAnswer = "65",
-                unlocked = false
+                unlocked = true
             });
             allTasks.Add(new GameTask
             {
@@ -639,17 +639,52 @@ namespace AgoraNavigator.Tasks
                 case 0:
                     result |= UnlockTask(index, 4);
                     result |= UnlockTask(index + 1, 12);
-                    result |= UnlockTask(index + 2, 16);
+                    result |= UnlockTask(index + 2, 3);
                     break;
                 case 1:
                     result |= UnlockTask(index, 7);
-                    result |= UnlockTask(index + 1, 17);
+                    result |= UnlockTask(index + 1, 36);
                     result |= UnlockTask(index + 2, 18);
                     break;
                 case 2:
                     result |= UnlockTask(index, 8);
                     result |= UnlockTask(index + 1, 19);
                     result |= UnlockTask(index + 2, 20);
+                    break;
+                case 3:
+                    result |= UnlockTask(index, 21);
+                    result |= UnlockTask(index + 1, 25);
+                    result |= UnlockTask(index + 2, 29);
+                    break;
+                case 4:
+                    result |= UnlockTask(index, 9);
+                    result |= UnlockTask(index + 1, 13);
+                    result |= UnlockTask(index + 2, 24);
+                    break;
+                case 5:
+                    result |= UnlockTask(index, 10);
+                    result |= UnlockTask(index + 1, 26);
+                    result |= UnlockTask(index + 2, 30);
+                    break;
+                case 6:
+                    result |= UnlockTask(index, 11);
+                    result |= UnlockTask(index + 1, 22);
+                    result |= UnlockTask(index + 2, 27);
+                    break;
+                case 7:
+                    result |= UnlockTask(index, 14);
+                    result |= UnlockTask(index + 1, 28);
+                    result |= UnlockTask(index + 2, 34);
+                    break;
+                case 8:
+                    result |= UnlockTask(index, 23);
+                    result |= UnlockTask(index + 1, 31);
+                    result |= UnlockTask(index + 2, 32);
+                    break;
+                case 9:
+                    result |= UnlockTask(index, 33);
+                    result |= UnlockTask(index + 1, 35);
+                    result |= UnlockTask(index + 2, 37);
                     break;
             }            
             return result;

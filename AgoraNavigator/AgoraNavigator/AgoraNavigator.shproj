@@ -8,4 +8,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.Common.props" />
   <Import Project="AgoraNavigator.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
+  <ItemGroup>
+    <Page Remove="Audio\Przepraszam.mp3" />
+  </ItemGroup>
 </Project>

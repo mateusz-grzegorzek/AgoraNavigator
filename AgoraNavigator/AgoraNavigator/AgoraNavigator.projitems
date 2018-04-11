@@ -60,4 +60,46 @@
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Czesc.mp3" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Cena.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Czy_moge_zaplacic_karta.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Czy_mozna_tu_palic.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Danie_wegetarianskie.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Dobranoc.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Dobry_wieczor.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Do_widzenia.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Dworzec_kolejowy.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Dziekuje.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Dzien_dobry.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Galeria_krakowska.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Gdzie_jest_toaleta.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Gdzie_znajde_fajne_dziewczyny.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Gdzie_znajde_przystojnych_facetow.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Ile_to_kosztuje.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Jak_moge_dojsc_do.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Jedno_piwo_prosze.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Kopiec_kraka.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Lotnisko.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Mam_na_imie.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Miasteczko_studenckie.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Na_zdrowie.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Nie.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Obiad.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Piwo.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Plac_wolnica.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Pociąg.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Poprosze_pol_litra_soplicy.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Prawo_lewo.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Prosze.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Prosze_o_rachunek.mp3" />
+    <Page Include="$(MSBuildThisFileDirectory)Audio\Przepraszam.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Restauracja.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Stadion_wisly.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Tak.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Ulica_krupnicza.mp3" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Wino.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Przepraszam.mp3" />
+  </ItemGroup>
 </Project>
