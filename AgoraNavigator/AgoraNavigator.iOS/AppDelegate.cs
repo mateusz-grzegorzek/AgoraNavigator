@@ -3,6 +3,8 @@ using Foundation;
 using System;
 using UIKit;
 using UserNotifications;
+using Google.Maps;
+using Plugin.FirebasePushNotification;
 
 namespace AgoraNavigator.iOS
 {
@@ -12,44 +14,55 @@ namespace AgoraNavigator.iOS
         const string MapsApiKey = "AIzaSyB2Yxx7le70m6vrXQDM8fZd8aEnwc1RWro";
         public AudioManager AudioManager { get; set; } = new AudioManager();
 
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            // Get current device token
+            var DeviceToken = deviceToken.Description;
+            if (!string.IsNullOrWhiteSpace(DeviceToken))
+            {
+                DeviceToken = DeviceToken.Trim('<').Trim('>');
+            }
+
+            // Get previous device token
+            var oldDeviceToken = NSUserDefaults.StandardUserDefaults.StringForKey("PushDeviceToken");
+
+            // Has the token changed?
+            if (string.IsNullOrEmpty(oldDeviceToken) || !oldDeviceToken.Equals(DeviceToken))
+            {
+                //TODO: Put your own logic here to notify your server that the device token has changed/been created!
+                FirebaseMessagingClient.TokenRefresh(DeviceToken);
+            }
+
+            // Save new device token
+            NSUserDefaults.StandardUserDefaults.SetString(DeviceToken, "PushDeviceToken");
+        }
+
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             Xamarin.Forms.Forms.Init();
 
             Xamarin.FormsGoogleMaps.Init(MapsApiKey);
 
-            // Register your app for remote notifications.
-            if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
             {
+                var pushSettings = UIUserNotificationSettings.GetSettingsForTypes(
+                                   UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
+                                   new NSSet());
 
-                // For iOS 10 display notification (sent via APNS)
-                UNUserNotificationCenter.Current.Delegate = (IUNUserNotificationCenterDelegate)this;
-
-                var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
-                UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
-                    Console.WriteLine(granted);
-                });
+                UIApplication.SharedApplication.RegisterUserNotificationSettings(pushSettings);
+                UIApplication.SharedApplication.RegisterForRemoteNotifications();
             }
             else
             {
-                // iOS 9 or before
-                var allNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound;
-                var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
-                UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+                UIRemoteNotificationType notificationTypes = UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge | UIRemoteNotificationType.Sound;
+                UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(notificationTypes);
             }
-            Messaging.SharedInstance.Delegate = (IMessagingDelegate)this;
-            UIApplication.SharedApplication.RegisterForRemoteNotifications();
+
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
             LoadApplication(new App());
-            
-            return base.FinishedLaunching(app, options);
-        }
+            FirebasePushNotificationManager.Initialize(options, true);
 
-        [Export("messaging:didReceiveRegistrationToken:")]
-        public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken)
-        {
-            Console.WriteLine($"Firebase registration token: {fcmToken}");
-            FirebaseMessagingClient.TokenRefresh(fcmToken);
+            return base.FinishedLaunching(app, options);
         }
 
         public override void DidEnterBackground(UIApplication application)
