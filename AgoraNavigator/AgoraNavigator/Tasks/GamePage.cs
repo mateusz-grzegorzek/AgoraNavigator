@@ -203,7 +203,12 @@ namespace AgoraNavigator.Tasks
             if (!isScanNewTasksButtonClick)
             {
                 isScanNewTasksButtonClick = true;
+#if __ANDROID__
                 bool permissionGranted = await Permissions.GetRuntimePermission(Permission.Location);
+#endif
+#if __IOS__
+                bool permissionGranted = true;
+#endif
                 Console.WriteLine("TasksMasterView:OnTaskTitleClick:permissionGranted=" + permissionGranted);
                 if (Beacons.IsBluetoothOn() && permissionGranted)
                 {

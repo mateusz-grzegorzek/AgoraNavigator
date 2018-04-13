@@ -53,6 +53,7 @@ namespace AgoraNavigator.Tasks
             idEntry = new Entry
             {
                 TextColor = Color.White,
+                BackgroundColor = Color.Transparent,
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Start,
                 PlaceholderColor = Color.LightGray,
@@ -74,6 +75,7 @@ namespace AgoraNavigator.Tasks
             pinEntry = new Entry
             {
                 TextColor = Color.White,
+                BackgroundColor = Color.Transparent,
                 Text = "0000",
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Center,
