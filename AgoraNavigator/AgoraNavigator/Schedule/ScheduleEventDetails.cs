@@ -158,7 +158,7 @@ namespace AgoraNavigator.Schedule
         private void ShowOnMapBtn_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
-            App.mainPage.OpenMapAt(item.scheduleItem.CoordX, item.scheduleItem.CoordY);
+            App.mainPage.OpenMapAtAsync(item.scheduleItem.CoordX, item.scheduleItem.CoordY);
         }
     }
 }
