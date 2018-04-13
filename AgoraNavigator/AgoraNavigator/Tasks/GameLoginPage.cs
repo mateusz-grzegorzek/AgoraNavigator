@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using AgoraNavigator.Menu;
+using Plugin.Permissions.Abstractions;
 
 namespace AgoraNavigator.Tasks
 {
@@ -109,15 +111,19 @@ namespace AgoraNavigator.Tasks
             };
             scanButton.Clicked += async (sender, e) =>
             {
-                var scanner = new ZXing.Mobile.MobileBarcodeScanner();
-                var result = await scanner.Scan(new ZXing.Mobile.MobileBarcodeScanningOptions()
+                bool permissionGranted = await Permissions.GetRuntimePermission(Permission.Camera);
+                if(permissionGranted)
                 {
-                    PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.AZTEC }
-                });
+                    var scanner = new ZXing.Mobile.MobileBarcodeScanner();
+                    var result = await scanner.Scan(new ZXing.Mobile.MobileBarcodeScanningOptions()
+                    {
+                        PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.AZTEC }
+                    });
 
-                if (result != null)
-                {
-                    await LoginUsingCodeAsync(result.Text);
+                    if (result != null)
+                    {
+                        await LoginUsingCodeAsync(result.Text);
+                    }
                 }
             };
 

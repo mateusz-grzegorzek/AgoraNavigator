@@ -18,7 +18,7 @@ namespace AgoraNavigator.Menu
                 {
                     Console.WriteLine("Permissions:GetRuntimePermission: Not granted yet!");
                     var results = await CrossPermissions.Current.RequestPermissionsAsync(permission);
-                    status = results[Permission.LocationWhenInUse];
+                    status = results[permission];
                     if (status == PermissionStatus.Granted)
                     {
                         Console.WriteLine("Permissions:GetRuntimePermission: Access granted! :)");
