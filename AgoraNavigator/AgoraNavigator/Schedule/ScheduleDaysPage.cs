@@ -19,6 +19,7 @@ namespace AgoraNavigator.Schedule
         public ScheduleDaysPage()
         {
             Title = "Schedule";
+            Appearing += OnAppearing;
             ItemsSource = new ObservableCollection<DayListGroup>();
             ItemTemplate = new DataTemplate(typeof(ScheduleDayPage));
 
@@ -30,7 +31,17 @@ namespace AgoraNavigator.Schedule
             else
             {
                 LoadDefaultEvents();
-            } 
+            }
+        }
+
+        public void OnAppearing(object sender, EventArgs e)
+        {
+            bool userInformedAboutUsage = CrossSettings.Current.GetValueOrDefault("userInformedAboutUsage", false);
+            if (!userInformedAboutUsage)
+            {
+                DependencyService.Get<IPopup>().ShowPopup("Schedule usage", "Swipe left or right to change days!", true);
+                CrossSettings.Current.AddOrUpdateValue("userInformedAboutUsage", true);
+            }
         }
 
         public async Task FetchScheduleAsync(bool forceUpdate = false)
