@@ -93,7 +93,7 @@ namespace AgoraNavigator.Menu
                 {
                     case "Map":
                         Detail = new MapPage(50.0656911, 19.9083581);
-                        GoogleMapPage.map.MyLocationEnabled = await Permissions.GetRuntimePermission(Permission.Location);
+                        GoogleMapPage.map.MyLocationEnabled = await Permissions.GetRuntimePermission(Permission.LocationWhenInUse);
                         break;
                     case "Schedule":
                         Detail = new SchedulePage();

@@ -113,7 +113,7 @@ namespace AgoraNavigator.Tasks
                     grid.Children.Add(userIdLabel);
                     grid.Children.Add(userId, 1, 0);
                     grid.Children.Add(totalPoints, 2, 0);
-
+                    grid.BackgroundColor = AgoraColor.DarkBlue;
                     return new ViewCell { View = grid };
                 }),
                 SeparatorVisibility = SeparatorVisibility.None
@@ -203,12 +203,7 @@ namespace AgoraNavigator.Tasks
             if (!isScanNewTasksButtonClick)
             {
                 isScanNewTasksButtonClick = true;
-#if __ANDROID__
-                bool permissionGranted = await Permissions.GetRuntimePermission(Permission.Location);
-#endif
-#if __IOS__
-                bool permissionGranted = true;
-#endif
+                bool permissionGranted = await Permissions.GetRuntimePermission(Permission.LocationWhenInUse);
                 Console.WriteLine("TasksMasterView:OnTaskTitleClick:permissionGranted=" + permissionGranted);
                 if (Beacons.IsBluetoothOn() && permissionGranted)
                 {

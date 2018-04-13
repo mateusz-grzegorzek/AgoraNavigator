@@ -61,5 +61,13 @@
 	</dict>
 	<key>Custom Property</key>
 	<string></string>
+	<key>NSCameraUsageDescription</key>
+	<string>camera</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Do you allow access to location? :)</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Do you allow access to location? :)</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Do you allow access to location? :)</string>
 </dict>
 </plist>
