@@ -96,7 +96,7 @@ namespace AgoraNavigator.Menu
                         GoogleMapPage.map.MyLocationEnabled = await Permissions.GetRuntimePermission(Permission.Location);
                         break;
                     case "Schedule":
-                        Detail = schedulePage;
+                        Detail = new SchedulePage();
                         break;
                     case "Tasks":
                         if (Users.isUserLogged)
