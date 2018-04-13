@@ -28,6 +28,7 @@ namespace AgoraNavigator.Popup
                 FontFamily = AgoraFonts.GetPoppinsMedium(),
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 HorizontalOptions = LayoutOptions.Center,
+                HorizontalTextAlignment = TextAlignment.Center
             };
 
             Button buttonOk = new Button

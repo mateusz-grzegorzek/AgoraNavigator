@@ -210,12 +210,33 @@ namespace AgoraNavigator.Tasks
                     bool result = await Beacons.ScanBeaconForNewTasks();
                     if (result)
                     {
-                        DependencyService.Get<IPopup>().ShowPopup("New task's founded!", "Go to tasks and solved them all!", true);  
                         GameTask.ReloadOpenedTasks();
+                        int tasksLeft = GameTask.allTasks.Count - Users.loggedUser.OpenedTasks.Count;
+                        string bodyMsg;
+                        if(tasksLeft == 0)
+                        {
+                            bodyMsg = "You have found all the tasks!\nGreat job!";
+                        }
+                        else
+                        {
+                            bodyMsg = tasksLeft + " tasks still waiting for discover!";
+                        }
+                        DependencyService.Get<IPopup>().ShowPopup("New task's founded!", "Go to tasks and solved them all!\n" + bodyMsg, true);
+
                     }
                     else
                     {
-                        DependencyService.Get<IPopup>().ShowPopup("No new task's...", "Keep looking!", false); 
+                        int tasksLeft = GameTask.allTasks.Count - Users.loggedUser.OpenedTasks.Count;
+                        string bodyMsg;
+                        if (tasksLeft == 0)
+                        {
+                            bodyMsg = "You have already found all the tasks!";
+                        }
+                        else
+                        {
+                            bodyMsg = "Keep looking!";
+                        }
+                        DependencyService.Get<IPopup>().ShowPopup("No new task's...", bodyMsg, false); 
                     }
                 }
                 else
