@@ -12,18 +12,15 @@ namespace Reachability
         {
             public bool IsNetworkAvailable()
             {
-                bool result = false;
-                NetworkStatus internetStatus = Reachability.InternetConnectionStatus();
-                if (internetStatus != NetworkStatus.NotReachable)
-                {
-                    result = true;
-                }
-                return result;
+                return Reachability.IsHostReachable("http://google.com");
             }
 
             public void WhenStatusChanged()
             {
-                // TODO Not working for now
+                Reachability.InternetConnectionStatus();
+                Reachability.LocalWifiConnectionStatus();
+                Reachability.RemoteHostStatus();
+
                 Reachability.ReachabilityChanged += delegate
                 {
                     Device.BeginInvokeOnMainThread(() =>

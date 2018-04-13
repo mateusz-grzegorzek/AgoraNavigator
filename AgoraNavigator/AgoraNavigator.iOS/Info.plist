@@ -29,9 +29,10 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CFBundleName</key>
-	<string>AgoraApplication</string>
+	<string>AgoraNavigator</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>bluetooth-central</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UIAppFonts</key>
@@ -46,5 +47,19 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>XSLaunchImageAssets</key>
 	<string>Assets.xcassets/LaunchImage.launchimage</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>NSExceptionDomains</key>
+	<dict>
+		<key>firebaseio.com</key>
+		<dict>
+			<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+			<true/>
+			<key>NSIncludesSubdomains</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>Custom Property</key>
+	<string></string>
 </dict>
 </plist>

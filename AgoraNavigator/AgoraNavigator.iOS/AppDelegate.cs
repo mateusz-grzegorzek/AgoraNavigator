@@ -3,6 +3,8 @@ using Foundation;
 using System;
 using UIKit;
 using UserNotifications;
+using Google.Maps;
+using Plugin.FirebasePushNotification;
 
 namespace AgoraNavigator.iOS
 {
@@ -18,17 +20,16 @@ namespace AgoraNavigator.iOS
 
             Xamarin.FormsGoogleMaps.Init(MapsApiKey);
 
-            // Register your app for remote notifications.
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
             {
-
-                // For iOS 10 display notification (sent via APNS)
-                UNUserNotificationCenter.Current.Delegate = (IUNUserNotificationCenterDelegate)this;
-
+                // iOS 10 or later
                 var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
                 UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
                     Console.WriteLine(granted);
                 });
+
+                UNUserNotificationCenter.Current.Delegate = this;
+                Messaging.SharedInstance.Delegate = this;
             }
             else
             {
@@ -37,25 +38,46 @@ namespace AgoraNavigator.iOS
                 var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
                 UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
             }
-            Messaging.SharedInstance.Delegate = (IMessagingDelegate)this;
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
+
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
             LoadApplication(new App());
-            
+            FirebasePushNotificationManager.Initialize(options, true);
+            FirebasePushNotificationManager.CurrentNotificationPresentationOption = UNNotificationPresentationOptions.Sound |
+                UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Badge;
             return base.FinishedLaunching(app, options);
         }
 
-        [Export("messaging:didReceiveRegistrationToken:")]
-        public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken)
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
         {
-            Console.WriteLine($"Firebase registration token: {fcmToken}");
-            FirebaseMessagingClient.TokenRefresh(fcmToken);
+            FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
+            FirebaseMessagingClient.TokenRefresh(deviceToken.ToString());
+
+            Messaging.SharedInstance.ShouldEstablishDirectChannel = true;
+        }
+
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
+
+        }
+
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            FirebasePushNotificationManager.DidReceiveMessage(userInfo);
+            System.Console.WriteLine(userInfo);
+        }
+
+        public override void OnActivated(UIApplication uiApplication)
+        {
+            FirebasePushNotificationManager.Connect();
         }
 
         public override void DidEnterBackground(UIApplication application)
         {
             AudioManager.SuspendBackgroundMusic();
             AudioManager.DeactivateAudioSession();
+            FirebasePushNotificationManager.Disconnect();
         }
 
         public override void WillEnterForeground(UIApplication application)
