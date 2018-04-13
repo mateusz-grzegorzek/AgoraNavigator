@@ -3,7 +3,6 @@ using Foundation;
 using System;
 using UIKit;
 using UserNotifications;
-using Google.Maps;
 
 namespace AgoraNavigator.iOS
 {
@@ -11,10 +10,11 @@ namespace AgoraNavigator.iOS
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IUNUserNotificationCenterDelegate, IMessagingDelegate
     {
         const string MapsApiKey = "AIzaSyB2Yxx7le70m6vrXQDM8fZd8aEnwc1RWro";
+        public AudioManager AudioManager { get; set; } = new AudioManager();
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            global::Xamarin.Forms.Forms.Init();
+            Xamarin.Forms.Forms.Init();
 
             Xamarin.FormsGoogleMaps.Init(MapsApiKey);
 
@@ -50,6 +50,24 @@ namespace AgoraNavigator.iOS
         {
             Console.WriteLine($"Firebase registration token: {fcmToken}");
             FirebaseMessagingClient.TokenRefresh(fcmToken);
+        }
+
+        public override void DidEnterBackground(UIApplication application)
+        {
+            AudioManager.SuspendBackgroundMusic();
+            AudioManager.DeactivateAudioSession();
+        }
+
+        public override void WillEnterForeground(UIApplication application)
+        {
+            AudioManager.ReactivateAudioSession();
+            AudioManager.RestartBackgroundMusic();
+        }
+
+        public override void WillTerminate(UIApplication application)
+        {
+            AudioManager.StopBackgroundMusic();
+            AudioManager.DeactivateAudioSession();
         }
     }
 }
