@@ -14,61 +14,70 @@ namespace AgoraNavigator.iOS
         const string MapsApiKey = "AIzaSyB2Yxx7le70m6vrXQDM8fZd8aEnwc1RWro";
         public AudioManager AudioManager { get; set; } = new AudioManager();
 
-        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
-        {
-            // Get current device token
-            var DeviceToken = deviceToken.Description;
-            if (!string.IsNullOrWhiteSpace(DeviceToken))
-            {
-                DeviceToken = DeviceToken.Trim('<').Trim('>');
-            }
-
-            // Get previous device token
-            var oldDeviceToken = NSUserDefaults.StandardUserDefaults.StringForKey("PushDeviceToken");
-
-            // Has the token changed?
-            if (string.IsNullOrEmpty(oldDeviceToken) || !oldDeviceToken.Equals(DeviceToken))
-            {
-                //TODO: Put your own logic here to notify your server that the device token has changed/been created!
-                FirebaseMessagingClient.TokenRefresh(DeviceToken);
-            }
-
-            // Save new device token
-            NSUserDefaults.StandardUserDefaults.SetString(DeviceToken, "PushDeviceToken");
-        }
-
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             Xamarin.Forms.Forms.Init();
 
             Xamarin.FormsGoogleMaps.Init(MapsApiKey);
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+            if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
             {
-                var pushSettings = UIUserNotificationSettings.GetSettingsForTypes(
-                                   UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
-                                   new NSSet());
+                // iOS 10 or later
+                var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
+                UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
+                    Console.WriteLine(granted);
+                });
 
-                UIApplication.SharedApplication.RegisterUserNotificationSettings(pushSettings);
-                UIApplication.SharedApplication.RegisterForRemoteNotifications();
+                UNUserNotificationCenter.Current.Delegate = this;
+                Messaging.SharedInstance.Delegate = this;
             }
             else
             {
-                UIRemoteNotificationType notificationTypes = UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge | UIRemoteNotificationType.Sound;
-                UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(notificationTypes);
+                // iOS 9 or before
+                var allNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound;
+                var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
+                UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
             }
+            UIApplication.SharedApplication.RegisterForRemoteNotifications();
 
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
             LoadApplication(new App());
             FirebasePushNotificationManager.Initialize(options, true);
-
+            FirebasePushNotificationManager.CurrentNotificationPresentationOption = UNNotificationPresentationOptions.Sound |
+                UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Badge;
             return base.FinishedLaunching(app, options);
+        }
+
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
+            FirebaseMessagingClient.TokenRefresh(deviceToken.ToString());
+
+            Messaging.SharedInstance.ShouldEstablishDirectChannel = true;
+        }
+
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
+
+        }
+
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            FirebasePushNotificationManager.DidReceiveMessage(userInfo);
+            System.Console.WriteLine(userInfo);
+        }
+
+        public override void OnActivated(UIApplication uiApplication)
+        {
+            FirebasePushNotificationManager.Connect();
         }
 
         public override void DidEnterBackground(UIApplication application)
         {
             AudioManager.SuspendBackgroundMusic();
             AudioManager.DeactivateAudioSession();
+            FirebasePushNotificationManager.Disconnect();
         }
 
         public override void WillEnterForeground(UIApplication application)

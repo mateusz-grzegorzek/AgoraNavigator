@@ -49,5 +49,17 @@
 	<string>Assets.xcassets/LaunchImage.launchimage</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>NSExceptionDomains</key>
+	<dict>
+		<key>firebaseio.com</key>
+		<dict>
+			<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+			<true/>
+			<key>NSIncludesSubdomains</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>Custom Property</key>
+	<string></string>
 </dict>
 </plist>
