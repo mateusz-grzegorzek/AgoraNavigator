@@ -88,8 +88,7 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!", false);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!", false);
                     }
                 }
                 else

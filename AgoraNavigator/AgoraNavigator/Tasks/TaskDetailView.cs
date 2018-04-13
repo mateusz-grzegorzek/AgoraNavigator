@@ -1,7 +1,6 @@
 ﻿using AgoraNavigator.Login;
 using AgoraNavigator.Popup;
 using Plugin.FirebasePushNotification;
-using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -156,8 +155,7 @@ namespace AgoraNavigator.Tasks
                             }
                             else
                             {
-                                SimplePopup popup = new SimplePopup("Bad answer!", "Try one more time!", false);
-                                await Navigation.PushPopupAsync(popup);
+                                DependencyService.Get<IPopup>().ShowPopup("Bad answer!", "Try one more time!", false);
                                 actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                             }
                             break;
@@ -182,8 +180,7 @@ namespace AgoraNavigator.Tasks
                             }
                             else
                             {
-                                SimplePopup popup = new SimplePopup("Bad answer!", "Try one more time!", false);
-                                await Navigation.PushPopupAsync(popup);
+                                DependencyService.Get<IPopup>().ShowPopup("Bad answer!", "Try one more time!", false);
                                 actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                             }
                             break;
@@ -198,8 +195,7 @@ namespace AgoraNavigator.Tasks
                                 }
                                 else
                                 {
-                                    SimplePopup popup = new SimplePopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
-                                    await Navigation.PushPopupAsync(popup);
+                                    DependencyService.Get<IPopup>().ShowPopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
                                     actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                                 }
                             }
@@ -223,8 +219,7 @@ namespace AgoraNavigator.Tasks
                                 }
                                 else if (processResult == null)
                                 {
-                                    SimplePopup popup = new SimplePopup("Task isn't completed yet.", "If you already completed it, please try again after some time.", false);
-                                    await Navigation.PushPopupAsync(popup);
+                                    DependencyService.Get<IPopup>().ShowPopup("Task isn't completed yet.", "If you already completed it, please try again after some time.", false);
                                     if ((actualTask.title != "AEGEE Army") && (actualTask.title != "The first are the best"))
                                     {
                                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
@@ -234,16 +229,14 @@ namespace AgoraNavigator.Tasks
                                 {
                                     if (actualTask.title == "The first are the best")
                                     {
-                                        SimplePopup popup = new SimplePopup("Sorry you're late :(", "Try once again next time!", false);
-                                        await Navigation.PushPopupAsync(popup);
+                                        DependencyService.Get<IPopup>().ShowPopup("Sorry you're late :(", "Try once again next time!", false);
                                         answerButton.Text = "START TASK";
                                         ForceLayout();
                                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                                     }
                                     else if (actualTask.title == "AEGEE Army")
                                     {
-                                        SimplePopup popup = new SimplePopup("Too few friends :(", "Gather more friends and try once again!", false);
-                                        await Navigation.PushPopupAsync(popup);
+                                        DependencyService.Get<IPopup>().ShowPopup("Too few friends :(", "Gather more friends and try once again!", false);
                                     }
                                 }
                             }
@@ -255,8 +248,7 @@ namespace AgoraNavigator.Tasks
                 }
                 else
                 {
-                    SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to complete task!", false);
-                    await Navigation.PushPopupAsync(popup);
+                    DependencyService.Get<IPopup>().ShowPopup("No internet connection!", "Turn on network to complete task!", false);
                     actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                 }
             }
@@ -278,9 +270,7 @@ namespace AgoraNavigator.Tasks
                         databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.AntenaId + "/" + Users.loggedUser.Id;
                         if (FirebaseMessagingClient.SendMessage(databasePath, "1"))
                         {
-                            SimplePopup popup = new SimplePopup("You're near beacon!", "Great! Now wait for your friends!", true);
-
-                            await Navigation.PushPopupAsync(popup);
+                            DependencyService.Get<IPopup>().ShowPopup("You're near beacon!", "Great! Now wait for your friends!", true);                            
                             result = true;
 
                             Task delayTask = Task.Run(async () =>
@@ -297,15 +287,13 @@ namespace AgoraNavigator.Tasks
                         }
                         else
                         {
-                            SimplePopup popup = new SimplePopup("No internet connection", "You need internet connection to complete this task!", false);
-                            await Navigation.PushPopupAsync(popup);
+                            DependencyService.Get<IPopup>().ShowPopup("No internet connection", "You need internet connection to complete this task!", false);
                             actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                         }
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                     }
                     break;
@@ -314,8 +302,7 @@ namespace AgoraNavigator.Tasks
                     databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.Id;
                     if (FirebaseMessagingClient.SendMessage(databasePath, "1"))
                     {
-                        SimplePopup popup = new SimplePopup("Great!", "Now check if you were first!", true);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("Great!", "Now check if you were first!", true);
                         result = true;
 
                         Task delayTask = Task.Run(async () =>
@@ -331,8 +318,7 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("No internet connection", "You need internet connection to complete this task!", false);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("No internet connection", "You need internet connection to complete this task!", false);
                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                     }
                     break;

@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Plugin.Permissions.Abstractions;
-using Rg.Plugins.Popup.Extensions;
 
 namespace AgoraNavigator.Tasks
 {
@@ -211,20 +210,17 @@ namespace AgoraNavigator.Tasks
                     bool result = await Beacons.ScanBeaconForNewTasks();
                     if (result)
                     {
-                        SimplePopup popup = new SimplePopup("New task's founded!", "Go to tasks and solved them all!", true);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("New task's founded!", "Go to tasks and solved them all!", true);  
                         GameTask.ReloadOpenedTasks();
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("No new task's...", "Keep looking!", false);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("No new task's...", "Keep looking!", false); 
                     }
                 }
                 else
                 {
-                    SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start scanning!", false);
-                    await Navigation.PushPopupAsync(popup);
+                    DependencyService.Get<IPopup>().ShowPopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start scanning!", false); 
                 }
                 isScanNewTasksButtonClick = false;
             }

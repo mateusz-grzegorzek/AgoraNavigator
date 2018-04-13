@@ -80,7 +80,7 @@ namespace AgoraNavigator.Downloads
             Content = stack;
         }
 
-        public async void OnOpenButtonClickedAsync(object sender, EventArgs e)
+        public void OnOpenButtonClickedAsync(object sender, EventArgs e)
         {
             if (FirebaseMessagingClient.IsNetworkAvailable())
             {
@@ -89,8 +89,7 @@ namespace AgoraNavigator.Downloads
             }
             else
             {
-                SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to download file!", false);     
-                await Navigation.PushPopupAsync(popup);
+                DependencyService.Get<IPopup>().ShowPopup("No internet connection!", "Turn on network to download file!", false);     
             }
         }
 
