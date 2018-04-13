@@ -4,7 +4,7 @@ using Plugin.Settings;
 using Firebase.Database;
 using System.Collections.Generic;
 using AgoraNavigator.Popup;
-using Rg.Plugins.Popup.Extensions;
+using System.Threading.Tasks;
 
 namespace AgoraNavigator.Downloads
 {
@@ -45,7 +45,6 @@ namespace AgoraNavigator.Downloads
     {
         private const string downloadsScheduleKey = "downloads";
         private int filesCounter;
-        bool downloadsUpToDate = false;
         bool downloadsLoaded = false;
 
         public DownloadsMasterPage()
@@ -93,8 +92,9 @@ namespace AgoraNavigator.Downloads
             }
         }
 
-        public async void FetchDownloadFilesAsync(bool forceUpdate = false)
+        public async Task FetchDownloadFilesAsync(bool forceUpdate = false)
         {
+            bool downloadsUpToDate = CrossSettings.Current.GetValueOrDefault("downloadsUpToDate", false);
             if (!downloadsUpToDate || forceUpdate)
             {
                 try
@@ -109,7 +109,7 @@ namespace AgoraNavigator.Downloads
                         CrossSettings.Current.AddOrUpdateValue("Downloads:Url:" + filesCounter, file.Url);
                     }
                     ProcessDownloads();
-                    downloadsUpToDate = true;
+                    CrossSettings.Current.AddOrUpdateValue("downloadsUpToDate", true);
                 }
                 catch (Exception)
                 {

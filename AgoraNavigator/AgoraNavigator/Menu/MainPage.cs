@@ -9,6 +9,7 @@ using AgoraNavigator.Info;
 using AgoraNavigator.GoogleMap;
 using AgoraNavigator.Badge;
 using AgoraNavigator.Downloads;
+using System.Threading.Tasks;
 
 namespace AgoraNavigator.Menu
 {
@@ -40,9 +41,6 @@ namespace AgoraNavigator.Menu
             masterPage.listView.ItemSelected += OnItemSelected;
             Master = masterPage;
             Detail = welcomePage;
-
-            SchedulePage.scheduleDaysPage.FetchScheduleAsync();
-            DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
         }
 
         public void SetStartedPage(string pageName)

@@ -24,11 +24,11 @@ namespace AgoraNavigator.Droid
 
         public void WhenStatusChanged()
         {
-            CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(() =>
+            CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(async () =>
             {
                 FirebaseMessagingClient.SubscribeForTopics(false);
-                SchedulePage.scheduleDaysPage.FetchScheduleAsync();
-                DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
+                await SchedulePage.scheduleDaysPage.FetchScheduleAsync();
+                await DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
             }));
         }
     }
