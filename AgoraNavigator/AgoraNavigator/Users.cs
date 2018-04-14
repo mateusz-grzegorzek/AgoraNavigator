@@ -1,7 +1,5 @@
 ﻿using AgoraNavigator.Tasks;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Plugin.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

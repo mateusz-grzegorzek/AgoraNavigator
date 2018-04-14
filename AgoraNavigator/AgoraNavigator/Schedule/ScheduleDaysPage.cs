@@ -1,8 +1,10 @@
-﻿using Firebase.Database;
+﻿using AgoraNavigator.Popup;
+using Firebase.Database;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using CrossSettings = Plugin.Settings.CrossSettings;
 
@@ -12,12 +14,12 @@ namespace AgoraNavigator.Schedule
     public class ScheduleDaysPage : CarouselPage
     {
         private const string _databaseScheduleKey = "schedule";
-        public bool scheduleUpToDate = false;
         private bool userInformedAboutScheduleOutOfDate = false;
 
         public ScheduleDaysPage()
         {
             Title = "Schedule";
+            Appearing += OnAppearing;
             ItemsSource = new ObservableCollection<DayListGroup>();
             ItemTemplate = new DataTemplate(typeof(ScheduleDayPage));
 
@@ -29,13 +31,25 @@ namespace AgoraNavigator.Schedule
             else
             {
                 LoadDefaultEvents();
-            } 
+            }
         }
 
-        public async void FetchScheduleAsync(bool forceUpdate = false)
+        public void OnAppearing(object sender, EventArgs e)
         {
-            if(!scheduleUpToDate || forceUpdate)
+            bool userInformedAboutUsage = CrossSettings.Current.GetValueOrDefault("userInformedAboutUsage", false);
+            if (!userInformedAboutUsage)
             {
+                DependencyService.Get<IPopup>().ShowPopup("Schedule usage", "Swipe left or right to change days!", true);
+                CrossSettings.Current.AddOrUpdateValue("userInformedAboutUsage", true);
+            }
+        }
+
+        public async Task FetchScheduleAsync(bool forceUpdate = false)
+        {
+            bool scheduleUpToDate = CrossSettings.Current.GetValueOrDefault("scheduleUpToDate", false);
+            if (!scheduleUpToDate || forceUpdate)
+            {
+                DependencyService.Get<IPopup>().ShowPopup("Schedule updating...", "It may take some time!", true);
                 try
                 {
                     List<ScheduleItem> itemList = new List<ScheduleItem>();
@@ -48,7 +62,7 @@ namespace AgoraNavigator.Schedule
                         eventNumber++;
                     }
                     ProcessDays(itemList);
-                    scheduleUpToDate = true;
+                    CrossSettings.Current.AddOrUpdateValue("scheduleUpToDate", true);
                     userInformedAboutScheduleOutOfDate = false;
                 }
                 catch (Exception err)

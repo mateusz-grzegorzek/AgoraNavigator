@@ -16,7 +16,6 @@ namespace AgoraNavigator.Menu
     {  
         MasterPage masterPage;
         public static WelcomePage welcomePage;
-        public static MapPage mapPage;
         public static SchedulePage schedulePage;
         public static TasksPage tasksPage;
         public static ContactPage contactPage;
@@ -31,7 +30,6 @@ namespace AgoraNavigator.Menu
             BackgroundColor = Color.FromHex("061d3f");
             masterPage = new MasterPage();
             welcomePage = new WelcomePage();
-            mapPage = new MapPage(50.0656911, 19.9083581);
             schedulePage = new SchedulePage();
             contactPage = new ContactPage();
             downloadsPage = new DownloadsPage();
@@ -40,9 +38,6 @@ namespace AgoraNavigator.Menu
             masterPage.listView.ItemSelected += OnItemSelected;
             Master = masterPage;
             Detail = welcomePage;
-
-            SchedulePage.scheduleDaysPage.FetchScheduleAsync();
-            DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
         }
 
         public void SetStartedPage(string pageName)
@@ -53,7 +48,7 @@ namespace AgoraNavigator.Menu
                     Detail = welcomePage;
                     break;
                 case "MapPage":
-                    Detail = mapPage;
+                    Detail = new MapPage(50.0656911, 19.9083581);
                     break;
                 case "SchedulePage":
                     Detail = schedulePage;
@@ -83,9 +78,11 @@ namespace AgoraNavigator.Menu
             Detail = Activator.CreateInstance(navigateTo) as Page;
         }
 
-        public void OpenMapAt(double latitude, double longitude)
+        public async void OpenMapAtAsync(double latitude, double longitude)
         {
-            Detail = new MapPage(latitude, longitude);
+            MapPage mapPage = new MapPage(latitude, longitude);
+            GoogleMapPage.map.MyLocationEnabled = await Permissions.GetRuntimePermission(Permission.Location);
+            Detail = mapPage;
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -95,11 +92,11 @@ namespace AgoraNavigator.Menu
                 switch (item.Title)
                 {
                     case "Map":
-                        GoogleMapPage.map.MyLocationEnabled = await Permissions.GetRuntimePermission(Permission.Location);
-                        Detail = mapPage;
+                        Detail = new MapPage(50.0656911, 19.9083581);
+                        GoogleMapPage.map.MyLocationEnabled = await Permissions.GetRuntimePermission(Permission.LocationWhenInUse);
                         break;
                     case "Schedule":
-                        Detail = schedulePage;
+                        Detail = new SchedulePage();
                         break;
                     case "Tasks":
                         if (Users.isUserLogged)

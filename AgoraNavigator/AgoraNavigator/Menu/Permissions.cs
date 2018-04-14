@@ -16,22 +16,22 @@ namespace AgoraNavigator.Menu
                 var status = await CrossPermissions.Current.CheckPermissionStatusAsync(permission);
                 if (status != PermissionStatus.Granted)
                 {
-                    Console.WriteLine("Permissions:GetRuntimePermissionNot granted yet!");
+                    Console.WriteLine("Permissions:GetRuntimePermission: Not granted yet!");
                     var results = await CrossPermissions.Current.RequestPermissionsAsync(permission);
-                    status = results[Permission.Location];
+                    status = results[permission];
                     if (status == PermissionStatus.Granted)
                     {
-                        Console.WriteLine("Permissions:GetRuntimePermissionAccess granted! :)");
+                        Console.WriteLine("Permissions:GetRuntimePermission: Access granted! :)");
                         permissionsGranted = true;
                     }
                     else
                     {
-                        Console.WriteLine("Permissions:GetRuntimePermissionNot granted! :(");
+                        Console.WriteLine("Permissions:GetRuntimePermission: Not granted! :(");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Permissions:GetRuntimePermissionAlready granted!");
+                    Console.WriteLine("Permissions:GetRuntimePermission: Already granted!");
                     permissionsGranted = true;
                 }
             }

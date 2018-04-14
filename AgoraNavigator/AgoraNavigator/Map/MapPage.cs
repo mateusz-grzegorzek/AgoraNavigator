@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.Settings;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 
@@ -21,17 +22,65 @@ namespace AgoraNavigator.GoogleMap
     {
         public static Map map;
         public bool locationEnabled = false;
-        Button buttonStreet;
-        Button buttonHybrid;
-        Button buttonSatellite;
+        static MapButton buttonStreet;
+        static MapButton buttonHybrid;
+        static MapButton buttonSatellite;
+        static MapType activeMapType;
+
+        public class MapButton : Button
+        {
+            MapType mapType;
+
+            public MapButton(MapType _mapType)
+            {
+                mapType = _mapType;
+                if (mapType == activeMapType)
+                {
+                    BackgroundColor = AgoraColor.DarkBlue;
+                }
+                else
+                {
+                    BackgroundColor = AgoraColor.Blue;
+                }
+                TextColor = Color.White;
+                Clicked += MapButton_Clicked;
+            }
+
+            private void MapButton_Clicked(object sender, EventArgs e)
+            {
+                MapButton mapButton = (MapButton)sender;
+                activeMapType = mapButton.mapType;
+                map.MapType = activeMapType;
+                switch (activeMapType)
+                {
+                    case MapType.Street:
+                        buttonStreet.BackgroundColor = AgoraColor.DarkBlue;
+                        buttonSatellite.BackgroundColor = AgoraColor.Blue;
+                        buttonHybrid.BackgroundColor = AgoraColor.Blue;
+                        break;
+                    case MapType.Satellite:
+                        buttonStreet.BackgroundColor = AgoraColor.Blue;
+                        buttonSatellite.BackgroundColor = AgoraColor.DarkBlue;
+                        buttonHybrid.BackgroundColor = AgoraColor.Blue;
+                        break;
+                    case MapType.Hybrid:
+                        buttonStreet.BackgroundColor = AgoraColor.Blue;
+                        buttonSatellite.BackgroundColor = AgoraColor.Blue;
+                        buttonHybrid.BackgroundColor = AgoraColor.DarkBlue;
+                        break;
+                }
+                CrossSettings.Current.AddOrUpdateValue("activeMapType", (int)activeMapType);
+            }
+        }
 
         public GoogleMapPage(double latitude, double longitude)
         {
             Title = "Map";
+            activeMapType = (MapType)CrossSettings.Current.GetValueOrDefault("activeMapType", (int)MapType.Hybrid);
             map = new Map()
             {
                 IsIndoorEnabled = true,
-                MapType = MapType.Hybrid,
+                MapType = activeMapType,
             };
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(latitude, longitude), Distance.FromMiles(0.05)));
             map.UiSettings.MyLocationButtonEnabled = true;
@@ -47,61 +96,26 @@ namespace AgoraNavigator.GoogleMap
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-            buttonStreet = new Button
+            buttonStreet = new MapButton(MapType.Street)
             {
                 Text = "Street",
-                BackgroundColor = AgoraColor.Blue,
-                TextColor = Color.White
             };
-            buttonStreet.Clicked += ButtonStreet_Clicked;
-            buttonSatellite = new Button
+            buttonSatellite = new MapButton(MapType.Satellite)
             {
                 Text = "Satellite",
-                BackgroundColor = AgoraColor.Blue,
-                TextColor = Color.White
             };
-            buttonSatellite.Clicked += ButtonSatellite_Clicked;
-            buttonHybrid = new Button
+            buttonHybrid = new MapButton(MapType.Hybrid)
             {
                 Text = "Hybrid",
-                BackgroundColor = AgoraColor.DarkBlue,
-                TextColor = Color.White
             };
-            buttonHybrid.Clicked += ButtonHybrid_Clicked;
-
 
             Grid.SetColumnSpan(map, 3);
-            Grid.SetRowSpan(map, 2);
-            grid.Children.Add(map, 0, 3, 0, 2);
+            grid.Children.Add(map, 0, 3, 0, 1);
             grid.Children.Add(buttonStreet, 0, 1);
             grid.Children.Add(buttonSatellite, 1, 1);
             grid.Children.Add(buttonHybrid, 2, 1);
 
             Content = grid; 
-        }
-
-        private void ButtonStreet_Clicked(object sender, EventArgs e)
-        {
-            map.MapType = MapType.Street;
-            buttonStreet.BackgroundColor = AgoraColor.DarkBlue;
-            buttonSatellite.BackgroundColor = AgoraColor.Blue;
-            buttonHybrid.BackgroundColor = AgoraColor.Blue;
-        }
-
-        private void ButtonSatellite_Clicked(object sender, EventArgs e)
-        {
-            map.MapType = MapType.Satellite;
-            buttonStreet.BackgroundColor = AgoraColor.Blue;
-            buttonSatellite.BackgroundColor = AgoraColor.DarkBlue;
-            buttonHybrid.BackgroundColor = AgoraColor.Blue;
-        }
-
-        private void ButtonHybrid_Clicked(object sender, EventArgs e)
-        {
-            map.MapType = MapType.Hybrid;
-            buttonStreet.BackgroundColor = AgoraColor.Blue;
-            buttonSatellite.BackgroundColor = AgoraColor.Blue;
-            buttonHybrid.BackgroundColor = AgoraColor.DarkBlue;
         }
     }
 }

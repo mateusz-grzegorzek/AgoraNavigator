@@ -25,20 +25,20 @@ namespace AgoraNavigator
 
         protected override void OnStart()
         {
-            CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandler;
-            CrossFirebasePushNotification.Current.OnNotificationOpened += FirebasePushNotificationDataEventHandler;
+            CrossFirebasePushNotification.Current.OnNotificationReceived += FirebasePushNotificationDataEventHandlerAsync;
+            CrossFirebasePushNotification.Current.OnNotificationOpened += FirebasePushNotificationDataEventHandlerAsync;
         }
 
-        void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationDataEventArgs e)
+        async void FirebasePushNotificationDataEventHandlerAsync(object source, FirebasePushNotificationDataEventArgs e)
         {
-            FirebasePushNotificationDataEventHandler(e.Data);
+            await FirebasePushNotificationDataEventHandlerAsync(e.Data);
         }
-        void FirebasePushNotificationDataEventHandler(object source, FirebasePushNotificationResponseEventArgs e)
+        async void FirebasePushNotificationDataEventHandlerAsync(object source, FirebasePushNotificationResponseEventArgs e)
         {
-            FirebasePushNotificationDataEventHandler(e.Data);
+            await FirebasePushNotificationDataEventHandlerAsync(e.Data);
         }
 
-        void FirebasePushNotificationDataEventHandler(IDictionary<string, object> data)
+        async System.Threading.Tasks.Task FirebasePushNotificationDataEventHandlerAsync(IDictionary<string, object> data)
         {
             Console.WriteLine("OnNotificationReceived");
             try
@@ -49,11 +49,11 @@ namespace AgoraNavigator
                 }
                 if (data.Keys.Contains("scheduleUpdate"))
                 {
-                    SchedulePage.scheduleDaysPage.FetchScheduleAsync(true);
+                    await SchedulePage.scheduleDaysPage.FetchScheduleAsync(true);
                 }
                 if (data.Keys.Contains("downloadUpdate"))
                 {
-                    DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync(true);
+                    await DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync(true);
                 }
             }
             catch (Exception err)

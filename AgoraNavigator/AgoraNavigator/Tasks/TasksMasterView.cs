@@ -4,7 +4,6 @@ using Plugin.Permissions.Abstractions;
 using Xamarin.Forms;
 using System;
 using AgoraNavigator.Popup;
-using Rg.Plugins.Popup.Extensions;
 using static AgoraNavigator.Tasks.GameTask;
 
 namespace AgoraNavigator.Tasks
@@ -57,7 +56,7 @@ namespace AgoraNavigator.Tasks
                     }
                     Grid.SetColumnSpan(task_separator, 2);
                     grid.Children.Add(task_separator, 0, 2, 0, 1);
-                    
+                    grid.BackgroundColor = AgoraColor.DarkBlue;
                     return new ViewCell { View = grid };
                 }),
                 SeparatorVisibility = SeparatorVisibility.None
@@ -88,8 +87,7 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!", false);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start this task!", false);
                     }
                 }
                 else

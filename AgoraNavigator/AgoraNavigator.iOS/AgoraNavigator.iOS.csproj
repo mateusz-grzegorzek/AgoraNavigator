@@ -91,8 +91,10 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AudioManager.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Popup_iOS.cs" />
     <Compile Include="Reachability.cs" />
     <None Include="Entitlements.plist" />
     <BundleResource Include="GoogleService-Info.plist" />
@@ -174,7 +176,7 @@
     <BundleResource Include="Resources\entry_separator.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\arrow.png" />
+    <BundleResource Include="Resources\Arrow.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\task_separator.png" />
@@ -223,16 +225,16 @@
     <BundleResource Include="Resources\Speaker_Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\112.png" />
+    <BundleResource Include="Resources\Contact_112.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\997.png" />
+    <BundleResource Include="Resources\Contact_997.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\998.png" />
+    <BundleResource Include="Resources\Contact_998.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\999.png" />
+    <BundleResource Include="Resources\Contact_999.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Contact_Photo_Katarzyna_Szubartowska.png" />

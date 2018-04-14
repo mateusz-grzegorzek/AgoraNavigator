@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FirebaseMessagingClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Info\BonusInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Local Notifications\INotification.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Popup\IPopup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Popup\SimplePopup.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>SimplePopup.xaml</DependentUpon>

@@ -1,6 +1,7 @@
 ﻿using Firebase.Database;
 using Newtonsoft.Json;
 using Plugin.FirebasePushNotification;
+using Plugin.Settings;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,7 +13,6 @@ namespace AgoraNavigator
     {
         private static FirebaseClient firebaseClient;
         public static String firebaseToken;
-        private static bool isRegistered = false;
 
         public static bool IsNetworkAvailable()
         {
@@ -22,7 +22,7 @@ namespace AgoraNavigator
         public static void TokenRefresh(String token)
         {
             firebaseToken = token;
-            Plugin.Settings.CrossSettings.Current.AddOrUpdateValue("firebaseToken", firebaseToken);
+            CrossSettings.Current.AddOrUpdateValue("firebaseToken", firebaseToken);
             SubscribeForTopics(true);
         }
 
@@ -37,6 +37,7 @@ namespace AgoraNavigator
 
         public static void SubscribeForTopics(bool tokenChanged)
         {
+            bool isRegistered = CrossSettings.Current.GetValueOrDefault("isRegistered", false);
             if (tokenChanged || (IsNetworkAvailable() && !isRegistered))
             {
                 Console.WriteLine("SubscribeForTopics");
@@ -44,7 +45,7 @@ namespace AgoraNavigator
                 if(SendMessage(databasePath, JsonConvert.SerializeObject(firebaseToken)))
                 {
                     CrossFirebasePushNotification.Current.Subscribe("Agora");
-                    isRegistered = true;
+                    CrossSettings.Current.AddOrUpdateValue("isRegistered", true);
                 }
                 else
                 {

@@ -1,12 +1,13 @@
 ﻿using AgoraNavigator.Login;
 using AgoraNavigator.Popup;
 using Newtonsoft.Json.Linq;
-using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using AgoraNavigator.Menu;
+using Plugin.Permissions.Abstractions;
 
 namespace AgoraNavigator.Tasks
 {
@@ -54,10 +55,11 @@ namespace AgoraNavigator.Tasks
             idEntry = new Entry
             {
                 TextColor = Color.White,
+                BackgroundColor = Color.Transparent,
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Start,
                 PlaceholderColor = Color.LightGray,
-                Text = "220-0000",
+                Text = "220-1195",
                 Placeholder = "XXX-XXXX",
                 HorizontalOptions = LayoutOptions.Center
             };
@@ -75,7 +77,8 @@ namespace AgoraNavigator.Tasks
             pinEntry = new Entry
             {
                 TextColor = Color.White,
-                Text = "0000",
+                BackgroundColor = Color.Transparent,
+                Text = "8862",
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Center,
                 PlaceholderColor = Color.LightGray,
@@ -108,15 +111,19 @@ namespace AgoraNavigator.Tasks
             };
             scanButton.Clicked += async (sender, e) =>
             {
-                var scanner = new ZXing.Mobile.MobileBarcodeScanner();
-                var result = await scanner.Scan(new ZXing.Mobile.MobileBarcodeScanningOptions()
+                bool permissionGranted = await Permissions.GetRuntimePermission(Permission.Camera);
+                if(permissionGranted)
                 {
-                    PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.AZTEC }
-                });
+                    var scanner = new ZXing.Mobile.MobileBarcodeScanner();
+                    var result = await scanner.Scan(new ZXing.Mobile.MobileBarcodeScanningOptions()
+                    {
+                        PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.AZTEC }
+                    });
 
-                if (result != null)
-                {
-                    await LoginUsingCodeAsync(result.Text);
+                    if (result != null)
+                    {
+                        await LoginUsingCodeAsync(result.Text);
+                    }
                 }
             };
 
@@ -166,8 +173,7 @@ namespace AgoraNavigator.Tasks
             if (!ValidateCode(code))
             {
                 await Task.Delay(1000); /* adding delay, so app can return from scanning mode */
-                SimplePopup popup = new SimplePopup("Scanning failed!", "Please scan the square-shaped code which you received.", false);
-                await Navigation.PushPopupAsync(popup);
+                DependencyService.Get<IPopup>().ShowPopup("Scanning failed!", "Please scan the square-shaped code which you received.", false);
                 App.mainPage.ShowLoginScreen(typeof(TasksPage));
             }
             else
@@ -205,7 +211,7 @@ namespace AgoraNavigator.Tasks
         {
             var entry = (Entry)sender;
 
-            if(entry.Text.Length < 4)
+            if (entry.Text.Length < 4)
             {
                 entry.TextChanged -= OnIdTextChanged;
                 entry.Text = e.OldTextValue;
@@ -234,8 +240,7 @@ namespace AgoraNavigator.Tasks
                 }
                 else
                 {
-                    SimplePopup popup = new SimplePopup("Login failed!", "Wrong ID or PIN number!", false);
-                    await Navigation.PushPopupAsync(popup);
+                    DependencyService.Get<IPopup>().ShowPopup("Login failed!", "Wrong ID or PIN number!", false);
                     isLoginStarted = false;
                 }
             }
@@ -248,15 +253,13 @@ namespace AgoraNavigator.Tasks
                 String databasePath = "/users/" + id + "/" + pin;
                 JObject userInfo = await FirebaseMessagingClient.SendSingleQuery<JObject>(databasePath);
                 Users.InitUserData(Convert.ToInt32(id), Convert.ToInt32(pin), userInfo);
-                SimplePopup popup = new SimplePopup("Login successful!", "Start the Game of Tasks or use your virtual badge!", true);
-                await Navigation.PushPopupAsync(popup);
+                DependencyService.Get<IPopup>().ShowPopup("Login successful!", "Start the Game of Tasks or use your virtual badge!", true);
                 App.mainPage.NavigateTo(_navigateToPage);
             }
             catch (Exception err)
             {
                 Console.WriteLine("OnLoginButtonClicked:err=" + err.ToString());
-                SimplePopup popup = new SimplePopup("Login failed!", "Check your internet connection, ID and PIN number and try again", false);
-                await Navigation.PushPopupAsync(popup);
+                DependencyService.Get<IPopup>().ShowPopup("Login failed!", "Check your internet connection, ID and PIN number and try again", false);
                 infoLabel.Text = "Login failed :(";
                 isLoginStarted = false;
             }

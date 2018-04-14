@@ -8,13 +8,12 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Plugin.Permissions.Abstractions;
-using Rg.Plugins.Popup.Extensions;
 
 namespace AgoraNavigator.Tasks
 {
     public class TopScorers
     {
-        public int userId { get; set; }
+        public String userId { get; set; }
         public int totalPoints { get; set; }
     }
 
@@ -79,27 +78,47 @@ namespace AgoraNavigator.Tasks
                 HorizontalOptions = LayoutOptions.Center
             };
 
+            Grid gridBestPlayersLayout = new Grid();
+
+            gridBestPlayersLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridBestPlayersLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            Label userIdLabel = new Label
+            {
+                Text = "ID: ",
+                TextColor = AgoraColor.Blue,
+                FontFamily = AgoraFonts.GetPoppinsBold(),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                HorizontalOptions = LayoutOptions.Center
+            };
+
+            Label pointsLabel = new Label
+            {
+                Text = "Points: ",
+                TextColor = Color.White,
+                FontFamily = AgoraFonts.GetPoppinsBold(),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                HorizontalOptions = LayoutOptions.Center
+            };
+
+            gridBestPlayersLayout.Children.Add(userIdLabel, 0, 0);
+            gridBestPlayersLayout.Children.Add(pointsLabel, 1, 0);
+
             topScorersListView = new ListView
             {
                 ItemTemplate = new DataTemplate(() =>
                 {
                     Grid grid = new Grid { Padding = new Thickness(1, 1) };
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100) });
 
-                    Label userIdLabel = new Label
-                    {
-                        Text = "ID: ",
-                        TextColor = AgoraColor.Blue,
-                        FontFamily = AgoraFonts.GetPoppinsBold(),
-                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
-                    };
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+              
                     Label userId = new Label
                     {
                         TextColor = AgoraColor.Blue,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
-                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                        HorizontalOptions = LayoutOptions.Center
                     };
                     userId.SetBinding(Label.TextProperty, "userId");
                     Label totalPoints = new Label
@@ -107,14 +126,14 @@ namespace AgoraNavigator.Tasks
                         TextColor = Color.White,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
                         HorizontalTextAlignment = TextAlignment.End,
-                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                        HorizontalOptions = LayoutOptions.Center
                     };
                     totalPoints.SetBinding(Label.TextProperty, "totalPoints");
 
-                    grid.Children.Add(userIdLabel);
-                    grid.Children.Add(userId, 1, 0);
-                    grid.Children.Add(totalPoints, 2, 0);
-
+                    grid.Children.Add(userId, 0, 0);
+                    grid.Children.Add(totalPoints, 1, 0);
+                    grid.BackgroundColor = AgoraColor.DarkBlue;
                     return new ViewCell { View = grid };
                 }),
                 SeparatorVisibility = SeparatorVisibility.None
@@ -138,12 +157,14 @@ namespace AgoraNavigator.Tasks
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
+            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
             gridLayout.Children.Add(scanNewTasksButton, 1, 0);
             gridLayout.Children.Add(goToTasksButton, 1, 1);
             gridLayout.Children.Add(bestPlayersLabel, 1, 2);
-            gridLayout.Children.Add(topScorersListView, 1, 3);
+            gridLayout.Children.Add(gridBestPlayersLayout, 1, 3);
+            gridLayout.Children.Add(topScorersListView, 1, 4);
 
             StackLayout layout = new StackLayout
             {
@@ -175,7 +196,8 @@ namespace AgoraNavigator.Tasks
                 ObservableCollection<TopScorers> topScorers = new ObservableCollection<TopScorers>();
                 foreach (JToken token in array)
                 {
-                    int userId = int.Parse(token["userId"].ToString());
+                    String userId = token["userId"].ToString();
+                    userId = userId.PadLeft(4, '0');
                     int totalPoints = int.Parse(token["totalPoints"].ToString());
                     TopScorers topScorer = new TopScorers
                     {
@@ -204,27 +226,45 @@ namespace AgoraNavigator.Tasks
             if (!isScanNewTasksButtonClick)
             {
                 isScanNewTasksButtonClick = true;
-                bool permissionGranted = await Permissions.GetRuntimePermission(Permission.Location);
+                bool permissionGranted = await Permissions.GetRuntimePermission(Permission.LocationWhenInUse);
                 Console.WriteLine("TasksMasterView:OnTaskTitleClick:permissionGranted=" + permissionGranted);
                 if (Beacons.IsBluetoothOn() && permissionGranted)
                 {
                     bool result = await Beacons.ScanBeaconForNewTasks();
                     if (result)
                     {
-                        SimplePopup popup = new SimplePopup("New task's founded!", "Go to tasks and solved them all!", true);
-                        await Navigation.PushPopupAsync(popup);
                         GameTask.ReloadOpenedTasks();
+                        int tasksLeft = GameTask.allTasks.Count - Users.loggedUser.OpenedTasks.Count;
+                        string bodyMsg;
+                        if(tasksLeft == 0)
+                        {
+                            bodyMsg = "You have found all the tasks!\nGreat job!";
+                        }
+                        else
+                        {
+                            bodyMsg = tasksLeft + " tasks still waiting for discover!";
+                        }
+                        DependencyService.Get<IPopup>().ShowPopup("New task's founded!", "Go to tasks and solved them all!\n" + bodyMsg, true);
+
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("No new task's...", "Keep looking!", false);
-                        await Navigation.PushPopupAsync(popup);
+                        int tasksLeft = GameTask.allTasks.Count - Users.loggedUser.OpenedTasks.Count;
+                        string bodyMsg;
+                        if (tasksLeft == 0)
+                        {
+                            bodyMsg = "You have already found all the tasks!";
+                        }
+                        else
+                        {
+                            bodyMsg = "Keep looking!";
+                        }
+                        DependencyService.Get<IPopup>().ShowPopup("No new task's...", bodyMsg, false); 
                     }
                 }
                 else
                 {
-                    SimplePopup popup = new SimplePopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start scanning!", false);
-                    await Navigation.PushPopupAsync(popup);
+                    DependencyService.Get<IPopup>().ShowPopup("Bluetooth needed", "Turn on bluetooth and accept location permission to start scanning!", false); 
                 }
                 isScanNewTasksButtonClick = false;
             }

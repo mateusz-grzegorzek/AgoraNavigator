@@ -1,7 +1,6 @@
 ﻿using AgoraNavigator.Login;
 using AgoraNavigator.Popup;
 using Plugin.FirebasePushNotification;
-using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -15,6 +14,7 @@ namespace AgoraNavigator.Tasks
         GameTask actualTask;
         String tasksPath = "tasks/";
         Button answerButton;
+        bool isAnswerButtonClicked = false;
 
         public TaskDetailView(GameTask task)
         {
@@ -129,136 +129,134 @@ namespace AgoraNavigator.Tasks
         public async void OnAnswerButtonClick(object sender, EventArgs e)
         {
             Console.WriteLine("OnAnswerButtonClick");
-            if ((actualTask.taskStatus == GameTask.TaskStatus.NotStarted) ||
-                (actualTask.taskStatus == GameTask.TaskStatus.Processing))
+            if(!isAnswerButtonClicked)
             {
-                if (actualTask.taskStatus == GameTask.TaskStatus.NotStarted)
+                isAnswerButtonClicked = true;
+                if ((actualTask.taskStatus == GameTask.TaskStatus.NotStarted) ||
+                    (actualTask.taskStatus == GameTask.TaskStatus.Processing))
                 {
-                    actualTask.taskStatus = GameTask.TaskStatus.Checking;
-                }
-
-                if (FirebaseMessagingClient.IsNetworkAvailable())
-                {
-                    string userAnswer = "";
-                    switch (actualTask.taskType)
+                    if (actualTask.taskStatus == GameTask.TaskStatus.NotStarted)
                     {
-                        case TaskType.Text:
-                            if (answerEntry.Text != null)
-                            {
-                                userAnswer = answerEntry.Text.ToLower();
-                            }
-                            Console.WriteLine("answerEntry.Text=" + userAnswer);
-                            Console.WriteLine("actualTask.correctAnswer" + actualTask.correctAnswer);
-                            if (actualTask.correctAnswer == userAnswer)
-                            {
-                                Console.WriteLine("Yeah! Correct answer!");
-                                await GamePage.tasksMasterPage.closeTask(actualTask);
-                            }
-                            else
-                            {
-                                SimplePopup popup = new SimplePopup("Bad answer!", "Try one more time!", false);
-                                await Navigation.PushPopupAsync(popup);
-                                actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
-                            }
-                            break;
-                        case TaskType.LongText:
-                            if (answerEntry.Text != null)
-                            {
-                                userAnswer = answerEntry.Text.ToLower();
-                            }
-                            Console.WriteLine("answerEntry.LongText=" + userAnswer);
-                            int correctAnswers = 0;
-                            foreach (string answer in actualTask.correctAnswers)
-                            {
-                                if (userAnswer.Contains(answer))
+                        actualTask.taskStatus = GameTask.TaskStatus.Checking;
+                    }
+
+                    if (FirebaseMessagingClient.IsNetworkAvailable())
+                    {
+                        string userAnswer = "";
+                        switch (actualTask.taskType)
+                        {
+                            case TaskType.Text:
+                                if (answerEntry.Text != null)
                                 {
-                                    correctAnswers++;
+                                    userAnswer = answerEntry.Text.ToLower();
                                 }
-                            }
-                            if (correctAnswers >= actualTask.minimumCorrectAnswers)
-                            {
-                                Console.WriteLine("Yeah! Correct answer!");
-                                await GamePage.tasksMasterPage.closeTask(actualTask);
-                            }
-                            else
-                            {
-                                SimplePopup popup = new SimplePopup("Bad answer!", "Try one more time!", false);
-                                await Navigation.PushPopupAsync(popup);
-                                actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
-                            }
-                            break;
-                        case TaskType.Button:
-                            bool result;
-                            if (actualTask.title == "Adventurer quest")
-                            {
-                                result = await Beacons.ScanForBeacon(Beacons.beaconFHNj);
-                                if (result)
+                                Console.WriteLine("answerEntry.Text=" + userAnswer);
+                                Console.WriteLine("actualTask.correctAnswer" + actualTask.correctAnswer);
+                                if (actualTask.correctAnswer == userAnswer)
                                 {
+                                    Console.WriteLine("Yeah! Correct answer!");
                                     await GamePage.tasksMasterPage.closeTask(actualTask);
                                 }
                                 else
                                 {
-                                    SimplePopup popup = new SimplePopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
-                                    await Navigation.PushPopupAsync(popup);
+                                    DependencyService.Get<IPopup>().ShowPopup("Bad answer!", "Try one more time!", false);
                                     actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                                 }
-                            }
-                            else if (actualTask.taskStatus == GameTask.TaskStatus.Checking &&
-                                (actualTask.title == "The first are the best" || actualTask.title == "AEGEE Army"))
-                            {
-                                result = await StartTask();
-                                if (result)
+                                break;
+                            case TaskType.LongText:
+                                if (answerEntry.Text != null)
                                 {
-                                    actualTask.taskStatus = GameTask.TaskStatus.Processing;
-                                    answerButton.Text = "CHECK TASK";
-                                    ForceLayout();
+                                    userAnswer = answerEntry.Text.ToLower();
                                 }
-                            }
-                            else
-                            {
-                                bool? processResult = await ProcessTask();
-                                if (processResult == true)
+                                Console.WriteLine("answerEntry.LongText=" + userAnswer);
+                                int correctAnswers = 0;
+                                foreach (string answer in actualTask.correctAnswers)
                                 {
+                                    if (userAnswer.Contains(answer))
+                                    {
+                                        correctAnswers++;
+                                    }
+                                }
+                                if (correctAnswers >= actualTask.minimumCorrectAnswers)
+                                {
+                                    Console.WriteLine("Yeah! Correct answer!");
                                     await GamePage.tasksMasterPage.closeTask(actualTask);
                                 }
-                                else if (processResult == null)
+                                else
                                 {
-                                    SimplePopup popup = new SimplePopup("Task isn't completed yet.", "If you already completed it, please try again after some time.", false);
-                                    await Navigation.PushPopupAsync(popup);
-                                    if ((actualTask.title != "AEGEE Army") && (actualTask.title != "The first are the best"))
+                                    DependencyService.Get<IPopup>().ShowPopup("Bad answer!", "Try one more time!", false);
+                                    actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
+                                }
+                                break;
+                            case TaskType.Button:
+                                bool result;
+                                if (actualTask.title == "Adventurer quest")
+                                {
+                                    result = await Beacons.ScanForBeacon(Beacons.beaconFHNj);
+                                    if (result)
                                     {
+                                        await GamePage.tasksMasterPage.closeTask(actualTask);
+                                    }
+                                    else
+                                    {
+                                        DependencyService.Get<IPopup>().ShowPopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
                                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
+                                    }
+                                }
+                                else if (actualTask.taskStatus == GameTask.TaskStatus.Checking &&
+                                    (actualTask.title == "The first are the best" || actualTask.title == "AEGEE Army"))
+                                {
+                                    result = await StartTask();
+                                    if (result)
+                                    {
+                                        actualTask.taskStatus = GameTask.TaskStatus.Processing;
+                                        answerButton.Text = "CHECK TASK";
+                                        ForceLayout();
                                     }
                                 }
                                 else
                                 {
-                                    if (actualTask.title == "The first are the best")
+                                    bool? processResult = await ProcessTask();
+                                    if (processResult == true)
                                     {
-                                        SimplePopup popup = new SimplePopup("Sorry you're late :(", "Try once again next time!", false);
-                                        await Navigation.PushPopupAsync(popup);
-                                        answerButton.Text = "START TASK";
-                                        ForceLayout();
-                                        actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
+                                        await GamePage.tasksMasterPage.closeTask(actualTask);
                                     }
-                                    else if (actualTask.title == "AEGEE Army")
+                                    else if (processResult == null)
                                     {
-                                        SimplePopup popup = new SimplePopup("Too few friends :(", "Gather more friends and try once again!", false);
-                                        await Navigation.PushPopupAsync(popup);
+                                        DependencyService.Get<IPopup>().ShowPopup("Task isn't completed yet.", "If you already completed it, please try again after some time.", false);
+                                        if ((actualTask.title != "AEGEE Army") && (actualTask.title != "The first are the best"))
+                                        {
+                                            actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (actualTask.title == "The first are the best")
+                                        {
+                                            DependencyService.Get<IPopup>().ShowPopup("Sorry you're late :(", "Try once again next time!", false);
+                                            answerButton.Text = "START TASK";
+                                            ForceLayout();
+                                            actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
+                                        }
+                                        else if (actualTask.title == "AEGEE Army")
+                                        {
+                                            DependencyService.Get<IPopup>().ShowPopup("Too few friends :(", "Gather more friends and try once again!", false);
+                                        }
                                     }
                                 }
-                            }
-                            break;
-                        default:
-                            Console.WriteLine("Error!");
-                            break;
+                                break;
+                            default:
+                                Console.WriteLine("Error!");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        DependencyService.Get<IPopup>().ShowPopup("No internet connection!", "Turn on network to complete task!", false);
+                        actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                     }
                 }
-                else
-                {
-                    SimplePopup popup = new SimplePopup("No internet connection!", "Turn on network to complete task!", false);
-                    await Navigation.PushPopupAsync(popup);
-                    actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
-                }
+                isAnswerButtonClicked = false;
             }
         }
 
@@ -274,13 +272,10 @@ namespace AgoraNavigator.Tasks
                     result = await Beacons.ScanForBeacon(Beacons.beaconFHNj);
                     if (result)
                     {
-                        CrossFirebasePushNotification.Current.Subscribe("AEGEE_Army_" + Users.loggedUser.AntenaId);
-                        databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.AntenaId + "/" + Users.loggedUser.Id;
+                        databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.AntenaId + "/" + Users.loggedUser.Id.ToString().PadLeft(4, '0');
                         if (FirebaseMessagingClient.SendMessage(databasePath, "1"))
                         {
-                            SimplePopup popup = new SimplePopup("You're near beacon!", "Great! Now wait for your friends!", true);
-
-                            await Navigation.PushPopupAsync(popup);
+                            DependencyService.Get<IPopup>().ShowPopup("You're near beacon!", "Great! Now wait for your friends!", true);                            
                             result = true;
 
                             Task delayTask = Task.Run(async () =>
@@ -288,7 +283,7 @@ namespace AgoraNavigator.Tasks
                                 await Task.Delay(30 * 1000);
                                 if (actualTask.taskStatus != GameTask.TaskStatus.Completed)
                                 {
-                                    DependencyService.Get<INotification>().Notify("AEGEE Army", "Too few friends were with you :( Gather more and try again!");
+                                    DependencyService.Get<IPopup>().ShowPopup("AEGEE Army", "Too few friends were with you :( Gather more and try again!", false);
                                     actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                                     answerButton.Text = "START TASK";
                                     ForceLayout();
@@ -297,25 +292,21 @@ namespace AgoraNavigator.Tasks
                         }
                         else
                         {
-                            SimplePopup popup = new SimplePopup("No internet connection", "You need internet connection to complete this task!", false);
-                            await Navigation.PushPopupAsync(popup);
+                            DependencyService.Get<IPopup>().ShowPopup("No internet connection", "You need internet connection to complete this task!", false);
                             actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                         }
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                     }
                     break;
                 case "The first are the best":
-                    CrossFirebasePushNotification.Current.Subscribe("First_Come_First_Served_" + Users.loggedUser.Id);
-                    databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.Id;
+                    databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.Id.ToString().PadLeft(4, '0');
                     if (FirebaseMessagingClient.SendMessage(databasePath, "1"))
                     {
-                        SimplePopup popup = new SimplePopup("Great!", "Now check if you were first!", true);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("Great!", "Now check if you were first!", true);
                         result = true;
 
                         Task delayTask = Task.Run(async () =>
@@ -331,8 +322,7 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        SimplePopup popup = new SimplePopup("No internet connection", "You need internet connection to complete this task!", false);
-                        await Navigation.PushPopupAsync(popup);
+                        DependencyService.Get<IPopup>().ShowPopup("No internet connection", "You need internet connection to complete this task!", false);
                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                     }
                     break;
