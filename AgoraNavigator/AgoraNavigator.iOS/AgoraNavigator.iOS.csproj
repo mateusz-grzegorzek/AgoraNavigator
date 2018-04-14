@@ -102,7 +102,6 @@
       <SubType>Designer</SubType>
     </None>
     <Compile Include="NetworkInfo_iOS.cs" />
-    <Compile Include="Notification_iOS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <BundleResource Include="Resources\Poppins-Bold.ttf" />
     <BundleResource Include="Resources\Poppins-Light.ttf" />

@@ -47,10 +47,6 @@ namespace AgoraNavigator
                     CrossFirebasePushNotification.Current.Subscribe("Agora");
                     CrossSettings.Current.AddOrUpdateValue("isRegistered", true);
                 }
-                else
-                {
-                    DependencyService.Get<INotification>().Notify("No internet connection", "Turn on the network to register for Agora News!");
-                }
             }
         }
 

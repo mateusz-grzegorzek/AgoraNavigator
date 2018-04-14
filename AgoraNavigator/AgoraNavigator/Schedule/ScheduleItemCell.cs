@@ -20,6 +20,9 @@ namespace AgoraNavigator.Schedule
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
 
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+
             Label timeLabel = new Label()
             {
                 FontFamily = AgoraFonts.GetPoppinsBold(),

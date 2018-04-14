@@ -28,10 +28,6 @@ namespace AgoraNavigator.Schedule
             {
                 LoadEventsFromMemory(numberOfEvents);
             }
-            else
-            {
-                LoadDefaultEvents();
-            }
         }
 
         public void OnAppearing(object sender, EventArgs e)
@@ -49,11 +45,11 @@ namespace AgoraNavigator.Schedule
             bool scheduleUpToDate = CrossSettings.Current.GetValueOrDefault("scheduleUpToDate", false);
             if (!scheduleUpToDate || forceUpdate)
             {
-                DependencyService.Get<IPopup>().ShowPopup("Schedule updating...", "It may take some time!", true);
                 try
                 {
                     List<ScheduleItem> itemList = new List<ScheduleItem>();
                     IReadOnlyCollection<FirebaseObject<ScheduleItem>> items = await FirebaseMessagingClient.SendQuery<ScheduleItem>(_databaseScheduleKey);
+                    DependencyService.Get<IPopup>().ShowPopup("Schedule updating...", "It may take some time!", true);
                     int eventNumber = 1;
                     foreach (FirebaseObject<ScheduleItem> groups in items)
                     {
@@ -70,72 +66,11 @@ namespace AgoraNavigator.Schedule
                     Console.WriteLine(err.ToString());
                     if(!userInformedAboutScheduleOutOfDate)
                     {
-                        DependencyService.Get<INotification>().Notify("No internet connection", "Schedule may be out of date, turn on the internet for updates");
+                        DependencyService.Get<IPopup>().ShowPopup("No internet connection", "Schedule may be out of date, turn on the internet for updates", false);
                         userInformedAboutScheduleOutOfDate = true;
                     }
                 }
             }   
-        }
-
-        private void LoadDefaultEvents()
-        {
-            List<ScheduleItem> eventsList = new List<ScheduleItem>();
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "Lelum Polelum",
-                StartTime = DateTime.Parse("2018-03-10T10:00:00"),
-                EndTime = DateTime.Parse("2018-03-10T11:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "Opening Ceremony",
-                StartTime = DateTime.Parse("2018-04-23T20:00:00"),
-                EndTime = DateTime.Parse("2018-04-23T23:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "The Pierogi Workshop",
-                StartTime = DateTime.Parse("2018-04-24T10:00:00"),
-                EndTime = DateTime.Parse("2018-04-24T11:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "Melanż & Drinking Presentation",
-                StartTime = DateTime.Parse("2018-04-24T12:00:00"),
-                EndTime = DateTime.Parse("2018-04-24T14:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "Another lecture",
-                StartTime = DateTime.Parse("2018-04-25T10:00:00"),
-                EndTime = DateTime.Parse("2018-04-25T11:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            ProcessDays(eventsList);
         }
 
         private void LoadEventsFromMemory(int numberOfEvents)
