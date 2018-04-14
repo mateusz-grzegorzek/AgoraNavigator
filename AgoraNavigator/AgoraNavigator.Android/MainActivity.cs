@@ -21,7 +21,6 @@ namespace AgoraNavigator.Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            Forms.SetFlags("FastRenderers_Experimental");
             Forms.Init(this, bundle);
             FormsGoogleMaps.Init(this, bundle);
             LoadApplication(new App());
