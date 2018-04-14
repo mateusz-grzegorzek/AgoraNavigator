@@ -13,7 +13,7 @@ namespace AgoraNavigator.Tasks
 {
     public class TopScorers
     {
-        public int userId { get; set; }
+        public String userId { get; set; }
         public int totalPoints { get; set; }
     }
 
@@ -78,27 +78,47 @@ namespace AgoraNavigator.Tasks
                 HorizontalOptions = LayoutOptions.Center
             };
 
+            Grid gridBestPlayersLayout = new Grid();
+
+            gridBestPlayersLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridBestPlayersLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            Label userIdLabel = new Label
+            {
+                Text = "ID: ",
+                TextColor = AgoraColor.Blue,
+                FontFamily = AgoraFonts.GetPoppinsBold(),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                HorizontalOptions = LayoutOptions.Center
+            };
+
+            Label pointsLabel = new Label
+            {
+                Text = "Points: ",
+                TextColor = Color.White,
+                FontFamily = AgoraFonts.GetPoppinsBold(),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                HorizontalOptions = LayoutOptions.Center
+            };
+
+            gridBestPlayersLayout.Children.Add(userIdLabel, 0, 0);
+            gridBestPlayersLayout.Children.Add(pointsLabel, 1, 0);
+
             topScorersListView = new ListView
             {
                 ItemTemplate = new DataTemplate(() =>
                 {
                     Grid grid = new Grid { Padding = new Thickness(1, 1) };
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100) });
 
-                    Label userIdLabel = new Label
-                    {
-                        Text = "ID: ",
-                        TextColor = AgoraColor.Blue,
-                        FontFamily = AgoraFonts.GetPoppinsBold(),
-                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
-                    };
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+              
                     Label userId = new Label
                     {
                         TextColor = AgoraColor.Blue,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
-                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                        HorizontalOptions = LayoutOptions.Center
                     };
                     userId.SetBinding(Label.TextProperty, "userId");
                     Label totalPoints = new Label
@@ -106,13 +126,13 @@ namespace AgoraNavigator.Tasks
                         TextColor = Color.White,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
                         HorizontalTextAlignment = TextAlignment.End,
-                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                        HorizontalOptions = LayoutOptions.Center
                     };
                     totalPoints.SetBinding(Label.TextProperty, "totalPoints");
 
-                    grid.Children.Add(userIdLabel);
-                    grid.Children.Add(userId, 1, 0);
-                    grid.Children.Add(totalPoints, 2, 0);
+                    grid.Children.Add(userId, 0, 0);
+                    grid.Children.Add(totalPoints, 1, 0);
                     grid.BackgroundColor = AgoraColor.DarkBlue;
                     return new ViewCell { View = grid };
                 }),
@@ -137,12 +157,14 @@ namespace AgoraNavigator.Tasks
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
+            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
             gridLayout.Children.Add(scanNewTasksButton, 1, 0);
             gridLayout.Children.Add(goToTasksButton, 1, 1);
             gridLayout.Children.Add(bestPlayersLabel, 1, 2);
-            gridLayout.Children.Add(topScorersListView, 1, 3);
+            gridLayout.Children.Add(gridBestPlayersLayout, 1, 3);
+            gridLayout.Children.Add(topScorersListView, 1, 4);
 
             StackLayout layout = new StackLayout
             {
@@ -174,7 +196,8 @@ namespace AgoraNavigator.Tasks
                 ObservableCollection<TopScorers> topScorers = new ObservableCollection<TopScorers>();
                 foreach (JToken token in array)
                 {
-                    int userId = int.Parse(token["userId"].ToString());
+                    String userId = token["userId"].ToString();
+                    userId = userId.PadLeft(4, '0');
                     int totalPoints = int.Parse(token["totalPoints"].ToString());
                     TopScorers topScorer = new TopScorers
                     {

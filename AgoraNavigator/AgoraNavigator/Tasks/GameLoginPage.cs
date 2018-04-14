@@ -59,7 +59,7 @@ namespace AgoraNavigator.Tasks
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Start,
                 PlaceholderColor = Color.LightGray,
-                Text = "220-0000",
+                Text = "220-1195",
                 Placeholder = "XXX-XXXX",
                 HorizontalOptions = LayoutOptions.Center
             };
@@ -78,7 +78,7 @@ namespace AgoraNavigator.Tasks
             {
                 TextColor = Color.White,
                 BackgroundColor = Color.Transparent,
-                Text = "0000",
+                Text = "8862",
                 Keyboard = Keyboard.Numeric,
                 HorizontalTextAlignment = TextAlignment.Center,
                 PlaceholderColor = Color.LightGray,
