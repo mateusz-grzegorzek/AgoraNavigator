@@ -8,6 +8,10 @@ using Plugin.FirebasePushNotification;
 using Android.Content;
 using Xamarin;
 using ZXing.Mobile;
+using Plugin.DeviceInfo;
+using System;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 namespace AgoraNavigator.Droid
 {
@@ -24,6 +28,11 @@ namespace AgoraNavigator.Droid
             FirebasePushNotificationManager.ProcessIntent(this, Intent);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             MobileBarcodeScanner.Initialize(Application);
+            
+            CrossDevice.Network.WhenStatusChanged().Subscribe(x =>
+            {
+                Task.Run(async () => { await FirebaseMessagingClient.NetworkStatusChangedAsync(); });
+            });
         }
 
         protected override void OnNewIntent(Intent intent)

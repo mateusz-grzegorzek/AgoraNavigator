@@ -3,8 +3,9 @@ using Android.App;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CurrentActivity;
+using Plugin.DeviceInfo;
 using Plugin.FirebasePushNotification;
-
+using System.Reactive.Linq;
 
 namespace AgoraNavigator.Droid
 {

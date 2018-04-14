@@ -1,8 +1,4 @@
-﻿using AgoraNavigator.Downloads;
-using AgoraNavigator.Schedule;
-using Plugin.DeviceInfo;
-using System;
-using System.Reactive.Linq;
+﻿using Plugin.DeviceInfo;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(AgoraNavigator.Droid.NetworkInfo_Android))]
@@ -20,16 +16,6 @@ namespace AgoraNavigator.Droid
                 result = true;
             }
             return result;
-        }
-
-        public void WhenStatusChanged()
-        {
-            CrossDevice.Network.WhenStatusChanged().Subscribe(x => Device.BeginInvokeOnMainThread(async () =>
-            {
-                FirebaseMessagingClient.SubscribeForTopics(false);
-                await SchedulePage.scheduleDaysPage.FetchScheduleAsync();
-                await DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
-            }));
         }
     }
 }

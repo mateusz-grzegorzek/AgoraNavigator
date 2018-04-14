@@ -208,17 +208,39 @@
     <BundleResource Include="Resources\schedulePin.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-1242%403x~iphone6s-landscape_2208x1242.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage~iphone_640x960.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-Portrait~ipad_768x1024.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-Portrait%402x~ipad_1536x2048.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-Landscape~ipad_1024x768.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-Landscape%402x~ipad_2048x1536.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-736h.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-667h.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-568h%402x~iphone.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-1242%403x~iphone6s-landscape_2208x1242.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage~iphone_640x960.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-Portrait~ipad_768x1024.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-Portrait%402x~ipad_1536x2048.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-Landscape~ipad_1024x768.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\LaunchImage-Landscape%402x~ipad_2048x1536.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-736h.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-667h.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-568h%402x~iphone.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Speaker_Icon.png" />

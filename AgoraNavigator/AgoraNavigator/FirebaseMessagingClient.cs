@@ -1,4 +1,6 @@
-﻿using Firebase.Database;
+﻿using AgoraNavigator.Downloads;
+using AgoraNavigator.Schedule;
+using Firebase.Database;
 using Newtonsoft.Json;
 using Plugin.FirebasePushNotification;
 using Plugin.Settings;
@@ -19,6 +21,16 @@ namespace AgoraNavigator
             return DependencyService.Get<INetworkInfo>().IsNetworkAvailable();
         }
 
+        public static async Task NetworkStatusChangedAsync()
+        {
+            if(IsNetworkAvailable())
+            {
+                SubscribeForTopics(false);
+                await SchedulePage.scheduleDaysPage.FetchScheduleAsync();
+                await DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync();
+            } 
+        }
+
         public static void TokenRefresh(String token)
         {
             firebaseToken = token;
@@ -28,11 +40,9 @@ namespace AgoraNavigator
 
         public static void InitFirebaseMessagingClientAsync()
         {
-            firebaseToken = Plugin.Settings.CrossSettings.Current.GetValueOrDefault("firebaseToken", "");
+            firebaseToken = CrossSettings.Current.GetValueOrDefault("firebaseToken", "");
             Console.WriteLine("InitFirebaseMessagingClientAsync:firebaseToken=" + firebaseToken);
             firebaseClient = new FirebaseClient(Configuration.FirebaseEndpoint);
-            SubscribeForTopics(false);
-            DependencyService.Get<INetworkInfo>().WhenStatusChanged();
         }
 
         public static void SubscribeForTopics(bool tokenChanged)

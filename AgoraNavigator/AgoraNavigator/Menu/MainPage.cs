@@ -27,7 +27,6 @@ namespace AgoraNavigator.Menu
         {
             NavigationPage.SetHasNavigationBar(this, false);
             NavigationPage.SetTitleIcon(this, "Hamburger_Icon.png");
-            BackgroundColor = Color.FromHex("061d3f");
             masterPage = new MasterPage();
             welcomePage = new WelcomePage();
             schedulePage = new SchedulePage();

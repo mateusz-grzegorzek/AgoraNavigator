@@ -24,8 +24,21 @@ namespace AgoraNavigator.Downloads
             BackgroundColor = AgoraColor.Blue;
             TextColor = AgoraColor.DarkBlue;
             FontFamily = AgoraFonts.GetPoppinsBold();
-            FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Button));
-            Clicked += DownloadsPage.downloadsMasterPage.OnOpenButtonClickedAsync;
+            FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
+            Clicked += OnOpenButtonClicked;
+        }
+
+        public void OnOpenButtonClicked(object sender, EventArgs e)
+        {
+            if (FirebaseMessagingClient.IsNetworkAvailable())
+            {
+                DownloadButton button = (DownloadButton)sender;
+                Device.OpenUri(new Uri(button.Url));
+            }
+            else
+            {
+                DependencyService.Get<IPopup>().ShowPopup("No internet connection!", "Turn on network to download file!", false);
+            }
         }
     }
 
@@ -45,50 +58,32 @@ namespace AgoraNavigator.Downloads
     {
         private const string downloadsScheduleKey = "downloads";
         private int filesCounter;
-        bool downloadsLoaded = false;
+        StackLayout stack;
 
         public DownloadsMasterPage()
         {
             Title = "Downloads";
             BackgroundColor = AgoraColor.DarkBlue;
-            Appearing += OnAppearing;
+
+            stack = new StackLayout { Spacing = 2 };
+            ReloadDownloads();
+            Content = new ScrollView { Content = stack };
         }
 
-        public void OnAppearing(object sender, EventArgs e)
+        private void ReloadDownloads()
         {
-            if(!downloadsLoaded)
-            {
-                ProcessDownloads();
-                downloadsLoaded = true;
-            }
-        }
-
-        private void ProcessDownloads()
-        {
-            StackLayout stack = new StackLayout { Spacing = 5 };
+            stack.Children.Clear();
             filesCounter = CrossSettings.Current.GetValueOrDefault("Downloads:filesCounter", 0);
             int index = 1;
             while (index <= filesCounter)
             {
-                DownloadButton button = new DownloadButton();
-                button.Text = CrossSettings.Current.GetValueOrDefault("Downloads:Text:" + index, "");
-                button.Url = CrossSettings.Current.GetValueOrDefault("Downloads:Url:" + index, "");
+                DownloadButton button = new DownloadButton
+                {
+                    Text = CrossSettings.Current.GetValueOrDefault("Downloads:Text:" + index, ""),
+                    Url = CrossSettings.Current.GetValueOrDefault("Downloads:Url:" + index, "")
+                };
                 index++;
                 stack.Children.Add(button);
-            }
-            Content = stack;
-        }
-
-        public void OnOpenButtonClickedAsync(object sender, EventArgs e)
-        {
-            if (FirebaseMessagingClient.IsNetworkAvailable())
-            {
-                DownloadButton button = (DownloadButton)sender;
-                Device.OpenUri(new Uri(button.Url));
-            }
-            else
-            {
-                DependencyService.Get<IPopup>().ShowPopup("No internet connection!", "Turn on network to download file!", false);     
             }
         }
 
@@ -108,12 +103,17 @@ namespace AgoraNavigator.Downloads
                         CrossSettings.Current.AddOrUpdateValue("Downloads:Text:" + filesCounter, file.FileName);
                         CrossSettings.Current.AddOrUpdateValue("Downloads:Url:" + filesCounter, file.Url);
                     }
-                    ProcessDownloads();
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        ReloadDownloads();
+                        ForceLayout();
+                    });
+                    
                     CrossSettings.Current.AddOrUpdateValue("downloadsUpToDate", true);
                 }
-                catch (Exception)
+                catch (Exception err)
                 {
-
+                    Console.WriteLine("FetchDownloadFilesAsync:" + err.ToString());
                 }
             }
 

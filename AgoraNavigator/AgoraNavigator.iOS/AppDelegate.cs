@@ -3,8 +3,9 @@ using Foundation;
 using System;
 using UIKit;
 using UserNotifications;
-using Google.Maps;
 using Plugin.FirebasePushNotification;
+using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace AgoraNavigator.iOS
 {
@@ -16,7 +17,7 @@ namespace AgoraNavigator.iOS
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            Xamarin.Forms.Forms.Init();
+            Forms.Init();
 
             Xamarin.FormsGoogleMaps.Init(MapsApiKey);
 
@@ -45,6 +46,14 @@ namespace AgoraNavigator.iOS
             FirebasePushNotificationManager.Initialize(options, true);
             FirebasePushNotificationManager.CurrentNotificationPresentationOption = UNNotificationPresentationOptions.Sound |
                 UNNotificationPresentationOptions.Alert | UNNotificationPresentationOptions.Badge;
+            Reachability.InternetConnectionStatus();
+            Reachability.LocalWifiConnectionStatus();
+            Reachability.RemoteHostStatus();
+
+            Reachability.ReachabilityChanged += delegate
+            {
+                Task.Run(async () => { await FirebaseMessagingClient.NetworkStatusChangedAsync(); });
+            };
             return base.FinishedLaunching(app, options);
         }
 

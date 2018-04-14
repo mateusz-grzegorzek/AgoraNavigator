@@ -78,15 +78,17 @@ namespace AgoraNavigator.Schedule
             List<ScheduleItem> eventsList = new List<ScheduleItem>();
             while (numberOfEvents != 0)
             {
-                ScheduleItem item = new ScheduleItem();
-                item.Title = CrossSettings.Current.GetValueOrDefault("Schedule_Title_" + numberOfEvents, "");
-                item.StartTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, ""));
-                item.EndTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, ""));
-                item.Description = CrossSettings.Current.GetValueOrDefault("Schedule_Description_" + numberOfEvents, "");
-                item.Place = CrossSettings.Current.GetValueOrDefault("Schedule_Place_" + numberOfEvents, "");
-                item.Address = CrossSettings.Current.GetValueOrDefault("Schedule_Address_" + numberOfEvents, "");
-                item.CoordX = CrossSettings.Current.GetValueOrDefault("Schedule_CoordX_" + numberOfEvents, 50.0608255);
-                item.CoordY = CrossSettings.Current.GetValueOrDefault("Schedule_CoordY_" + numberOfEvents, 19.9309346);
+                ScheduleItem item = new ScheduleItem
+                {
+                    Title = CrossSettings.Current.GetValueOrDefault("Schedule_Title_" + numberOfEvents, ""),
+                    StartTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, "")),
+                    EndTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, "")),
+                    Description = CrossSettings.Current.GetValueOrDefault("Schedule_Description_" + numberOfEvents, ""),
+                    Place = CrossSettings.Current.GetValueOrDefault("Schedule_Place_" + numberOfEvents, ""),
+                    Address = CrossSettings.Current.GetValueOrDefault("Schedule_Address_" + numberOfEvents, ""),
+                    CoordX = CrossSettings.Current.GetValueOrDefault("Schedule_CoordX_" + numberOfEvents, 50.0608255),
+                    CoordY = CrossSettings.Current.GetValueOrDefault("Schedule_CoordY_" + numberOfEvents, 19.9309346)
+                };
                 eventsList.Add(item);
                 numberOfEvents--;
 
