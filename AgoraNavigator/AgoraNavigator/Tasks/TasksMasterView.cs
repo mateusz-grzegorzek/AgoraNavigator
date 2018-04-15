@@ -28,8 +28,6 @@ namespace AgoraNavigator.Tasks
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
 
-                    //grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-
                     Label taskTitleLabel = new Label
                     {
                         TextColor = AgoraColor.Blue,
@@ -43,7 +41,7 @@ namespace AgoraNavigator.Tasks
                         Source = "Arrow.png",
                         VerticalOptions = LayoutOptions.Center,
                         HorizontalOptions = LayoutOptions.End,
-                        Margin = new Thickness(5, 10)
+                        Margin = new Thickness(10, 10)
                     };
                     Image task_separator = new Image
                     {
