@@ -48,7 +48,7 @@ namespace AgoraNavigator.Contact
             {
                 Photo = "Contact_Photo_Karolina_Lapczyk.png",
                 Name = "Karolina Lapczyk",
-                Position = "Main Cordinator",
+                Position = "Main Coordinator",
                 PhoneNumber = "+48512088789"
             });
             contactsList.Add(new Contact
@@ -57,6 +57,20 @@ namespace AgoraNavigator.Contact
                 Name = "Kasia Szubartowska",
                 Position = "Incoming",
                 PhoneNumber = "+48662612656"
+            });
+            contactsList.Add(new Contact
+            {
+                Photo = "Contact_Safe_Person.png",
+                Name = "Safe Person",
+                Position = "Person you can trust",
+                PhoneNumber = "+32483358647"
+            });
+            contactsList.Add(new Contact
+            {
+                Photo = "Contact_Info_Desk.png",
+                Name = "Info Desk",
+                Position = "Agora Information",
+                PhoneNumber = "+791628161"
             });
             contactsList.Add(new Contact
             {

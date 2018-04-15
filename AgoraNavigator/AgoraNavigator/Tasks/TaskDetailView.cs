@@ -1,6 +1,5 @@
 ﻿using AgoraNavigator.Login;
 using AgoraNavigator.Popup;
-using Plugin.FirebasePushNotification;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;

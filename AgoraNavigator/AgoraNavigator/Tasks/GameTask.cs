@@ -25,6 +25,12 @@ namespace AgoraNavigator.Tasks
             Completed = 3
         }
 
+        public string taskMasterViewText
+        {
+            get { return title + " (" + scorePoints.ToString() + "p)"; }
+            set { }
+        }
+
         public int id { get; set; }
 
         public string title { get; set; }
@@ -116,7 +122,7 @@ namespace AgoraNavigator.Tasks
                 description = "Gather more than half of your antena members near beacon at gym",
                 taskType = TaskType.Button,
                 correctAnswer = null,
-                scorePoints = 3,
+                scorePoints = 4,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = true,
                 dbName = "AEGEE_Army",
@@ -150,26 +156,24 @@ namespace AgoraNavigator.Tasks
             {
                 id = 5,
                 title = "Plenary photo",
-                description = "Take a photo on plenary and send on Instagram with #",
-                taskType = TaskType.Button,
-                correctAnswer = null,
-                scorePoints = 2,
+                description = "Take a photo on plenary and send on Instagram with #springagorakrakow",
+                taskType = TaskType.Text,
+                correctAnswer = "$5BM#e85^BK8iy",
+                scorePoints = 4,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                dbName = "Plenary_photo",
                 unlocked = true
             });
             allTasks.Add(new GameTask
             {
                 id = 6,
                 title = "Redbull give you the wings",
-                description = "Take a photo with redbull and send on Instagram with #",
-                taskType = TaskType.Button,
-                correctAnswer = null,
-                scorePoints = 2,
+                description = "Take a photo with redbull and send on Instagram with #redbull",
+                taskType = TaskType.Text,
+                correctAnswer = "X88!3A*xZORBAc",
+                scorePoints = 6,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                dbName = "Redbull",
                 unlocked = true
             });
             allTasks.Add(new GameTask
@@ -179,7 +183,7 @@ namespace AgoraNavigator.Tasks
                 description = "Be the one of first persons on morning plenary",
                 taskType = TaskType.Button,
                 correctAnswer = null,
-                scorePoints = 1,
+                scorePoints = 4,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = true,
                 dbName = "First_Come_First_Served",
@@ -192,7 +196,7 @@ namespace AgoraNavigator.Tasks
                 description = "Talk with Gunnar about his best memory connected with AEGEE and try to get the password",
                 taskType = TaskType.Text,
                 correctAnswer = "gunnar",
-                scorePoints = 2,
+                scorePoints = 3,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
                 unlocked = false
@@ -204,7 +208,7 @@ namespace AgoraNavigator.Tasks
                 description = "Ask the President of AEGEE-Krakow about the most important character in the local",
                 taskType = TaskType.Text,
                 correctAnswer = "buka",
-                scorePoints = 2,
+                scorePoints = 4,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
                 unlocked = false
@@ -216,7 +220,7 @@ namespace AgoraNavigator.Tasks
                 description = "Enter code from Women's WC",
                 taskType = TaskType.Text,
                 correctAnswer = "closed",
-                scorePoints = 2,
+                scorePoints = 4,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
                 unlocked = false
@@ -228,7 +232,7 @@ namespace AgoraNavigator.Tasks
                 description = "Enter code from Plenary",
                 taskType = TaskType.Text,
                 correctAnswer = "code",
-                scorePoints = 2,
+                scorePoints = 3,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
                 unlocked = false
@@ -249,24 +253,24 @@ namespace AgoraNavigator.Tasks
             {
                 id = 13,
                 title = "Selfie with friends!",
-                description = "Take a photo with your friends, send it on Facebook participants group and tag your friends",
-                taskType = TaskType.Button,
-                scorePoints = 2,
+                description = "Take a photo with your friends, send it on Facebook participants group and tag your friends with #agoranavigator",
+                taskType = TaskType.Text,
+                correctAnswer = "c3z7$i6fG*1ts2",
+                scorePoints = 5,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                dbName = "Selfie",
                 unlocked = false
             });
             allTasks.Add(new GameTask
             {
                 id = 14,
                 title = "I need a dollar dollar...",
-                description = "Lend from AEGEEans five different currency in banknote or coin and show them to local organizer",
-                taskType = TaskType.Button,
-                scorePoints = 3,
+                description = "Lend from AEGEEans five different currency in banknote or coin and show them to local organizers at info desk",
+                taskType = TaskType.Text,
+                correctAnswer = "6q92%FJUB!y&RP",
+                scorePoints = 4,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
-                dbName = "Dollar",
                 unlocked = false
             });
             allTasks.Add(new GameTask
@@ -612,8 +616,8 @@ namespace AgoraNavigator.Tasks
                 title = "Talk 2 Hays",
                 description = "During Career Fair approach the representative of Hays and ask for a secret password",
                 taskType = TaskType.Text,
-                correctAnswer = "todo",
-                scorePoints = 2,
+                correctAnswer = "recruitment",
+                scorePoints = 6,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
                 unlocked = true

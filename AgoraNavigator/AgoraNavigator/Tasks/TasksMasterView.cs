@@ -17,30 +17,31 @@ namespace AgoraNavigator.Tasks
             tasksListView = new ListView
             {
                 ItemsSource = tasks,
+                HasUnevenRows = true,
                 ItemTemplate = new DataTemplate(() =>
                 {
                     Grid grid = new Grid
                     {
                         Padding = new Thickness(10, 2),
-                        RowSpacing = 10
+                        RowSpacing = 1
                     };
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
 
-                    Label taskTitle = new Label
+                    Label taskTitleLabel = new Label
                     {
                         TextColor = AgoraColor.Blue,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
                         FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                         VerticalTextAlignment = TextAlignment.Center
                     };
-                    taskTitle.SetBinding(Label.TextProperty, "title");
+                    taskTitleLabel.SetBinding(Label.TextProperty, "taskMasterViewText");
                     Image arrow = new Image
                     {
                         Source = "Arrow.png",
                         VerticalOptions = LayoutOptions.Center,
                         HorizontalOptions = LayoutOptions.End,
-                        Margin = new Thickness(2,2)
+                        Margin = new Thickness(10, 10)
                     };
                     Image task_separator = new Image
                     {
@@ -48,8 +49,8 @@ namespace AgoraNavigator.Tasks
                         VerticalOptions = LayoutOptions.Start,
                         HorizontalOptions = LayoutOptions.EndAndExpand
                     };
-                    
-                    grid.Children.Add(taskTitle);
+
+                    grid.Children.Add(taskTitleLabel);
                     if(isOpenTasks)
                     {
                         grid.Children.Add(arrow, 1, 0);
@@ -63,9 +64,7 @@ namespace AgoraNavigator.Tasks
             };
             tasksListView.ItemTapped += OnTaskTitleClick;
 
-            StackLayout stack = new StackLayout { Spacing = 0 };
-            stack.Children.Add(tasksListView);
-            Content = stack;
+            Content = tasksListView;
             BackgroundColor = AgoraColor.DarkBlue;
         }
 
