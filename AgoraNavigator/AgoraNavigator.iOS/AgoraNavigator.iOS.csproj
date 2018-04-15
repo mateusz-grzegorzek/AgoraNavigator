@@ -260,6 +260,12 @@
   <ItemGroup>
     <BundleResource Include="Resources\Contact_Photo_Katarzyna_Szubartowska.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Contact_Safe_Person.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Contact_Info_Desk.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />
 </Project>

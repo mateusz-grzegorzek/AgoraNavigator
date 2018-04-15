@@ -76,7 +76,7 @@ namespace AgoraNavigator.GoogleMap
         public GoogleMapPage(double latitude, double longitude)
         {
             Title = "Map";
-            activeMapType = (MapType)CrossSettings.Current.GetValueOrDefault("activeMapType", (int)MapType.Hybrid);
+            activeMapType = (MapType)CrossSettings.Current.GetValueOrDefault("activeMapType", (int)MapType.Street);
             map = new Map()
             {
                 IsIndoorEnabled = true,
