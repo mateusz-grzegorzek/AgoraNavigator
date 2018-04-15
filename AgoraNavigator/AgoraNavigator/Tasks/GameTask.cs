@@ -189,9 +189,9 @@ namespace AgoraNavigator.Tasks
             {
                 id = 8,
                 title = "Gunnar",
-                description = "Ask Gunnar for task",
+                description = "Talk with Gunnar about his best memory connected with AEGEE and try to get the password",
                 taskType = TaskType.Text,
-                correctAnswer = "GUNNAR",
+                correctAnswer = "gunnar",
                 scorePoints = 2,
                 taskStatus = TaskStatus.NotStarted,
                 needBluetoothAndLocation = false,
@@ -201,7 +201,7 @@ namespace AgoraNavigator.Tasks
             {
                 id = 9,
                 title = "Randevu",
-                description = "Talk with AEGEE-Cracow president and ask him for secret password",
+                description = "Ask the President of AEGEE-Krakow about the most important character in the local",
                 taskType = TaskType.Text,
                 correctAnswer = "buka",
                 scorePoints = 2,
@@ -605,6 +605,18 @@ namespace AgoraNavigator.Tasks
                 },
                 minimumCorrectAnswers = 2,
                 unlocked = false
+            });
+            allTasks.Add(new GameTask
+            {
+                id = 38,
+                title = "Talk 2 Hays",
+                description = "During Career Fair approach the representative of Hays and ask for a secret password",
+                taskType = TaskType.Text,
+                correctAnswer = "todo",
+                scorePoints = 2,
+                taskStatus = TaskStatus.NotStarted,
+                needBluetoothAndLocation = false,
+                unlocked = true
             });
             InitUnlockedTasks();
         }

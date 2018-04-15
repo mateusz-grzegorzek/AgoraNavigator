@@ -28,10 +28,6 @@ namespace AgoraNavigator.Schedule
             {
                 LoadEventsFromMemory(numberOfEvents);
             }
-            else
-            {
-                LoadDefaultEvents();
-            }
         }
 
         public void OnAppearing(object sender, EventArgs e)
@@ -49,11 +45,11 @@ namespace AgoraNavigator.Schedule
             bool scheduleUpToDate = CrossSettings.Current.GetValueOrDefault("scheduleUpToDate", false);
             if (!scheduleUpToDate || forceUpdate)
             {
-                DependencyService.Get<IPopup>().ShowPopup("Schedule updating...", "It may take some time!", true);
                 try
                 {
                     List<ScheduleItem> itemList = new List<ScheduleItem>();
                     IReadOnlyCollection<FirebaseObject<ScheduleItem>> items = await FirebaseMessagingClient.SendQuery<ScheduleItem>(_databaseScheduleKey);
+                    DependencyService.Get<IPopup>().ShowPopup("Schedule updating...", "It may take some time!", true);
                     int eventNumber = 1;
                     foreach (FirebaseObject<ScheduleItem> groups in items)
                     {
@@ -70,72 +66,11 @@ namespace AgoraNavigator.Schedule
                     Console.WriteLine(err.ToString());
                     if(!userInformedAboutScheduleOutOfDate)
                     {
-                        DependencyService.Get<INotification>().Notify("No internet connection", "Schedule may be out of date, turn on the internet for updates");
+                        DependencyService.Get<IPopup>().ShowPopup("No internet connection", "Schedule may be out of date, turn on the internet for updates", false);
                         userInformedAboutScheduleOutOfDate = true;
                     }
                 }
             }   
-        }
-
-        private void LoadDefaultEvents()
-        {
-            List<ScheduleItem> eventsList = new List<ScheduleItem>();
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "Lelum Polelum",
-                StartTime = DateTime.Parse("2018-03-10T10:00:00"),
-                EndTime = DateTime.Parse("2018-03-10T11:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "Opening Ceremony",
-                StartTime = DateTime.Parse("2018-04-23T20:00:00"),
-                EndTime = DateTime.Parse("2018-04-23T23:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "The Pierogi Workshop",
-                StartTime = DateTime.Parse("2018-04-24T10:00:00"),
-                EndTime = DateTime.Parse("2018-04-24T11:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "Melanż & Drinking Presentation",
-                StartTime = DateTime.Parse("2018-04-24T12:00:00"),
-                EndTime = DateTime.Parse("2018-04-24T14:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            eventsList.Add(new ScheduleItem
-            {
-                Title = "Another lecture",
-                StartTime = DateTime.Parse("2018-04-25T10:00:00"),
-                EndTime = DateTime.Parse("2018-04-25T11:00:00"),
-                Description = "Event description",
-                Place = "Auditorium Maximum",
-                Address = "ul. Krupnicza 33",
-                CoordX = 50.0627042,
-                CoordY = 19.9230431,
-            });
-            ProcessDays(eventsList);
         }
 
         private void LoadEventsFromMemory(int numberOfEvents)
@@ -143,15 +78,17 @@ namespace AgoraNavigator.Schedule
             List<ScheduleItem> eventsList = new List<ScheduleItem>();
             while (numberOfEvents != 0)
             {
-                ScheduleItem item = new ScheduleItem();
-                item.Title = CrossSettings.Current.GetValueOrDefault("Schedule_Title_" + numberOfEvents, "");
-                item.StartTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, ""));
-                item.EndTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, ""));
-                item.Description = CrossSettings.Current.GetValueOrDefault("Schedule_Description_" + numberOfEvents, "");
-                item.Place = CrossSettings.Current.GetValueOrDefault("Schedule_Place_" + numberOfEvents, "");
-                item.Address = CrossSettings.Current.GetValueOrDefault("Schedule_Address_" + numberOfEvents, "");
-                item.CoordX = CrossSettings.Current.GetValueOrDefault("Schedule_CoordX_" + numberOfEvents, 50.0608255);
-                item.CoordY = CrossSettings.Current.GetValueOrDefault("Schedule_CoordY_" + numberOfEvents, 19.9309346);
+                ScheduleItem item = new ScheduleItem
+                {
+                    Title = CrossSettings.Current.GetValueOrDefault("Schedule_Title_" + numberOfEvents, ""),
+                    StartTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, "")),
+                    EndTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, "")),
+                    Description = CrossSettings.Current.GetValueOrDefault("Schedule_Description_" + numberOfEvents, ""),
+                    Place = CrossSettings.Current.GetValueOrDefault("Schedule_Place_" + numberOfEvents, ""),
+                    Address = CrossSettings.Current.GetValueOrDefault("Schedule_Address_" + numberOfEvents, ""),
+                    CoordX = CrossSettings.Current.GetValueOrDefault("Schedule_CoordX_" + numberOfEvents, 50.0608255),
+                    CoordY = CrossSettings.Current.GetValueOrDefault("Schedule_CoordY_" + numberOfEvents, 19.9309346)
+                };
                 eventsList.Add(item);
                 numberOfEvents--;
 

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Net;
 using SystemConfiguration;
-
 using CoreFoundation;
 
-namespace Reachability
+namespace AgoraNavigator.iOS
 {
     public enum NetworkStatus
     {

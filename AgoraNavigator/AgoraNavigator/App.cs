@@ -6,6 +6,7 @@ using Plugin.FirebasePushNotification;
 using Plugin.FirebasePushNotification.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace AgoraNavigator
@@ -29,16 +30,16 @@ namespace AgoraNavigator
             CrossFirebasePushNotification.Current.OnNotificationOpened += FirebasePushNotificationDataEventHandlerAsync;
         }
 
-        async void FirebasePushNotificationDataEventHandlerAsync(object source, FirebasePushNotificationDataEventArgs e)
+        void FirebasePushNotificationDataEventHandlerAsync(object source, FirebasePushNotificationDataEventArgs e)
         {
-            await FirebasePushNotificationDataEventHandlerAsync(e.Data);
+            FirebasePushNotificationDataEventHandlerAsync(e.Data);
         }
-        async void FirebasePushNotificationDataEventHandlerAsync(object source, FirebasePushNotificationResponseEventArgs e)
+        void FirebasePushNotificationDataEventHandlerAsync(object source, FirebasePushNotificationResponseEventArgs e)
         {
-            await FirebasePushNotificationDataEventHandlerAsync(e.Data);
+            FirebasePushNotificationDataEventHandlerAsync(e.Data);
         }
 
-        async System.Threading.Tasks.Task FirebasePushNotificationDataEventHandlerAsync(IDictionary<string, object> data)
+        void FirebasePushNotificationDataEventHandlerAsync(IDictionary<string, object> data)
         {
             Console.WriteLine("OnNotificationReceived");
             try
@@ -49,11 +50,11 @@ namespace AgoraNavigator
                 }
                 if (data.Keys.Contains("scheduleUpdate"))
                 {
-                    await SchedulePage.scheduleDaysPage.FetchScheduleAsync(true);
+                    Task.Run(async () => { await SchedulePage.scheduleDaysPage.FetchScheduleAsync(true); });
                 }
                 if (data.Keys.Contains("downloadUpdate"))
                 {
-                    await DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync(true);
+                    Task.Run(async () => { await DownloadsPage.downloadsMasterPage.FetchDownloadFilesAsync(true); });
                 }
             }
             catch (Exception err)
