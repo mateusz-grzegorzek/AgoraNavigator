@@ -82,7 +82,7 @@ namespace AgoraNavigator.Schedule
                             new Label()
                             {
                                 Text = item.scheduleItem.Place,
-                                TextColor = AgoraColor.Blue,
+                                TextColor = AgoraColor.DarkBlue,
                                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                                 FontFamily = AgoraFonts.GetPoppinsBold()
                             },

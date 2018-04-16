@@ -1,4 +1,5 @@
-﻿using Plugin.Settings;
+﻿using AgoraNavigator.Popup;
+using Plugin.Settings;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -13,9 +14,20 @@ namespace AgoraNavigator.GoogleMap
         public MapPage(double latitude, double longitude)
         {
             Console.WriteLine("MapPage");
+            Appearing += OnAppearing;
             BarTextColor = AgoraColor.Blue;
             googleMapPage = new GoogleMapPage(latitude, longitude);
             Navigation.PushAsync(googleMapPage);
+        }
+
+        public void OnAppearing(object sender, EventArgs e)
+        {
+            bool userInformedAboutUsage = CrossSettings.Current.GetValueOrDefault("userInformedAboutMapUsage", false);
+            if (!userInformedAboutUsage)
+            {
+                DependencyService.Get<IPopup>().ShowPopup("Map usage", "Click on icon in upper right corner to change views!", true);
+                CrossSettings.Current.AddOrUpdateValue("userInformedAboutMapUsage", true);
+            }
         }
     }
 
@@ -27,6 +39,14 @@ namespace AgoraNavigator.GoogleMap
         static MapButton buttonHybrid;
         static MapButton buttonSatellite;
         static MapType activeMapType;
+
+        public enum PinsType
+        {
+            AgoraSpots = 0,
+            DiscoverKrakow = 1,
+            HidePins = 2
+        };
+        PinsType activePinsType;
 
         public class MapButton : Button
         {
@@ -105,23 +125,26 @@ namespace AgoraNavigator.GoogleMap
         public GoogleMapPage(double latitude, double longitude)
         {
             activeMapType = (MapType)CrossSettings.Current.GetValueOrDefault("activeMapType", (int)MapType.Street);
-            Title = "Map (Agora Spots)";
+            activePinsType = (PinsType)CrossSettings.Current.GetValueOrDefault("activePinsType", (int)PinsType.AgoraSpots);
 
             ToolbarItem item1 = new ToolbarItem("Agora Spots", "", () => {
                 Title = "Map (Agora Spots)";
                 this.showPins(pins_agoraSpots);
+                CrossSettings.Current.AddOrUpdateValue("activePinsType", (int)PinsType.AgoraSpots);
             });
             item1.Order = ToolbarItemOrder.Secondary;
 
             ToolbarItem item2 = new ToolbarItem("Discover Kraków", "", () => {
                 Title = "Map (Discover Kraków)";
                 this.showPins(pins_discover);
+                CrossSettings.Current.AddOrUpdateValue("activePinsType", (int)PinsType.DiscoverKrakow);
             });
             item2.Order = ToolbarItemOrder.Secondary;
 
             ToolbarItem item3 = new ToolbarItem("Hide pins", "", () => {
                 Title = "Map";
                 this.showPins(null);
+                CrossSettings.Current.AddOrUpdateValue("activePinsType", (int)PinsType.HidePins);
             });
             item3.Order = ToolbarItemOrder.Secondary;
 
@@ -137,7 +160,22 @@ namespace AgoraNavigator.GoogleMap
 
             map.MapClicked += Map_MapClicked;
             map.PinClicked += Map_PinClicked;
-            this.showPins(pins_agoraSpots);
+            switch(activePinsType)
+            {
+                case PinsType.AgoraSpots:
+                    Title = "Map (Agora Spots)";
+                    this.showPins(pins_agoraSpots);
+                    break;
+                case PinsType.DiscoverKrakow:
+                    Title = "Map (Discover Kraków)";
+                    this.showPins(pins_discover);
+                    break;
+                case PinsType.HidePins:
+                    Title = "Map";
+                    this.showPins(null);
+                    break;
+            }
+            
 
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(latitude, longitude), Distance.FromMiles(0.05)));
             map.UiSettings.MyLocationButtonEnabled = true;
