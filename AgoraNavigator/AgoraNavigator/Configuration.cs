@@ -29,5 +29,9 @@ namespace AgoraNavigator
         {
             return Device.RuntimePlatform == Device.iOS ? "Poppins-Bold" : "Poppins-Bold.ttf#Poppins-Bold";
         }
+        public static string GetFontAwesome()
+        {
+            return "Font-Awesome.ttf#Font-Awesome";
+        }
     }
 }

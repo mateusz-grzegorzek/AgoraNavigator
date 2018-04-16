@@ -34,12 +34,6 @@ namespace AgoraNavigator.Droid
             });
         }
 
-        protected override void OnNewIntent(Intent intent)
-        {
-            FirebasePushNotificationManager.ProcessIntent(this, intent);
-            base.OnNewIntent(intent);
-        }
-
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);

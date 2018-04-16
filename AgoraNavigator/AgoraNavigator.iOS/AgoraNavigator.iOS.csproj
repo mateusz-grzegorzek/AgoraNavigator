@@ -108,6 +108,7 @@
     <BundleResource Include="Resources\Poppins-Medium.ttf" />
     <BundleResource Include="Resources\Poppins-Regular.ttf" />
     <BundleResource Include="Resources\Poppins-SemiBold.ttf" />
+    <BundleResource Include="Resources\Font-Awesome.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -178,9 +179,6 @@
     <BundleResource Include="Resources\Arrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\task_separator.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BundleResource Include="Resources\Contact_Separator.png" />
   </ItemGroup>
   <ItemGroup>
@@ -203,9 +201,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TasksMasterView_Task_Separator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\schedulePin.png" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
@@ -265,6 +260,15 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Contact_Info_Desk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Map_Pin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Map_Pin_Selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Schedule_Pin.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />

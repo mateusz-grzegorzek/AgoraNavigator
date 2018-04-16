@@ -30,6 +30,16 @@ namespace AgoraNavigator.Tasks
             Console.WriteLine("GamePage");
             tasksMasterPage = new TasksMasterPage();
             Title = "Game of Tasks";
+            Label gameInfoLabel = new Label
+            {
+                Text = "Take the first place and get your fee back!",
+                FontFamily = AgoraFonts.GetPoppinsBold(),
+                TextColor = Color.White,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                HorizontalOptions = LayoutOptions.Center,
+                Margin = new Thickness(10, 2),
+                HorizontalTextAlignment = TextAlignment.Center
+            };
             Label totalPointsLabel = new Label
             {
                 Text = "Your Total Points: ",
@@ -143,8 +153,9 @@ namespace AgoraNavigator.Tasks
             {
                 Orientation = StackOrientation.Horizontal,
                 HorizontalOptions = LayoutOptions.Center,
-                Margin = new Thickness(10, 20)
+                Margin = new Thickness(10, 5)
             };
+
             totalPointsLayout.Children.Add(totalPointsLabel);
             totalPointsLayout.Children.Add(totalPoints);
 
@@ -169,15 +180,16 @@ namespace AgoraNavigator.Tasks
             StackLayout layout = new StackLayout
             {
                 Margin = new Thickness(0, 0),
-                Spacing = 5
+                Spacing = 2
             };
 
+            layout.Children.Add(gameInfoLabel);
             layout.Children.Add(totalPointsLayout);
             layout.Children.Add(gridLayout);
 
-            Content = layout;
             Appearing += OnPageAppearing;
             BackgroundColor = AgoraColor.DarkBlue;
+            Content = new ScrollView { Content = layout };
         }
 
         private async void OnPageAppearing(object sender, EventArgs e)
