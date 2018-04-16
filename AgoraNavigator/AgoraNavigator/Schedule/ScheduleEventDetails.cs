@@ -70,7 +70,7 @@ namespace AgoraNavigator.Schedule
                 {
                     new Image()
                     {
-                        Source = "schedulePin.png",
+                        Source = "Schedule_Pin.png",
                         HeightRequest = 90
                     },
                     new StackLayout()

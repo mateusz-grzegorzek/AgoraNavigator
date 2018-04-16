@@ -193,7 +193,7 @@
     <AndroidResource Include="Resources\drawable\Contact_Separator.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\schedulePin.png" />
+    <AndroidResource Include="Resources\drawable\Schedule_Pin.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Speaker_Icon.png" />
@@ -220,13 +220,10 @@
     <AndroidResource Include="Resources\drawable\Contact_Info_Desk.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\mapPin.png" />
+    <AndroidResource Include="Resources\drawable\Map_Pin.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\pinTestIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\mapPinSelected.png" />
+    <AndroidResource Include="Resources\drawable\Map_Pin_Selected.png" />
   </ItemGroup>
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

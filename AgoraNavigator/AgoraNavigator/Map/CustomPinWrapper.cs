@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms.GoogleMaps;
+﻿using Xamarin.Forms.GoogleMaps;
 
 namespace AgoraNavigator.GoogleMap
 {
     class CustomPinWrapper
     {
-        public static string BackgroundDefault = "mapPin.png";
-        public static string BackgroundSelected = "mapPinSelected.png";
+        public static string BackgroundDefault = "Map_Pin.png";
+        public static string BackgroundSelected = "Map_Pin_Selected.png";
 
         public Pin pin;
 
