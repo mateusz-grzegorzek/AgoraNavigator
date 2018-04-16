@@ -17,6 +17,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)FirebaseMessagingClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Info\BonusInfoPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Popup\IPopup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Info\InfoPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Map\CustomPinView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Map\CustomPinWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Popup\SimplePopup.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>SimplePopup.xaml</DependentUpon>
@@ -59,8 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Czesc.mp3" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Cena.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Czy_moge_zaplacic_karta.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Czy_mozna_tu_palic.mp3" />
@@ -98,8 +99,6 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Tak.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Ulica_krupnicza.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Wino.mp3" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Przepraszam.mp3" />
   </ItemGroup>
 </Project>
