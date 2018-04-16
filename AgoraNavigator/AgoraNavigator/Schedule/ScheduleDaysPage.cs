@@ -13,7 +13,7 @@ namespace AgoraNavigator.Schedule
 
     public class ScheduleDaysPage : CarouselPage
     {
-        private const string _databaseScheduleKey = "schedule";
+        private const string databaseScheduleKey = "schedule";
         private bool userInformedAboutScheduleOutOfDate = false;
 
         public ScheduleDaysPage()
@@ -30,7 +30,7 @@ namespace AgoraNavigator.Schedule
             }
         }
 
-        public void OnAppearing(object sender, EventArgs e)
+        public async void OnAppearing(object sender, EventArgs e)
         {
             bool userInformedAboutUsage = CrossSettings.Current.GetValueOrDefault("userInformedAboutUsage", false);
             if (!userInformedAboutUsage)
@@ -38,17 +38,19 @@ namespace AgoraNavigator.Schedule
                 DependencyService.Get<IPopup>().ShowPopup("Schedule usage", "Swipe left or right to change days!", true);
                 CrossSettings.Current.AddOrUpdateValue("userInformedAboutUsage", true);
             }
+            await FetchScheduleAsync();
         }
 
         public async Task FetchScheduleAsync(bool forceUpdate = false)
         {
-            bool scheduleUpToDate = CrossSettings.Current.GetValueOrDefault("scheduleUpToDate", false);
-            if (!scheduleUpToDate || forceUpdate)
+            int versionInDb = await FirebaseMessagingClient.SendSingleQuery<int>(databaseScheduleKey + "/version");
+            int versionInMemory = CrossSettings.Current.GetValueOrDefault("Schedule:version", 0);
+            if ((versionInMemory < versionInDb) || forceUpdate)
             {
                 try
                 {
                     List<ScheduleItem> itemList = new List<ScheduleItem>();
-                    IReadOnlyCollection<FirebaseObject<ScheduleItem>> items = await FirebaseMessagingClient.SendQuery<ScheduleItem>(_databaseScheduleKey);
+                    IReadOnlyCollection<FirebaseObject<ScheduleItem>> items = await FirebaseMessagingClient.SendQuery<ScheduleItem>(databaseScheduleKey + "/events");
                     DependencyService.Get<IPopup>().ShowPopup("Schedule updating...", "It may take some time!", true);
                     int eventNumber = 1;
                     foreach (FirebaseObject<ScheduleItem> groups in items)
@@ -58,7 +60,7 @@ namespace AgoraNavigator.Schedule
                         eventNumber++;
                     }
                     ProcessDays(itemList);
-                    CrossSettings.Current.AddOrUpdateValue("scheduleUpToDate", true);
+                    CrossSettings.Current.AddOrUpdateValue("Schedule:version", versionInDb);
                     userInformedAboutScheduleOutOfDate = false;
                 }
                 catch (Exception err)

@@ -67,7 +67,13 @@ namespace AgoraNavigator.Downloads
 
             stack = new StackLayout { Spacing = 2 };
             ReloadDownloads();
+            Appearing += OnAppearing;
             Content = new ScrollView { Content = stack };
+        }
+
+        public async void OnAppearing(object sender, EventArgs e)
+        {
+            await FetchDownloadFilesAsync();
         }
 
         private void ReloadDownloads()
@@ -89,12 +95,13 @@ namespace AgoraNavigator.Downloads
 
         public async Task FetchDownloadFilesAsync(bool forceUpdate = false)
         {
-            bool downloadsUpToDate = CrossSettings.Current.GetValueOrDefault("downloadsUpToDate", false);
-            if (!downloadsUpToDate || forceUpdate)
+            int versionInDb = await FirebaseMessagingClient.SendSingleQuery<int>(downloadsScheduleKey + "/version");
+            int versionInMemory = CrossSettings.Current.GetValueOrDefault("Downloads:version", 0);
+            if ((versionInMemory < versionInDb) || forceUpdate)
             {
                 try
                 {
-                    IReadOnlyCollection<FirebaseObject<DownloadFile>> downloadFiles = await FirebaseMessagingClient.SendQuery<DownloadFile>(downloadsScheduleKey);
+                    IReadOnlyCollection<FirebaseObject<DownloadFile>> downloadFiles = await FirebaseMessagingClient.SendQuery<DownloadFile>(downloadsScheduleKey + "/files");
                     filesCounter = 0;
                     foreach (FirebaseObject<DownloadFile> downloadFile in downloadFiles)
                     {
@@ -109,7 +116,7 @@ namespace AgoraNavigator.Downloads
                         ForceLayout();
                     });
                     
-                    CrossSettings.Current.AddOrUpdateValue("downloadsUpToDate", true);
+                    CrossSettings.Current.AddOrUpdateValue("Downloads:version", versionInDb);
                 }
                 catch (Exception err)
                 {
