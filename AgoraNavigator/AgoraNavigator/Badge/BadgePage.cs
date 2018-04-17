@@ -1,6 +1,8 @@
 ﻿using AgoraNavigator.Login;
+#if __ANDROID__
 using Android.Graphics;
 using Plugin.CurrentActivity;
+#endif
 using System;
 using System.IO;
 using Xamarin.Forms;
@@ -99,6 +101,7 @@ namespace AgoraNavigator.Badge
             return "220-" + Users.loggedUser.Id.ToString();
         }
 
+#if __ANDROID__
         private View CreateAndroidView(string code)
         {
             var writer = new ZXing.Mobile.BarcodeWriter
@@ -130,6 +133,7 @@ namespace AgoraNavigator.Badge
             return m;
 
         }
+#endif
 
         private View CreateIOSView(string code)
         {
