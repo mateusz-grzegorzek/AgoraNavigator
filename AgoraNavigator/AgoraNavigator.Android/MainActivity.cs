@@ -5,13 +5,13 @@ using Plugin.Permissions;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Plugin.FirebasePushNotification;
-using Android.Content;
 using Xamarin;
 using ZXing.Mobile;
 using Plugin.DeviceInfo;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Plugin.LocalNotifications;
 
 namespace AgoraNavigator.Droid
 {
@@ -27,7 +27,8 @@ namespace AgoraNavigator.Droid
             FirebasePushNotificationManager.ProcessIntent(this, Intent);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             MobileBarcodeScanner.Initialize(Application);
-            
+            LocalNotificationsImplementation.NotificationIconId = Resource.Drawable.icon;
+
             CrossDevice.Network.WhenStatusChanged().Subscribe(x =>
             {
                 Task.Run(async () => { await FirebaseMessagingClient.NetworkStatusChangedAsync(); });

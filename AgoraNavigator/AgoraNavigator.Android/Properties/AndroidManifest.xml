@@ -14,6 +14,7 @@
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<application android:label="Agora Navigator" android:icon="@drawable/icon" android:theme="@style/MyTheme" android:hardwareAccelerated="false" android:largeHeap="true">
+      <receiver android:name="Plugin.LocalNotifications.ScheduledAlarmHandler" android:enabled="true"></receiver>
 		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDFhKjuQbr-YAHRBkc7JRW0792F9QO21eI" />
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">

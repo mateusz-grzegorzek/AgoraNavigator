@@ -5,6 +5,8 @@ namespace AgoraNavigator.Schedule
 {
     public class ScheduleItem
     {
+        public int EventId { get; set; }
+
         public string Title { get; set; }
 
         public DateTime StartTime { get; set; }

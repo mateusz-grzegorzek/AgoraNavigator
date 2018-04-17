@@ -95,12 +95,13 @@ namespace AgoraNavigator.Downloads
 
         public async Task FetchDownloadFilesAsync(bool forceUpdate = false)
         {
-            int versionInDb = await FirebaseMessagingClient.SendSingleQuery<int>(downloadsScheduleKey + "/version");
-            int versionInMemory = CrossSettings.Current.GetValueOrDefault("Downloads:version", 0);
-            if ((versionInMemory < versionInDb) || forceUpdate)
+            try
             {
-                try
+                int versionInDb = await FirebaseMessagingClient.SendSingleQuery<int>(downloadsScheduleKey + "/version");
+                int versionInMemory = CrossSettings.Current.GetValueOrDefault("Downloads:version", 0);
+                if ((versionInMemory < versionInDb) || forceUpdate)
                 {
+
                     IReadOnlyCollection<FirebaseObject<DownloadFile>> downloadFiles = await FirebaseMessagingClient.SendQuery<DownloadFile>(downloadsScheduleKey + "/files");
                     filesCounter = 0;
                     foreach (FirebaseObject<DownloadFile> downloadFile in downloadFiles)
@@ -115,15 +116,14 @@ namespace AgoraNavigator.Downloads
                         ReloadDownloads();
                         ForceLayout();
                     });
-                    
+
                     CrossSettings.Current.AddOrUpdateValue("Downloads:version", versionInDb);
                 }
-                catch (Exception err)
-                {
-                    Console.WriteLine("FetchDownloadFilesAsync:" + err.ToString());
-                }
             }
-
+            catch (Exception err)
+            {
+                Console.WriteLine("FetchDownloadFilesAsync:" + err.ToString());
+            }
         }
     }
 }

@@ -23,11 +23,7 @@ namespace AgoraNavigator.Schedule
             ItemsSource = new ObservableCollection<DayListGroup>();
             ItemTemplate = new DataTemplate(typeof(ScheduleDayPage));
 
-            int numberOfEvents = CrossSettings.Current.GetValueOrDefault("Schedule_numberOfEvents", 0);
-            if(numberOfEvents > 0)
-            {
-                LoadEventsFromMemory(numberOfEvents);
-            }
+            LoadEventsFromMemory();
         }
 
         public async void OnAppearing(object sender, EventArgs e)
@@ -43,19 +39,20 @@ namespace AgoraNavigator.Schedule
 
         public async Task FetchScheduleAsync(bool forceUpdate = false)
         {
-            int versionInDb = await FirebaseMessagingClient.SendSingleQuery<int>(databaseScheduleKey + "/version");
-            int versionInMemory = CrossSettings.Current.GetValueOrDefault("Schedule:version", 0);
-            if ((versionInMemory < versionInDb) || forceUpdate)
+            try
             {
-                try
+                int versionInDb = await FirebaseMessagingClient.SendSingleQuery<int>(databaseScheduleKey + "/version");
+                int versionInMemory = CrossSettings.Current.GetValueOrDefault("Schedule:version", 0);
+                if ((versionInMemory < versionInDb) || forceUpdate)
                 {
+
                     List<ScheduleItem> itemList = new List<ScheduleItem>();
                     IReadOnlyCollection<FirebaseObject<ScheduleItem>> items = await FirebaseMessagingClient.SendQuery<ScheduleItem>(databaseScheduleKey + "/events");
                     DependencyService.Get<IPopup>().ShowPopup("Schedule updating...", "It may take some time!", true);
                     int eventNumber = 1;
                     foreach (FirebaseObject<ScheduleItem> groups in items)
                     {
-                        SaveEventToMemory(groups.Object, eventNumber);
+                        SaveEventToMemory(int.Parse(groups.Key.ToString().Substring(5, 2)), groups.Object, eventNumber);
                         itemList.Add(groups.Object);
                         eventNumber++;
                     }
@@ -63,39 +60,44 @@ namespace AgoraNavigator.Schedule
                     CrossSettings.Current.AddOrUpdateValue("Schedule:version", versionInDb);
                     userInformedAboutScheduleOutOfDate = false;
                 }
-                catch (Exception err)
-                {
-                    Console.WriteLine(err.ToString());
-                    if(!userInformedAboutScheduleOutOfDate)
-                    {
-                        DependencyService.Get<IPopup>().ShowPopup("No internet connection", "Schedule may be out of date, turn on the internet for updates", false);
-                        userInformedAboutScheduleOutOfDate = true;
-                    }
-                }
-            }   
-        }
-
-        private void LoadEventsFromMemory(int numberOfEvents)
-        {
-            List<ScheduleItem> eventsList = new List<ScheduleItem>();
-            while (numberOfEvents != 0)
-            {
-                ScheduleItem item = new ScheduleItem
-                {
-                    Title = CrossSettings.Current.GetValueOrDefault("Schedule_Title_" + numberOfEvents, ""),
-                    StartTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, "")),
-                    EndTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, "")),
-                    Description = CrossSettings.Current.GetValueOrDefault("Schedule_Description_" + numberOfEvents, ""),
-                    Place = CrossSettings.Current.GetValueOrDefault("Schedule_Place_" + numberOfEvents, ""),
-                    Address = CrossSettings.Current.GetValueOrDefault("Schedule_Address_" + numberOfEvents, ""),
-                    CoordX = CrossSettings.Current.GetValueOrDefault("Schedule_CoordX_" + numberOfEvents, 50.0608255),
-                    CoordY = CrossSettings.Current.GetValueOrDefault("Schedule_CoordY_" + numberOfEvents, 19.9309346)
-                };
-                eventsList.Add(item);
-                numberOfEvents--;
 
             }
-            ProcessDays(eventsList);
+            catch (Exception err)
+            {
+                Console.WriteLine(err.ToString());
+                if (!userInformedAboutScheduleOutOfDate)
+                {
+                    DependencyService.Get<IPopup>().ShowPopup("No internet connection", "Schedule may be out of date, turn on the internet for updates", false);
+                    userInformedAboutScheduleOutOfDate = true;
+                }
+            }
+        }
+
+        public void LoadEventsFromMemory()
+        {
+            int numberOfEvents = CrossSettings.Current.GetValueOrDefault("Schedule_numberOfEvents", 0);
+            if (numberOfEvents > 0)
+            {
+                List<ScheduleItem> eventsList = new List<ScheduleItem>();
+                while (numberOfEvents != 0)
+                {
+                    ScheduleItem item = new ScheduleItem
+                    {
+                        EventId = CrossSettings.Current.GetValueOrDefault("Schedule_EventId_" + numberOfEvents, 0),
+                        Title = CrossSettings.Current.GetValueOrDefault("Schedule_Title_" + numberOfEvents, ""),
+                        StartTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_StartTime_" + numberOfEvents, "")),
+                        EndTime = DateTime.Parse(CrossSettings.Current.GetValueOrDefault("Schedule_EndTime_" + numberOfEvents, "")),
+                        Description = CrossSettings.Current.GetValueOrDefault("Schedule_Description_" + numberOfEvents, ""),
+                        Place = CrossSettings.Current.GetValueOrDefault("Schedule_Place_" + numberOfEvents, ""),
+                        Address = CrossSettings.Current.GetValueOrDefault("Schedule_Address_" + numberOfEvents, ""),
+                        CoordX = CrossSettings.Current.GetValueOrDefault("Schedule_CoordX_" + numberOfEvents, 50.0608255),
+                        CoordY = CrossSettings.Current.GetValueOrDefault("Schedule_CoordY_" + numberOfEvents, 19.9309346)
+                    };
+                    eventsList.Add(item);
+                    numberOfEvents--;
+                }
+                ProcessDays(eventsList);
+            }
         }
 
         private void ProcessDays(List<ScheduleItem> eventsList)
@@ -113,9 +115,14 @@ namespace AgoraNavigator.Schedule
             {
                 foreach (ScheduleItemViewModel item in scheduleItem)
                 {
+                    bool favourite = CrossSettings.Current.GetValueOrDefault("Schedule_Favourite_" + item.scheduleItem.EventId, false);
                     if (item.scheduleItem.StartTime < DateTime.Now)
                     {
                         item.scheduleItem.Color = AgoraColor.LightGray;
+                    }
+                    else if (favourite)
+                    {
+                        item.scheduleItem.Color = Color.Yellow;
                     }
                     else
                     {
@@ -126,8 +133,9 @@ namespace AgoraNavigator.Schedule
             }
         }
 
-        private void SaveEventToMemory(ScheduleItem oneEvent, int eventNumber)
+        private void SaveEventToMemory(int eventId, ScheduleItem oneEvent, int eventNumber)
         {
+            CrossSettings.Current.AddOrUpdateValue("Schedule_EventId_" + eventNumber, eventId);
             CrossSettings.Current.AddOrUpdateValue("Schedule_Title_" + eventNumber, oneEvent.Title);
             CrossSettings.Current.AddOrUpdateValue("Schedule_StartTime_" + eventNumber, oneEvent.StartTime.ToString());
             CrossSettings.Current.AddOrUpdateValue("Schedule_EndTime_" + eventNumber, oneEvent.EndTime.ToString());
