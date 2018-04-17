@@ -79,6 +79,12 @@ namespace AgoraNavigator.Downloads
         private void ReloadDownloads()
         {
             stack.Children.Clear();
+            DownloadButton privacyPolicyFileButton = new DownloadButton
+            {
+                Text = "Privacy Policy",
+                Url = "http://agorakrakow.eu/wp-content/uploads/2018/04/privacy_policy.pdf"
+            };
+            stack.Children.Add(privacyPolicyFileButton);
             filesCounter = CrossSettings.Current.GetValueOrDefault("Downloads:filesCounter", 0);
             int index = 1;
             while (index <= filesCounter)
@@ -95,12 +101,13 @@ namespace AgoraNavigator.Downloads
 
         public async Task FetchDownloadFilesAsync(bool forceUpdate = false)
         {
-            int versionInDb = await FirebaseMessagingClient.SendSingleQuery<int>(downloadsScheduleKey + "/version");
-            int versionInMemory = CrossSettings.Current.GetValueOrDefault("Downloads:version", 0);
-            if ((versionInMemory < versionInDb) || forceUpdate)
+            try
             {
-                try
+                int versionInDb = await FirebaseMessagingClient.SendSingleQuery<int>(downloadsScheduleKey + "/version");
+                int versionInMemory = CrossSettings.Current.GetValueOrDefault("Downloads:version", 0);
+                if ((versionInMemory < versionInDb) || forceUpdate)
                 {
+
                     IReadOnlyCollection<FirebaseObject<DownloadFile>> downloadFiles = await FirebaseMessagingClient.SendQuery<DownloadFile>(downloadsScheduleKey + "/files");
                     filesCounter = 0;
                     foreach (FirebaseObject<DownloadFile> downloadFile in downloadFiles)
@@ -115,15 +122,14 @@ namespace AgoraNavigator.Downloads
                         ReloadDownloads();
                         ForceLayout();
                     });
-                    
+
                     CrossSettings.Current.AddOrUpdateValue("Downloads:version", versionInDb);
                 }
-                catch (Exception err)
-                {
-                    Console.WriteLine("FetchDownloadFilesAsync:" + err.ToString());
-                }
             }
-
+            catch (Exception err)
+            {
+                Console.WriteLine("FetchDownloadFilesAsync:" + err.ToString());
+            }
         }
     }
 }
