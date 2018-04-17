@@ -6,6 +6,7 @@ using UserNotifications;
 using Plugin.FirebasePushNotification;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using KeyboardOverlap;
 
 namespace AgoraNavigator.iOS
 {
@@ -18,6 +19,8 @@ namespace AgoraNavigator.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             Forms.Init();
+            KeyboardOverlap.Forms.Plugin.iOSUnified.KeyboardOverlapRenderer.Init();
+
 
             Xamarin.FormsGoogleMaps.Init(MapsApiKey);
 
