@@ -109,6 +109,7 @@
     <BundleResource Include="Resources\Poppins-Regular.ttf" />
     <BundleResource Include="Resources\Poppins-SemiBold.ttf" />
     <BundleResource Include="Resources\Font-Awesome.ttf" />
+    <Compile Include="MyButtonRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

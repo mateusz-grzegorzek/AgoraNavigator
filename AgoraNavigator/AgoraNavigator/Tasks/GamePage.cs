@@ -28,8 +28,9 @@ namespace AgoraNavigator.Tasks
         public GamePage()
         {
             Console.WriteLine("GamePage");
-            tasksMasterPage = new TasksMasterPage();
             Title = "Game of Tasks";
+            tasksMasterPage = new TasksMasterPage();
+
             Label gameInfoLabel = new Label
             {
                 Text = "Take the first place and get your fee back!",
@@ -40,6 +41,7 @@ namespace AgoraNavigator.Tasks
                 Margin = new Thickness(10, 2),
                 HorizontalTextAlignment = TextAlignment.Center
             };
+
             Label totalPointsLabel = new Label
             {
                 Text = "Your Total Points: ",
@@ -57,16 +59,15 @@ namespace AgoraNavigator.Tasks
                 HorizontalOptions = LayoutOptions.Center
             };
 
-            Button goToTasksButton = new Button
+            StackLayout totalPointsLayout = new StackLayout
             {
-                Text = "GO TO TASKS",
-                BackgroundColor = AgoraColor.Blue,
-                TextColor = AgoraColor.DarkBlue,
-                FontFamily = AgoraFonts.GetPoppinsBold(),
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                HorizontalOptions = LayoutOptions.Center
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.Center,
+                Margin = new Thickness(10, 5)
             };
-            goToTasksButton.Clicked += OnGoToTasksButtonClick;
+            totalPointsLayout.Children.Add(totalPointsLabel);
+            totalPointsLayout.Children.Add(totalPoints);
+
 
             Button scanNewTasksButton = new Button
             {
@@ -75,9 +76,36 @@ namespace AgoraNavigator.Tasks
                 TextColor = AgoraColor.DarkBlue,
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                HorizontalOptions = LayoutOptions.Center
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HeightRequest = 100,
+                WidthRequest = 250,
             };
             scanNewTasksButton.Clicked += OnScanNewTasksButtonClick;
+
+            Button goToTasksButton = new Button
+            {
+                Text = "GO TO TASKS",
+                BackgroundColor = AgoraColor.Blue,
+                TextColor = AgoraColor.DarkBlue,
+                FontFamily = AgoraFonts.GetPoppinsBold(),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HeightRequest = 100,
+                WidthRequest = 200,
+            };
+            goToTasksButton.Clicked += OnGoToTasksButtonClick;
+
+            StackLayout buttonsLayout = new StackLayout
+            {
+                Padding = new Thickness(20, 10),
+                Children = {
+                    scanNewTasksButton,
+                    goToTasksButton
+                }
+            };
+
 
             Label bestPlayersLabel = new Label
             {
@@ -87,11 +115,6 @@ namespace AgoraNavigator.Tasks
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 HorizontalOptions = LayoutOptions.Center
             };
-
-            Grid gridBestPlayersLayout = new Grid();
-
-            gridBestPlayersLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            gridBestPlayersLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             Label userIdLabel = new Label
             {
@@ -111,6 +134,9 @@ namespace AgoraNavigator.Tasks
                 HorizontalOptions = LayoutOptions.Center
             };
 
+            Grid gridBestPlayersLayout = new Grid();
+            gridBestPlayersLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridBestPlayersLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             gridBestPlayersLayout.Children.Add(userIdLabel, 0, 0);
             gridBestPlayersLayout.Children.Add(pointsLabel, 1, 0);
 
@@ -118,6 +144,8 @@ namespace AgoraNavigator.Tasks
             {
                 BackgroundColor = Color.Transparent,
                 IsEnabled = false,
+                Header = gridBestPlayersLayout,
+                SeparatorVisibility = SeparatorVisibility.None,
                 ItemTemplate = new DataTemplate(() =>
                 {
                     Grid grid = new Grid { Padding = new Thickness(1, 1) };
@@ -130,7 +158,7 @@ namespace AgoraNavigator.Tasks
                         TextColor = AgoraColor.Blue,
                         FontFamily = AgoraFonts.GetPoppinsBold(),
                         FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                        HorizontalOptions = LayoutOptions.Center
+                        HorizontalOptions = LayoutOptions.Center,
                     };
                     userId.SetBinding(Label.TextProperty, "userId");
                     Label totalPoints = new Label
@@ -139,59 +167,33 @@ namespace AgoraNavigator.Tasks
                         FontFamily = AgoraFonts.GetPoppinsBold(),
                         HorizontalTextAlignment = TextAlignment.End,
                         FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                        HorizontalOptions = LayoutOptions.Center
+                        HorizontalOptions = LayoutOptions.Center,
                     };
                     totalPoints.SetBinding(Label.TextProperty, "totalPoints");
 
                     grid.Children.Add(userId, 0, 0);
                     grid.Children.Add(totalPoints, 1, 0);
                     grid.BackgroundColor = AgoraColor.DarkBlue;
+
                     return new ViewCell { View = grid };
                 }),
-                SeparatorVisibility = SeparatorVisibility.None
             };
-
-            StackLayout totalPointsLayout = new StackLayout
-            {
-                Orientation = StackOrientation.Horizontal,
-                HorizontalOptions = LayoutOptions.Center,
-                Margin = new Thickness(10, 5)
-            };
-
-            totalPointsLayout.Children.Add(totalPointsLabel);
-            totalPointsLayout.Children.Add(totalPoints);
-
-            Grid gridLayout = new Grid();
-
-            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(5, GridUnitType.Star) });
-            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-
-            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
-            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
-            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
-            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
-            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-
-            gridLayout.Children.Add(scanNewTasksButton, 1, 0);
-            gridLayout.Children.Add(goToTasksButton, 1, 1);
-            gridLayout.Children.Add(bestPlayersLabel, 1, 2);
-            gridLayout.Children.Add(gridBestPlayersLayout, 1, 3);
-            gridLayout.Children.Add(topScorersListView, 1, 4);
 
             StackLayout layout = new StackLayout
             {
-                Margin = new Thickness(0, 0),
+                Margin = new Thickness(0, 15),
                 Spacing = 2
             };
 
             layout.Children.Add(gameInfoLabel);
             layout.Children.Add(totalPointsLayout);
-            layout.Children.Add(gridLayout);
+            layout.Children.Add(buttonsLayout);
+            layout.Children.Add(bestPlayersLabel);
+            layout.Children.Add(topScorersListView);
 
             Appearing += OnPageAppearing;
             BackgroundColor = AgoraColor.DarkBlue;
-            Content = new ScrollView { Content = layout };
+            Content = layout;
         }
 
         private async void OnPageAppearing(object sender, EventArgs e)
