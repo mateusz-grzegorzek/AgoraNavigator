@@ -14,12 +14,15 @@ namespace AgoraNavigator.GoogleMap
         public MapPage(double latitude, double longitude)
         {
             Console.WriteLine("MapPage");
+#if __ANDROID__
             Appearing += OnAppearing;
+#endif
             BarTextColor = AgoraColor.Blue;
             googleMapPage = new GoogleMapPage(latitude, longitude);
             Navigation.PushAsync(googleMapPage);
         }
 
+#if __ANDROID__
         public void OnAppearing(object sender, EventArgs e)
         {
             bool userInformedAboutUsage = CrossSettings.Current.GetValueOrDefault("userInformedAboutMapUsage", false);
@@ -29,6 +32,7 @@ namespace AgoraNavigator.GoogleMap
                 CrossSettings.Current.AddOrUpdateValue("userInformedAboutMapUsage", true);
             }
         }
+#endif
     }
 
     public class GoogleMapPage : ContentPage
@@ -119,7 +123,7 @@ namespace AgoraNavigator.GoogleMap
             new CustomPinWrapper("Sukiennice", "ul. Rynek Główny 3", 50.0616869, 19.9373206, "\uf06e"),
             new CustomPinWrapper("Cracow National Museum", "Al. 3 Maja 1", 50.0604778, 19.9236189, "\uf06e"),
             new CustomPinWrapper("AGH Student Campus", "ul. Józefa Rostafińskiego 7a", 50.068057, 19.9054193, "\uf0fc")
-            
+
         };
 
         public GoogleMapPage(double latitude, double longitude)
@@ -127,31 +131,35 @@ namespace AgoraNavigator.GoogleMap
             activeMapType = (MapType)CrossSettings.Current.GetValueOrDefault("activeMapType", (int)MapType.Street);
             activePinsType = (PinsType)CrossSettings.Current.GetValueOrDefault("activePinsType", (int)PinsType.AgoraSpots);
 
-            ToolbarItem item1 = new ToolbarItem("Agora Spots", "", () => {
+            ToolbarItem item1 = new ToolbarItem("Agora Spots", "", () =>
+            {
                 Title = "Map (Agora Spots)";
                 this.showPins(pins_agoraSpots);
                 CrossSettings.Current.AddOrUpdateValue("activePinsType", (int)PinsType.AgoraSpots);
             });
             item1.Order = ToolbarItemOrder.Secondary;
 
-            ToolbarItem item2 = new ToolbarItem("Discover Kraków", "", () => {
+            ToolbarItem item2 = new ToolbarItem("Discover Kraków", "", () =>
+            {
                 Title = "Map (Discover Kraków)";
                 this.showPins(pins_discover);
                 CrossSettings.Current.AddOrUpdateValue("activePinsType", (int)PinsType.DiscoverKrakow);
             });
             item2.Order = ToolbarItemOrder.Secondary;
 
-            ToolbarItem item3 = new ToolbarItem("Hide pins", "", () => {
+            ToolbarItem item3 = new ToolbarItem("Hide pins", "", () =>
+            {
                 Title = "Map";
                 this.showPins(null);
                 CrossSettings.Current.AddOrUpdateValue("activePinsType", (int)PinsType.HidePins);
             });
             item3.Order = ToolbarItemOrder.Secondary;
 
+#if __ANDROID__
             ToolbarItems.Add(item1);
             ToolbarItems.Add(item2);
             ToolbarItems.Add(item3);
-
+#endif
             map = new Map()
             {
                 IsIndoorEnabled = true,
@@ -160,6 +168,7 @@ namespace AgoraNavigator.GoogleMap
 
             map.MapClicked += Map_MapClicked;
             map.PinClicked += Map_PinClicked;
+#if __ANDROID__
             switch(activePinsType)
             {
                 case PinsType.AgoraSpots:
@@ -175,7 +184,7 @@ namespace AgoraNavigator.GoogleMap
                     this.showPins(null);
                     break;
             }
-            
+#endif
 
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(latitude, longitude), Distance.FromMiles(0.05)));
             map.UiSettings.MyLocationButtonEnabled = true;

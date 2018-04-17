@@ -32,11 +32,13 @@ namespace AgoraNavigator.Menu
                 Title = "Tasks",
                 TargetType = typeof(TasksPage)
             });
+#if __ANDROID__
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Badge",
                 TargetType = typeof(BadgePage)
             });
+#endif
             masterPageItems.Add(new MasterPageItem
             {
                 Title = "Contact",

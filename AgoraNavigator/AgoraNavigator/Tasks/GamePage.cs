@@ -116,6 +116,8 @@ namespace AgoraNavigator.Tasks
 
             topScorersListView = new ListView
             {
+                BackgroundColor = Color.Transparent,
+                IsEnabled = false,
                 ItemTemplate = new DataTemplate(() =>
                 {
                     Grid grid = new Grid { Padding = new Thickness(1, 1) };

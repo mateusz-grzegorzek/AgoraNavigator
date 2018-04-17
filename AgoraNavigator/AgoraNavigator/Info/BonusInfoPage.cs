@@ -127,11 +127,13 @@ namespace AgoraNavigator.Info
             };
             Grid.SetColumnSpan(separator, 2);
             grid.Children.Add(phraseStackLayout, 0, 0);
+            #if __ANDROID__
             if(audioEnabled)
-            {
+            {        
                 SpeakerImage speakerImage = new SpeakerImage(audioFileName);
-                grid.Children.Add(speakerImage, 1, 0);
+                grid.Children.Add(speakerImage, 1, 0);    
             }
+            #endif
             grid.Children.Add(separator, 0, 2, 0, 1);
             layout.Children.Add(grid);
         }

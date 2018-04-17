@@ -88,6 +88,7 @@ namespace AgoraNavigator.Tasks
                 answerEntry = new Entry
                 {
                     TextColor = Color.White,
+                    BackgroundColor = Color.Transparent,
                     FontFamily = AgoraFonts.GetPoppinsMedium(),
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                     VerticalOptions = LayoutOptions.End,
