@@ -257,7 +257,6 @@ namespace AgoraNavigator.Tasks
                             bodyMsg = tasksLeft + " tasks still waiting for discover!";
                         }
                         DependencyService.Get<IPopup>().ShowPopup("New task's founded!", "Go to tasks and solved them all!\n" + bodyMsg, true);
-
                     }
                     else
                     {
