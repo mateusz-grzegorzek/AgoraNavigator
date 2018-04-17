@@ -614,7 +614,7 @@ namespace AgoraNavigator.Tasks
             {
                 id = 38,
                 title = "Talk 2 Hays",
-                description = "During Career Fair approach the representative of Hays and ask for a secret password",
+                description = "During Career Fair approach the representative of Hays, talk about your career opportunities in Poland and ask for a secret password",
                 taskType = TaskType.Text,
                 correctAnswer = "recruitment",
                 scorePoints = 6,
