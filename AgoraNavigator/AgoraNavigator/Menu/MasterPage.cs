@@ -52,6 +52,11 @@ namespace AgoraNavigator.Menu
                 Title = "Bonus info",
                 TargetType = typeof(BonusInfoPage)
             });
+            masterPageItems.Add(new MasterPageItem
+            {
+                Title = "News",
+                TargetType = typeof(NewsPage)
+            });
 
             listView = new ListView
             {

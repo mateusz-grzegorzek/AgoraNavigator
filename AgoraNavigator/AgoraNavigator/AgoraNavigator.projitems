@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Downloads\DownloadsPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FirebaseMessagingClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Info\BonusInfoPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Info\NewsPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Popup\IPopup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Map\CustomPinView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Map\CustomPinWrapper.cs" />
