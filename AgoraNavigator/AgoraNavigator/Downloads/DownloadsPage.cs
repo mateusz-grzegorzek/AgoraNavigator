@@ -79,6 +79,12 @@ namespace AgoraNavigator.Downloads
         private void ReloadDownloads()
         {
             stack.Children.Clear();
+            DownloadButton privacyPolicyFileButton = new DownloadButton
+            {
+                Text = "Privacy Policy",
+                Url = "http://agorakrakow.eu/wp-content/uploads/2018/04/privacy_policy.pdf"
+            };
+            stack.Children.Add(privacyPolicyFileButton);
             filesCounter = CrossSettings.Current.GetValueOrDefault("Downloads:filesCounter", 0);
             int index = 1;
             while (index <= filesCounter)
