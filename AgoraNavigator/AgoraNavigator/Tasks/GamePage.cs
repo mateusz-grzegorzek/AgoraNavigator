@@ -243,10 +243,11 @@ namespace AgoraNavigator.Tasks
                 if (Beacons.IsBluetoothOn() && permissionGranted)
                 {
                     bool result = await Beacons.ScanBeaconForNewTasks();
+                    
                     if (result)
                     {
                         GameTask.ReloadOpenedTasks();
-                        int tasksLeft = GameTask.allTasks.Count - Users.loggedUser.OpenedTasks.Count;
+                        int tasksLeft = GameTask.allTasks.Count - (Users.loggedUser.OpenedTasks.Count + Users.loggedUser.ClosedTasks.Count);
                         string bodyMsg;
                         if(tasksLeft == 0)
                         {
@@ -260,7 +261,7 @@ namespace AgoraNavigator.Tasks
                     }
                     else
                     {
-                        int tasksLeft = GameTask.allTasks.Count - Users.loggedUser.OpenedTasks.Count;
+                        int tasksLeft = GameTask.allTasks.Count - (Users.loggedUser.OpenedTasks.Count + Users.loggedUser.ClosedTasks.Count);
                         string bodyMsg;
                         if (tasksLeft == 0)
                         {
