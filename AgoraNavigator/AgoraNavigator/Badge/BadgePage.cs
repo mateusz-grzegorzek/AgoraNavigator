@@ -96,7 +96,7 @@ namespace AgoraNavigator.Badge
 
         private string BuildBarcodeValue()
         {
-            return "220-" + Users.loggedUser.Id.ToString();
+            return "220-" + Users.loggedUser.Id.ToString().PadLeft(4, '0');
         }
 
         private View CreateAndroidView(string code)
