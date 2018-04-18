@@ -144,7 +144,7 @@ namespace AgoraNavigator.Tasks
             {
                 id = 4,
                 title = "More than one animal is?",
-                description = "Ask Agora organizer what is the name of the AEGEE-Cracow sheep",
+                description = "Ask Agora organizer what is the name of the AEGEE-Krakow sheep",
                 taskType = TaskType.Text,
                 correctAnswer = "mateusz",
                 scorePoints = 2,
@@ -156,7 +156,7 @@ namespace AgoraNavigator.Tasks
             {
                 id = 5,
                 title = "Plenary photo",
-                description = "Take a photo on plenary and send on Instagram with #springagorakrakow",
+                description = "Take a photo on plenary and send on Instagram with #AgoraKrakow",
                 taskType = TaskType.Text,
                 correctAnswer = "$5bm#e85^bk8iy",
                 scorePoints = 4,
@@ -277,7 +277,7 @@ namespace AgoraNavigator.Tasks
             {
                 id = 15,
                 title = "Gunnar Quiz - question #1",
-                description = "How many times did AEGEE-Kraków sign the CdA?",
+                description = "How many times did AEGEE-Krakow sign the CdA?",
                 taskType = TaskType.LongText,
                 scorePoints = 1,
                 taskStatus = TaskStatus.NotStarted,
@@ -614,7 +614,7 @@ namespace AgoraNavigator.Tasks
             {
                 id = 38,
                 title = "Talk 2 Hays",
-                description = "During Career Fair approach the representative of Hays and ask for a secret password",
+                description = "During Career Fair approach the representative of Hays, talk about your career opportunities in Poland and ask for a secret password",
                 taskType = TaskType.Text,
                 correctAnswer = "recruitment",
                 scorePoints = 6,

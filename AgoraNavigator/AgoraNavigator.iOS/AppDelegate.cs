@@ -14,7 +14,7 @@ namespace AgoraNavigator.iOS
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IUNUserNotificationCenterDelegate, IMessagingDelegate
     {
         const string MapsApiKey = "AIzaSyB2Yxx7le70m6vrXQDM8fZd8aEnwc1RWro";
-        public AudioManager AudioManager { get; set; } = new AudioManager();
+        public static AudioManager AudioManager { get; set; } = new AudioManager();
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {

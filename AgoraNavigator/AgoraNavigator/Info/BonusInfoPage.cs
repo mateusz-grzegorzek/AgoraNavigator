@@ -1,4 +1,4 @@
-﻿using Plugin.SimpleAudioPlayer.Abstractions;
+﻿using AgoraNavigator.iOS;
 using System;
 using System.IO;
 using System.Reflection;
@@ -69,17 +69,7 @@ namespace AgoraNavigator.Info
         void OnTapGestureRecognizerTapped(object sender, EventArgs args)
         {
             SpeakerImage speakerImage = (SpeakerImage)sender;
-            ISimpleAudioPlayer player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-            try
-            {
-                Stream stream = GetStreamFromFile(speakerImage.audioFileName);
-                player.Load(stream);
-                player.Play();
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine(err.ToString());
-            }
+            AppDelegate.AudioManager.PlayBackgroundMusic(speakerImage.audioFileName);
         }
 
         Stream GetStreamFromFile(string filename)
@@ -127,13 +117,11 @@ namespace AgoraNavigator.Info
             };
             Grid.SetColumnSpan(separator, 2);
             grid.Children.Add(phraseStackLayout, 0, 0);
-            #if __ANDROID__
             if(audioEnabled)
             {        
                 SpeakerImage speakerImage = new SpeakerImage(audioFileName);
                 grid.Children.Add(speakerImage, 1, 0);    
             }
-            #endif
             grid.Children.Add(separator, 0, 2, 0, 1);
             layout.Children.Add(grid);
         }
@@ -191,7 +179,7 @@ namespace AgoraNavigator.Info
             layout.Children.Add(topicLabel4);
 
             AddPhraseToLayout("Airport - ", "Lotnisko", "Lotnisko.mp3");
-            AddPhraseToLayout("Train - ", "Pociąg", "Pociąg.mp3");
+            AddPhraseToLayout("Train - ", "Pociąg", "Pociag.mp3");
             AddPhraseToLayout("Train station - ", "Dworzec kolejowy", "Dworzec_kolejowy.mp3");
             AddPhraseToLayout("Cracow Gallery - ", "Galeria krakowska", "Galeria_krakowska.mp3");
             AddPhraseToLayout("Krakus Mound - ", "Kopiec Kraka", "Kopiec_kraka.mp3");
