@@ -10,7 +10,35 @@ using AgoraNavigator.iOS;
 namespace AgoraNavigator.iOS
 {
     public class ExtendedTabbedPageRenderer : TabbedRenderer
-    {        
+    {
+        public override void ViewWillLayoutSubviews()
+        {
+            var tabs = Element as TabbedPage;
+            if (tabs != null && TabBar.Items != null)
+            {
+                for (int i = 0; i < TabBar.Items.Length; i++)
+                {
+                    UITabBarItem item = TabBar.Items[i];
+                    if (item != TabBar.SelectedItem)
+                    {
+                        item.SetTitleTextAttributes(new UITextAttributes
+                        {
+                            Font = UIFont.FromName("ChalkboardSE-Light", 28.0F)
+                        }, UIControlState.Normal);
+                    }
+                    else
+                    {
+                        item.SetTitleTextAttributes(new UITextAttributes
+                        {
+                            Font = UIFont.FromName("ChalkboardSE-Bold", 32.0F)
+                        }, UIControlState.Normal);
+                    }
+                }
+            }
+
+            base.ViewWillLayoutSubviews();
+        }
+
         protected override void OnElementChanged(VisualElementChangedEventArgs e)
         {
             base.OnElementChanged(e);

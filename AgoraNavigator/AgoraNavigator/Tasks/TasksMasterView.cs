@@ -50,12 +50,6 @@ namespace AgoraNavigator.Tasks
                         HorizontalOptions = LayoutOptions.End,
                         Margin = new Thickness(10, 10)
                     };
-                    Image task_separator = new Image
-                    {
-                        Source = "TasksMasterView_Task_Separator.png",
-                        VerticalOptions = LayoutOptions.Start,
-                        HorizontalOptions = LayoutOptions.EndAndExpand
-                    };
 
                     grid.Children.Add(taskTitleLabel);
                     if (isOpenTasks)
