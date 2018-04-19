@@ -102,12 +102,12 @@ namespace AgoraNavigator.GoogleMap
             new CustomPinWrapper("Gym", "ul. Reymonta 22", 50.0655713, 19.9083845, "\uf236"),
             new CustomPinWrapper("Auditorium Maximum", "ul. Krupnicza 33", 50.0627189, 19.9251657, "\uf086"),
             new CustomPinWrapper("Institute of Psychology UJ", "ul. Ingardena 6", 50.0616172, 19.9198355, "\uf086"),
-            new CustomPinWrapper("Department of Law and Administration UJ", "ul. Krupnicza 33A", 50.0610109, 19.9328122, "\uf086"),
+            new CustomPinWrapper("Department of Law and Administration UJ", "ul. Krupnicza 33A", 50.0630855, 19.9256148, "\uf086"),
             new CustomPinWrapper("Canteen Nawojka - dinner from the second day", "ul. Reymonta 11", 50.0649061, 19.9183185, "\uf2e7"),
-            new CustomPinWrapper("Stara Zajezdnia", "ul. Świętego Wawrzyńca 12", 50.0501472, 19.9471204, "\uf001"),
-            new CustomPinWrapper("Prozak 2.0", "plac Dominikański 6", 50.0590028, 19.9379979, "\uf001"),
-            new CustomPinWrapper("ZET PE TE", "ul. Dolnych Młynów 10", 50.0645571, 19.9255292, "\uf001"),
-            new CustomPinWrapper("Forty Kleparz", "ul. Kamienna 2", 50.0747908, 19.9376157, "\uf001")
+            new CustomPinWrapper("Stara Zajezdnia - Tuesday", "ul. Świętego Wawrzyńca 12", 50.0501472, 19.9471204, "\uf001"),
+            new CustomPinWrapper("Prozak 2.0 - Wednesday", "plac Dominikański 6", 50.0590028, 19.9379979, "\uf001"),
+            new CustomPinWrapper("ZET PE TE - Thursday", "ul. Dolnych Młynów 10", 50.0645571, 19.9255292, "\uf001"),
+            new CustomPinWrapper("Forty Kleparz - Friday", "ul. Kamienna 2", 50.0747908, 19.9376157, "\uf001")
         };
 
         List<CustomPinWrapper> pins_discover = new List<CustomPinWrapper>()
