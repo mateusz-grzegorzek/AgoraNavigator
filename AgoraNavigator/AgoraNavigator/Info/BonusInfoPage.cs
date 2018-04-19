@@ -189,7 +189,7 @@ namespace AgoraNavigator.Info
             layout.Children.Add(topicLabel4);
 
             AddPhraseToLayout("Airport - ", "Lotnisko", "Lotnisko.mp3");
-            AddPhraseToLayout("Train - ", "Pociąg", "Pociąg.mp3");
+            AddPhraseToLayout("Train - ", "Pociąg", "Pociag.mp3");
             AddPhraseToLayout("Train station - ", "Dworzec kolejowy", "Dworzec_kolejowy.mp3");
             AddPhraseToLayout("Cracow Gallery - ", "Galeria krakowska", "Galeria_krakowska.mp3");
             AddPhraseToLayout("Krakus Mound - ", "Kopiec Kraka", "Kopiec_kraka.mp3");

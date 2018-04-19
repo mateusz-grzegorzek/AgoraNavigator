@@ -107,7 +107,8 @@ namespace AgoraNavigator.GoogleMap
             new CustomPinWrapper("Stara Zajezdnia - Tuesday", "ul. Świętego Wawrzyńca 12", 50.0501472, 19.9471204, "\uf001"),
             new CustomPinWrapper("Prozak 2.0 - Wednesday", "plac Dominikański 6", 50.0590028, 19.9379979, "\uf001"),
             new CustomPinWrapper("ZET PE TE - Thursday", "ul. Dolnych Młynów 10", 50.0645571, 19.9255292, "\uf001"),
-            new CustomPinWrapper("Forty Kleparz - Friday", "ul. Kamienna 2", 50.0747908, 19.9376157, "\uf001")
+            new CustomPinWrapper("Forty Kleparz - Friday", "ul. Kamienna 2", 50.0747908, 19.9376157, "\uf001"),
+            new CustomPinWrapper("Hala TS Wisła - Saturday", "ul. Reymonta 22", 50.0655961, 19.9097579, "\uf001")
         };
 
         List<CustomPinWrapper> pins_discover = new List<CustomPinWrapper>()
