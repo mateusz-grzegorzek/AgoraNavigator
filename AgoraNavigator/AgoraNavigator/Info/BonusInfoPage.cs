@@ -228,7 +228,7 @@ namespace AgoraNavigator.Info
                 "It’s Eros Bendato, head of love god. Why has he band on his eyes? " +
                 "Maybe because the love is blind…?", "", false);
             AddPhraseToLayout(
-                "- ", "In Wawel Castle, there is an exhibition of one painting." +
+                "- ", "In National Museum, there is an exhibition of one painting." +
                 " It is the original painting by Leonardo da Vinci “Lady with an Ermine.” " +
                 "Only five other cities in the world can boast a painting by da Vinci, " +
                 "so don’t even think about letting this opportunity pass by.", "", false);
