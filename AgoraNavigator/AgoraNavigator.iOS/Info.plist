@@ -30,7 +30,8 @@
 	<string>AgoraNavigator</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Poppins-Bold.ttf</string>
+		<!-- FIXME #1: Change the font PostScript name from "Poppins" to "Poppins-Bold" -->
+		<!-- <string>Poppins-Bold.ttf</string> -->
 		<string>Poppins-Light.ttf</string>
 		<string>Poppins-Medium.ttf</string>
 		<string>Poppins-Regular.ttf</string>
