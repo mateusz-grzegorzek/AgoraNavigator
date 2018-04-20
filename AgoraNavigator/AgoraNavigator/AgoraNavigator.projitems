@@ -89,7 +89,6 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Obiad.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Piwo.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Plac_wolnica.mp3" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Pociag.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Poprosze_pol_litra_soplicy.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Prawo_lewo.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Prosze.mp3" />
