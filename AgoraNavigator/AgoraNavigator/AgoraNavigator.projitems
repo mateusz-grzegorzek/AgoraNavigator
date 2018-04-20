@@ -56,7 +56,6 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Popup\SimplePopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Pociag.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Map\" />

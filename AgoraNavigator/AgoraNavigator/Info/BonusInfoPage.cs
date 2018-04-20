@@ -1,4 +1,7 @@
-﻿using AgoraNavigator.iOS;
+﻿#if __IOS__
+using AgoraNavigator.iOS;
+#endif
+using Plugin.SimpleAudioPlayer.Abstractions;
 using System;
 using System.IO;
 using System.Reflection;
@@ -69,7 +72,22 @@ namespace AgoraNavigator.Info
         void OnTapGestureRecognizerTapped(object sender, EventArgs args)
         {
             SpeakerImage speakerImage = (SpeakerImage)sender;
+#if __ANDROID__
+            ISimpleAudioPlayer player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+            try
+            {
+                Stream stream = GetStreamFromFile(speakerImage.audioFileName);
+                player.Load(stream);
+                player.Play();
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.ToString());
+            }
+#endif
+#if __IOS__
             AppDelegate.AudioManager.PlayBackgroundMusic(speakerImage.audioFileName);
+#endif
         }
 
         Stream GetStreamFromFile(string filename)

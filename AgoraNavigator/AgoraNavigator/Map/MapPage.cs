@@ -123,8 +123,11 @@ namespace AgoraNavigator.GoogleMap
             new CustomPinWrapper("Kraków Barbican", "Basztowa", 50.0654663, 19.9416142, "\uf06e"),
             new CustomPinWrapper("Sukiennice", "ul. Rynek Główny 3", 50.0616869, 19.9373206, "\uf06e"),
             new CustomPinWrapper("Cracow National Museum", "Al. 3 Maja 1", 50.0604778, 19.9236189, "\uf06e"),
+            new CustomPinWrapper("Jewish Quarter", "Kazimierz", 50.051967, 19.945652, "\uf06e"),
+            new CustomPinWrapper("Juliusz Słowacki Theatre", "plac Świętego Ducha 1", 50.0639425, 19.9431825, "\uf06e"),
+            new CustomPinWrapper("Wieliczka", "Wieliczka", 49.9871892, 20.0658565, "\uf06e"),
+            new CustomPinWrapper("Oświęcim", "Oświęcim", 50.0362927, 19.2474858, "\uf06e"),
             new CustomPinWrapper("AGH Student Campus", "ul. Józefa Rostafińskiego 7a", 50.068057, 19.9054193, "\uf0fc")
-
         };
 
         public GoogleMapPage(double latitude, double longitude)
