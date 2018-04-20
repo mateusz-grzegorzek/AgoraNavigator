@@ -1,10 +1,10 @@
 ﻿using AgoraNavigator.Login;
+#if __ANDROID__
 using Android.Graphics;
 using Plugin.CurrentActivity;
+#endif
 using System;
-using System.IO;
 using Xamarin.Forms;
-using ZXing.Net.Mobile.Forms;
 
 namespace AgoraNavigator.Badge
 {
@@ -14,11 +14,6 @@ namespace AgoraNavigator.Badge
 
         public BadgePage()
         {
-            if (!Users.isUserLogged)
-            {
-                App.mainPage.ShowLoginScreen(typeof(BadgePage));
-                return;
-            }
             barCodeMasterPage = new BadgeMasterPage();
             Navigation.PushAsync(barCodeMasterPage);
         }
@@ -37,6 +32,46 @@ namespace AgoraNavigator.Badge
             Disappearing += OnDisappearing;
         }
 
+        private View CreateView(string code)
+        {
+            var writer = new ZXing.Mobile.BarcodeWriter
+            {
+                Format = ZXing.BarcodeFormat.CODE_39,
+                Options = new ZXing.Common.EncodingOptions
+                {
+                    Width = 1200,
+                    Height = 256,
+                    Margin = 10
+                }
+            };
+
+            var bitmap = writer.Write(code);
+
+#if __ANDROID__
+            var source = ImageSource.FromStream(() =>
+            {
+                MemoryStream ms = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                return ms;
+            });
+#endif
+
+#if __IOS__
+            var source = ImageSource.FromStream(() => bitmap.AsPNG().AsStream());
+#endif
+
+            Image m = new Image
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                Aspect = Aspect.AspectFit,
+                Source = source
+            };
+
+            return m;
+        }
+
         private void OnDisappearing(object sender, EventArgs e)
         {
             SetBrightness(-1f);
@@ -45,15 +80,7 @@ namespace AgoraNavigator.Badge
         public void OnAppearing(object sender, EventArgs e)
         {
             string barcodeValue = BuildBarcodeValue();
-#if __IOS__
-            View barcode = CreateIOSView(barcodeValue);
-
-#endif
-#if __ANDROID__
-            View barcode = CreateAndroidView(barcodeValue);
-#endif
-
-
+            View barcode = CreateView(barcodeValue);
             Label idLabel = new Label();
             idLabel.HorizontalTextAlignment = TextAlignment.Center;
             idLabel.Text = barcodeValue;
@@ -97,55 +124,6 @@ namespace AgoraNavigator.Badge
         private string BuildBarcodeValue()
         {
             return "220-" + Users.loggedUser.Id.ToString().PadLeft(4, '0');
-        }
-
-        private View CreateAndroidView(string code)
-        {
-            var writer = new ZXing.Mobile.BarcodeWriter
-            {
-                Format = ZXing.BarcodeFormat.CODE_39,
-                Options = new ZXing.Common.EncodingOptions
-                {
-                    Width = 1200,
-                    Height = 256,
-                    Margin = 10
-                }
-            };
-
-            var b = writer.Write(code);
-
-            Image m = new Image
-            {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                Aspect = Aspect.AspectFit,
-                Source = ImageSource.FromStream(() => {
-                    MemoryStream ms = new MemoryStream();
-                    b.Compress(Bitmap.CompressFormat.Png, 100, ms);
-                    ms.Seek(0, SeekOrigin.Begin);
-                    return ms;
-                    })
-            };
-
-            return m;
-
-        }
-
-        private View CreateIOSView(string code)
-        {
-            ZXingBarcodeImageView barcode = new ZXingBarcodeImageView
-            {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                BarcodeFormat = ZXing.BarcodeFormat.CODE_39,
-            };
-            barcode.BarcodeOptions.Width = 600;
-            barcode.BarcodeOptions.Height = 128;
-            barcode.BarcodeOptions.Margin = 10;
-
-            barcode.BarcodeValue = code;
-
-            return barcode;
         }
     }
 }

@@ -29,12 +29,13 @@ namespace AgoraNavigator.Tasks
         {
             Console.WriteLine("TasksMasterPage");
             Title = "Tasks";
-            BackgroundColor = AgoraColor.DarkBlue;
+            BarBackgroundColor = AgoraColor.DarkBlue;
             BarTextColor = AgoraColor.Blue;
 
             openedTasksView = new TasksMasterView(Users.loggedUser.OpenedTasks, true);
             openedTasksView.Title = "OPEN";
             this.Children.Add(openedTasksView);
+
             closedTasksView = new TasksMasterView(Users.loggedUser.ClosedTasks, false);
             closedTasksView.Title = "CLOSED";
             this.Children.Add(closedTasksView);

@@ -34,6 +34,7 @@ namespace AgoraNavigator.Menu
             contactPage = new ContactPage();
             downloadsPage = new DownloadsPage();
             bonusInfoPage = new BonusInfoPage();
+            badgePage = new BadgePage();
             newsPage = new NewsPage();
 
             masterPage.listView.ItemSelected += OnItemSelected;
@@ -65,6 +66,9 @@ namespace AgoraNavigator.Menu
                     break;
                 case "BonusInfoPage":
                     Detail = bonusInfoPage;
+                    break;
+                case "BadgePage":
+                    Detail = badgePage;
                     break;
             }
         }

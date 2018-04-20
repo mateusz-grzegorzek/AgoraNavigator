@@ -16,8 +16,11 @@ namespace AgoraNavigator.Tasks
         {
             tasksListView = new ListView
             {
-                ItemsSource = tasks,
+                BackgroundColor = AgoraColor.DarkBlue,
+                SeparatorVisibility = SeparatorVisibility.Default,
+                SeparatorColor = AgoraColor.LightGray,
                 HasUnevenRows = true,
+                ItemsSource = tasks,
                 ItemTemplate = new DataTemplate(() =>
                 {
                     Grid grid = new Grid
@@ -27,6 +30,10 @@ namespace AgoraNavigator.Tasks
                     };
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
+                    if (!isOpenTasks)
+                    {
+                        grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
+                    }
 
                     Label taskTitleLabel = new Label
                     {
@@ -43,29 +50,21 @@ namespace AgoraNavigator.Tasks
                         HorizontalOptions = LayoutOptions.End,
                         Margin = new Thickness(10, 10)
                     };
-                    Image task_separator = new Image
-                    {
-                        Source = "TasksMasterView_Task_Separator.png",
-                        VerticalOptions = LayoutOptions.Start,
-                        HorizontalOptions = LayoutOptions.EndAndExpand
-                    };
 
                     grid.Children.Add(taskTitleLabel);
-                    if(isOpenTasks)
+                    if (isOpenTasks)
                     {
                         grid.Children.Add(arrow, 1, 0);
                     }
-                    Grid.SetColumnSpan(task_separator, 2);
-                    grid.Children.Add(task_separator, 0, 2, 0, 1);
                     grid.BackgroundColor = AgoraColor.DarkBlue;
                     return new ViewCell { View = grid };
                 }),
-                SeparatorVisibility = SeparatorVisibility.None
             };
             tasksListView.ItemTapped += OnTaskTitleClick;
 
             Content = tasksListView;
             BackgroundColor = AgoraColor.DarkBlue;
+            IsEnabled = isOpenTasks ? true : false;
         }
 
         public async void OnTaskTitleClick(object sender, ItemTappedEventArgs e)
