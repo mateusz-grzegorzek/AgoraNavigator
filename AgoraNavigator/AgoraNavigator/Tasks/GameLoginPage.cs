@@ -47,7 +47,7 @@ namespace AgoraNavigator.Tasks
             }
             else
             {
-                infoLabel.Text = "Login to use\nyour virtual badge!",
+                infoLabel.Text = "Login to use\nyour virtual badge!";
             }
 
             Label idLabel = new Label
