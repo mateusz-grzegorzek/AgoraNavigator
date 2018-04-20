@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using AgoraNavigator.Menu;
 using Plugin.Permissions.Abstractions;
+using Plugin.Settings;
 
 namespace AgoraNavigator.Tasks
 {
@@ -70,6 +71,8 @@ namespace AgoraNavigator.Tasks
                 Placeholder = "XXX-XXXX",
                 HorizontalOptions = LayoutOptions.Center
             };
+            string idInMemory = CrossSettings.Current.GetValueOrDefault("GameLogin:ID", "");
+            idEntry.Text += idInMemory;
             idEntry.TextChanged += OnIdTextChanged;
 
             Label pinLabel = new Label
@@ -92,6 +95,8 @@ namespace AgoraNavigator.Tasks
                 IsPassword = true,
                 HorizontalOptions = LayoutOptions.Center
             };
+            string pinInMemory = CrossSettings.Current.GetValueOrDefault("GameLogin:PIN", "");
+            pinEntry.Text += pinInMemory;
             pinEntry.TextChanged += OnPinTextChanged;
 
             Button loginButton = new Button
@@ -260,6 +265,8 @@ namespace AgoraNavigator.Tasks
                 JObject userInfo = await FirebaseMessagingClient.SendSingleQuery<JObject>(databasePath);
                 Users.InitUserData(Convert.ToInt32(id), Convert.ToInt32(pin), userInfo);
                 DependencyService.Get<IPopup>().ShowPopup("Login successful!", "Start the Game of Tasks or use your virtual badge!", true);
+                CrossSettings.Current.AddOrUpdateValue("GameLogin:ID", id);
+                CrossSettings.Current.AddOrUpdateValue("GameLogin:PIN", pin);
                 App.mainPage.NavigateTo(_navigateToPage);
             }
             catch (Exception err)
