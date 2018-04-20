@@ -103,7 +103,7 @@ namespace AgoraNavigator.Menu
                     case "Schedule":
                         Detail = new SchedulePage();
                         break;
-                    case "Tasks":
+                    case "Game of Tasks":
                         if (Users.isUserLogged)
                         {
                             Detail = new TasksPage();
