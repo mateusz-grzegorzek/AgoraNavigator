@@ -29,7 +29,7 @@ namespace AgoraNavigator.Menu
             });
             masterPageItems.Add(new MasterPageItem
             {
-                Title = "Tasks",
+                Title = "Game of Tasks",
                 TargetType = typeof(TasksPage)
             });
             masterPageItems.Add(new MasterPageItem
