@@ -46,13 +46,6 @@ namespace AgoraNavigator.Contact
             List<Contact> contactsList = new List<Contact>();
             contactsList.Add(new Contact
             {
-                Photo = "Contact_Photo_Karolina_Lapczyk.png",
-                Name = "Karolina Lapczyk",
-                Position = "Main Coordinator",
-                PhoneNumber = "+48512088789"
-            });
-            contactsList.Add(new Contact
-            {
                 Photo = "Contact_Photo_Katarzyna_Szubartowska.png",
                 Name = "Kasia Szubartowska",
                 Position = "Incoming",
@@ -96,7 +89,7 @@ namespace AgoraNavigator.Contact
             contactsList.Add(new Contact
             {
                 Photo = "Contact_999.png",
-                Name = "Police",
+                Name = "Ambulance",
                 Position = "",
                 PhoneNumber = "999"
             });
