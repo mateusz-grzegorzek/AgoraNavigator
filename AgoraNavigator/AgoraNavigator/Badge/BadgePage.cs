@@ -4,6 +4,7 @@ using Android.Graphics;
 using Plugin.CurrentActivity;
 #endif
 using System;
+using System.IO;
 using Xamarin.Forms;
 
 namespace AgoraNavigator.Badge

@@ -30,6 +30,7 @@ namespace AgoraNavigator.Tasks
             Console.WriteLine("TasksMasterPage");
             Title = "Tasks";
             BarBackgroundColor = AgoraColor.DarkBlue;
+            BackgroundColor = AgoraColor.DarkBlue;
             BarTextColor = AgoraColor.Blue;
 
             openedTasksView = new TasksMasterView(Users.loggedUser.OpenedTasks, true);

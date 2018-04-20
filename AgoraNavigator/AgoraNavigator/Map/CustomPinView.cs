@@ -21,6 +21,7 @@ namespace AgoraNavigator.GoogleMap
                 FontSize = 28,
                 Opacity = 0.5,
                 FontFamily = AgoraFonts.GetFontAwesome(),
+                //HorizontalOptions = LayoutOptions.Center,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center
             };
