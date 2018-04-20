@@ -31,7 +31,7 @@ namespace AgoraNavigator
         }
         public static string GetFontAwesome()
         {
-            return "Font-Awesome.ttf#Font-Awesome";
+            return Device.RuntimePlatform == Device.iOS ? "Font-Awesome" : "Font-Awesome.ttf#Font-Awesome";
         }
     }
 }
