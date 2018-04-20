@@ -27,8 +27,7 @@ namespace AgoraNavigator
         }
         public static string GetPoppinsBold()
         {
-            // FIXME #2: When the #1 fixed then change "Poppins-SemiBold" to "Poppins-Bold"
-            return Device.RuntimePlatform == Device.iOS ? "Poppins-SemiBold" : "Poppins-SemiBold.ttf#Poppins-SemiBold";
+            return Device.RuntimePlatform == Device.iOS ? "Poppins-Bold" : "Poppins-SemiBold.ttf#Poppins-SemiBold";
         }
         public static string GetFontAwesome()
         {
