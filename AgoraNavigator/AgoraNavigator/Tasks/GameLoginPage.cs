@@ -36,12 +36,19 @@ namespace AgoraNavigator.Tasks
             _navigateToPage = navigateTo;
             infoLabel = new Label
             {
-                Text = "Login to use\nall cool features!",
                 FontFamily = AgoraFonts.GetPoppinsBold(),
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 TextColor = AgoraColor.Blue,
                 HorizontalTextAlignment = TextAlignment.Center,
             };
+            if(navigateTo == typeof(TasksPage))
+            {
+                infoLabel.Text = "Play the game\nand win your fee back!";
+            }
+            else
+            {
+                infoLabel.Text = "Login to use\nyour virtual badge!",
+            }
 
             Label idLabel = new Label
             {
