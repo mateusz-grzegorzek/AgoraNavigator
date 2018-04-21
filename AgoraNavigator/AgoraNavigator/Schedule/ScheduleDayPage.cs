@@ -32,6 +32,8 @@ namespace AgoraNavigator.Schedule
             {
                 ItemTemplate = new DataTemplate(typeof(ScheduleItemCell)),
                 HasUnevenRows = true,
+                SeparatorColor = AgoraColor.Dark,
+                SeparatorVisibility = SeparatorVisibility.Default
             };
             scheduleItemsListView.SetBinding(ListView.ItemsSourceProperty, "Items");
             scheduleItemsListView.ItemSelected += OnScheduleItemSelected;
@@ -41,6 +43,7 @@ namespace AgoraNavigator.Schedule
             stack.Children.Add(dayLabel);
             stack.Children.Add(scheduleItemsListView);
             CompressedLayout.SetIsHeadless(stack, true);
+            BackgroundColor = AgoraColor.LightGray;
             Content = stack;
         }
 

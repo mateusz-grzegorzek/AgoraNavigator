@@ -296,19 +296,10 @@
     <BundleResource Include="Resources\Login.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\entry_separator.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BundleResource Include="Resources\Arrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\Contact_Separator.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BundleResource Include="Resources\Contact_Phone_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Contact_Photo_Karolina_Lapczyk.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Hamburger_Icon.png" />
@@ -321,9 +312,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Menu_Separator.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\TasksMasterView_Task_Separator.png" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
@@ -359,9 +347,15 @@
     <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Default-568h%402x~iphone.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-120.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-167.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-120.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-167.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Speaker_Icon.png" />
@@ -404,7 +398,8 @@
     <ITunesArtwork Include="iTunesArtwork" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Sounds\" />
+  	<Folder Include="Sounds\" />
+    <BundleResource Include="Resources\Separator_DarkBlue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\AgoraNavigator\AgoraNavigator.projitems" Label="Shared" />

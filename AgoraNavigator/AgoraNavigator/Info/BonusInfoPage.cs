@@ -130,7 +130,7 @@ namespace AgoraNavigator.Info
             
             Image separator = new Image
             {
-                Source = "Contact_Separator.png",
+                Source = "Separator_DarkBlue.png",
                 VerticalOptions = LayoutOptions.End,
             };
             Grid.SetColumnSpan(separator, 2);

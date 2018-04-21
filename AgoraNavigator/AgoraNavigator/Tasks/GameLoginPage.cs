@@ -242,7 +242,7 @@ namespace AgoraNavigator.Tasks
             if (!isLoginStarted)
             {
                 isLoginStarted = true;
-                if (idEntry.Text != null && pinEntry.Text != null)
+                if (idEntry.Text != null && pinEntry.Text != null && idEntry.Text.Length == 8 && pinEntry.Text.Length == 4)
                 {
                     Console.WriteLine("OnLoginButtonClicked:idEntry=" + idEntry.Text + ", pinEntry=" + pinEntry.Text);
                     String id = idEntry.Text.Substring(4, 4);
