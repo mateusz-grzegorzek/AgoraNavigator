@@ -133,7 +133,7 @@ namespace AgoraNavigator.Tasks
 
                     if (result != null)
                     {
-                        await LoginUsingCodeAsync(result.Text);
+                        await LoginUsingCodeAsync(result.Text.Substring(4, 9));
                     }
                 }
             };
