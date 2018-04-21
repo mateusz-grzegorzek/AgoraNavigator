@@ -6,3 +6,5 @@ obj/
 
 # Mac system related files
 .DS_Store
+AgoraNavigator/AgoraNavigator.Android/google-services.json
+AgoraNavigator/AgoraNavigator/Tasks/GameTask.cs

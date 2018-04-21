@@ -98,6 +98,8 @@ namespace AgoraNavigator.Contact
             {
                 ItemsSource = contactsList,
                 HasUnevenRows = true,
+                SeparatorColor = AgoraColor.DarkBlue,
+                SeparatorVisibility = SeparatorVisibility.Default,
                 ItemTemplate = new DataTemplate(() =>
                 {
                     Grid grid = new Grid
@@ -113,11 +115,6 @@ namespace AgoraNavigator.Contact
                     grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20) });
                     grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
 
-                    Image separatorStart = new Image
-                    {
-                        Source = "Contact_Separator.png",
-                        VerticalOptions = LayoutOptions.Start
-                    };
                     Image photo = new Image
                     {
                         VerticalOptions = LayoutOptions.Center
@@ -157,11 +154,6 @@ namespace AgoraNavigator.Contact
                         VerticalOptions = LayoutOptions.Center,
                         Margin = new Thickness(10, 10)
                     };
-                    Image separatorEnd = new Image
-                    {
-                        Source = "Contact_Separator.png",
-                        VerticalOptions = LayoutOptions.End
-                    };
 
                     Grid.SetRowSpan(photo, 3);
                     grid.Children.Add(photo, 0, 1, 0, 3);
@@ -169,11 +161,6 @@ namespace AgoraNavigator.Contact
                     grid.Children.Add(nameLabel, 1, 0);
                     grid.Children.Add(positionLabel, 1, 1);
                     grid.Children.Add(phoneNumberLabel, 1, 2);
-
-                    Grid.SetColumnSpan(separatorStart, 3);
-                    Grid.SetColumnSpan(separatorEnd, 3);
-                    grid.Children.Add(separatorStart, 0, 3, 0, 1);
-                    grid.Children.Add(separatorEnd, 0, 3, 2, 3);
 
                     Grid.SetRowSpan(phoneIcon, 3);
                     grid.Children.Add(phoneIcon, 2, 3, 0, 3);
