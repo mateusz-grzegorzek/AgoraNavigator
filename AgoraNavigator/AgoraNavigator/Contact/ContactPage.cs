@@ -63,7 +63,7 @@ namespace AgoraNavigator.Contact
                 Photo = "Contact_Info_Desk.png",
                 Name = "Info Desk",
                 Position = "Agora Information",
-                PhoneNumber = "+791628161"
+                PhoneNumber = "+48791628161"
             });
             contactsList.Add(new Contact
             {
