@@ -22,7 +22,7 @@ namespace AgoraNavigator.Droid
         {
             base.OnCreate();
             RegisterActivityLifecycleCallbacks(this);
-            FirebasePushNotificationManager.Initialize(this, true);
+            FirebasePushNotificationManager.Initialize(this, false);
         }
 
         public override void OnTerminate()

@@ -25,7 +25,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.AgoraNavigator.iOS</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.0.2</string>
 	<key>CFBundleName</key>
 	<string>AgoraNavigator</string>
 	<key>UIAppFonts</key>
@@ -36,10 +36,6 @@
 		<string>Poppins-Regular.ttf</string>
 		<string>Poppins-SemiBold.ttf</string>
 	</array>
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
-	<key>XSLaunchImageAssets</key>
-	<string>Assets.xcassets/LaunchImage.launchimage</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>NSExceptionDomains</key>
@@ -69,5 +65,9 @@
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Do you allow access to your Calendar (it is needed for favorite event notification)? :)</string>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcon.appiconset</string>
 </dict>
 </plist>
