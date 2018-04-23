@@ -303,26 +303,35 @@ namespace AgoraNavigator.Tasks
                     }
                     break;
                 case "The first are the best":
-                    databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.Id.ToString().PadLeft(4, '0');
-                    if (FirebaseMessagingClient.SendMessage(databasePath, "1"))
+                    result = await Beacons.ScanForBeacon(Beacons.beaconGt6e);
+                    if (result)
                     {
-                        DependencyService.Get<IPopup>().ShowPopup("Great!", "Now check if you were first!", true);
-                        result = true;
-
-                        Task delayTask = Task.Run(async () =>
+                        databasePath = tasksPath + actualTask.dbName + "/Active/" + Users.loggedUser.Id.ToString().PadLeft(4, '0');
+                        if (FirebaseMessagingClient.SendMessage(databasePath, "1"))
                         {
-                            await Task.Delay(30 * 1000);
-                            if (actualTask.taskStatus != GameTask.TaskStatus.Completed)
+                            DependencyService.Get<IPopup>().ShowPopup("Great!", "Now check if you were first!", true);
+                            result = true;
+
+                            Task delayTask = Task.Run(async () =>
                             {
-                                actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
-                                answerButton.Text = "START TASK";
-                                ForceLayout();
-                            }
-                        });
+                                await Task.Delay(30 * 1000);
+                                if (actualTask.taskStatus != GameTask.TaskStatus.Completed)
+                                {
+                                    actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
+                                    answerButton.Text = "START TASK";
+                                    ForceLayout();
+                                }
+                            });
+                        }
+                        else
+                        {
+                            DependencyService.Get<IPopup>().ShowPopup("No internet connection", "You need internet connection to complete this task!", false);
+                            actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
+                        }
                     }
                     else
                     {
-                        DependencyService.Get<IPopup>().ShowPopup("No internet connection", "You need internet connection to complete this task!", false);
+                        DependencyService.Get<IPopup>().ShowPopup("You're not near beacon!", "Come closer to beacon to complete this task!", false);
                         actualTask.taskStatus = GameTask.TaskStatus.NotStarted;
                     }
                     break;
