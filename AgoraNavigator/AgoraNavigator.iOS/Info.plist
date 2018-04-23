@@ -19,7 +19,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>10.3</string>
+	<string>9.3</string>
 	<key>CFBundleDisplayName</key>
 	<string>Agora Navigator</string>
 	<key>CFBundleIdentifier</key>
@@ -35,6 +35,7 @@
 		<string>Poppins-Medium.ttf</string>
 		<string>Poppins-Regular.ttf</string>
 		<string>Poppins-SemiBold.ttf</string>
+		<string>Font-Awesome.ttf</string>
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>

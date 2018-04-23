@@ -1,7 +1,7 @@
 ﻿#if __IOS__
 using AgoraNavigator.iOS;
 #endif
-using Plugin.SimpleAudioPlayer.Abstractions;
+using Plugin.SimpleAudioPlayer;
 using System;
 using System.IO;
 using System.Reflection;
