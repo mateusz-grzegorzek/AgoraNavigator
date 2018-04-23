@@ -72,7 +72,7 @@ namespace AgoraNavigator.Tasks
             bool showTaskDetails = false;
             GameTask task = (GameTask)e.Item;
             Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.id=" + task.id + ", completed=" + task.taskStatus);
-            if (task.taskStatus == TaskStatus.NotStarted)
+            if (task.taskStatus != TaskStatus.Completed)
             {
                 Console.WriteLine("TasksMasterView:OnTaskTitleClick:task.needBluetoothAndLocation=" + task.needBluetoothAndLocation);
                 if (task.needBluetoothAndLocation)

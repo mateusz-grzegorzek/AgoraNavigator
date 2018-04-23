@@ -192,7 +192,7 @@ namespace AgoraNavigator.Tasks
                                 bool result;
                                 if (actualTask.title == "Adventurer quest")
                                 {
-                                    result = await Beacons.ScanForBeacon(Beacons.beaconFHNj);
+                                    result = await Beacons.ScanForBeacon(Beacons.beaconUQwa);
                                     if (result)
                                     {
                                         await GamePage.tasksMasterPage.closeTask(actualTask);

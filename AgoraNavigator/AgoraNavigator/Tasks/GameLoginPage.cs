@@ -261,7 +261,7 @@ namespace AgoraNavigator.Tasks
         {
             try
             {
-                String databasePath = "/users/" + id + "/" + pin;
+                String databasePath = "/agora_users/" + id + "/" + pin;
                 JObject userInfo = await FirebaseMessagingClient.SendSingleQuery<JObject>(databasePath);
                 Users.InitUserData(Convert.ToInt32(id), Convert.ToInt32(pin), userInfo);
                 DependencyService.Get<IPopup>().ShowPopup("Login successful!", "Start the Game of Tasks or use your virtual badge!", true);
