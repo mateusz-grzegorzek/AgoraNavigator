@@ -99,4 +99,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Wino.mp3" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Przepraszam.mp3" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Audio\Pociag.mp3" />
+  </ItemGroup>
 </Project>
