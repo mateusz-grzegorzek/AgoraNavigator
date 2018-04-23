@@ -57,23 +57,23 @@ namespace AgoraNavigator.Info
         {
             stack.Children.Clear();
             newsCounter = CrossSettings.Current.GetValueOrDefault("News:newsCounter", 0);
-            int index = 1;
-            while (index <= newsCounter)
+            while (newsCounter > 0)
             {
                 StackLayout layoutNews = new StackLayout
                 {
+                    Margin = new Thickness(5, 5),
                     Spacing = 5
                 };
                 Label newsTitle = new Label
                 {
-                    Text = CrossSettings.Current.GetValueOrDefault("News:Title:" + index, ""),
+                    Text = CrossSettings.Current.GetValueOrDefault("News:Title:" + newsCounter, ""),
                     TextColor = AgoraColor.DarkBlue,
                     FontFamily = AgoraFonts.GetPoppinsBold(),
                     FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Button)),
                 };
                 Label newsBody = new Label
                 {
-                    Text = CrossSettings.Current.GetValueOrDefault("News:Body:" + index, ""),
+                    Text = CrossSettings.Current.GetValueOrDefault("News:Body:" + newsCounter, ""),
                     TextColor = AgoraColor.Blue,
                     FontFamily = AgoraFonts.GetPoppinsRegular(),
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
@@ -86,7 +86,7 @@ namespace AgoraNavigator.Info
                 layoutNews.Children.Add(newsTitle);
                 layoutNews.Children.Add(newsBody);
                 layoutNews.Children.Add(separator);
-                index++;
+                newsCounter--;
                 stack.Children.Add(layoutNews);
             }
         }
