@@ -86,7 +86,10 @@ namespace AgoraNavigator.Info
             }
 #endif
 #if __IOS__
-            AppDelegate.AudioManager.PlayBackgroundMusic(speakerImage.audioFileName);
+            string filename = speakerImage.audioFileName;
+            filename = filename.Remove(filename.Length - 3);
+            filename = filename + "wav";
+            AppDelegate.AudioManager.PlaySound(filename);
 #endif
         }
 

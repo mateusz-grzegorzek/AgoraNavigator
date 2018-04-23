@@ -94,7 +94,6 @@ namespace AgoraNavigator.iOS
 
         public override void WillEnterForeground(UIApplication application)
         {
-            AudioManager.ReactivateAudioSession();
             AudioManager.RestartBackgroundMusic();
         }
 

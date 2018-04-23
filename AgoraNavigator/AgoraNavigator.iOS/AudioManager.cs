@@ -61,9 +61,6 @@ namespace AgoraNavigator.iOS
         {
             NSUrl songURL;
 
-            filename = filename.Remove(filename.Length - 3);
-            filename = filename + "wav";
-
             // Music enabled?
             if (!MusicOn) return;
 
@@ -74,27 +71,23 @@ namespace AgoraNavigator.iOS
                 backgroundMusic.Stop();
                 backgroundMusic.Dispose();
             }
-            var session = AVAudioSession.SharedInstance();
-            session.SetCategory(AVAudioSessionCategory.Playback);
-            session.SetActive(true);
 
             // Initialize background music
             songURL = new NSUrl("Sounds/" + filename);
             NSError err;
             backgroundMusic = new AVAudioPlayer(songURL, "wav", out err);
             backgroundMusic.Volume = MusicVolume;
-            backgroundMusic.FinishedPlaying += delegate
-            { 
+            backgroundMusic.FinishedPlaying += delegate {
+                // backgroundMusic.Dispose(); 
                 backgroundMusic = null;
             };
-            backgroundMusic.NumberOfLoops = 0;
+            backgroundMusic.NumberOfLoops = -1;
             backgroundMusic.Play();
             backgroundSong = filename;
         }
 
         public void StopBackgroundMusic()
         {
-
             // If any background music is playing, stop it
             backgroundSong = "";
             if (backgroundMusic != null)
@@ -106,7 +99,6 @@ namespace AgoraNavigator.iOS
 
         public void SuspendBackgroundMusic()
         {
-
             // If any background music is playing, stop it
             if (backgroundMusic != null)
             {
@@ -117,7 +109,6 @@ namespace AgoraNavigator.iOS
 
         public void RestartBackgroundMusic()
         {
-
             // Music enabled?
             if (!MusicOn) return;
 
@@ -131,6 +122,7 @@ namespace AgoraNavigator.iOS
         public void PlaySound(string filename)
         {
             NSUrl songURL;
+
 
             // Music enabled?
             if (!EffectsOn) return;
