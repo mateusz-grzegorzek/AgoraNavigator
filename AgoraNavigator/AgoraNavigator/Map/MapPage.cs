@@ -14,25 +14,10 @@ namespace AgoraNavigator.GoogleMap
         public MapPage(double latitude, double longitude)
         {
             Console.WriteLine("MapPage");
-#if __ANDROID__
-            Appearing += OnAppearing;
-#endif
             BarTextColor = AgoraColor.Blue;
             googleMapPage = new GoogleMapPage(latitude, longitude);
             Navigation.PushAsync(googleMapPage);
         }
-
-#if __ANDROID__
-        public void OnAppearing(object sender, EventArgs e)
-        {
-            bool userInformedAboutUsage = CrossSettings.Current.GetValueOrDefault("userInformedAboutMapUsage", false);
-            if (!userInformedAboutUsage)
-            {
-                DependencyService.Get<IPopup>().ShowPopup("Map usage", "Click on icon in upper right corner to change views!", true);
-                CrossSettings.Current.AddOrUpdateValue("userInformedAboutMapUsage", true);
-            }
-        }
-#endif
     }
 
     public class GoogleMapPage : ContentPage
@@ -47,10 +32,9 @@ namespace AgoraNavigator.GoogleMap
         public enum PinsType
         {
             AgoraSpots = 0,
-            DiscoverKrakow = 1,
-            HidePins = 2
+            DiscoverKrakow = 1
         };
-        PinsType activePinsType;
+        static PinsType activePinsType;
 
         public class MapButton : Button
         {
@@ -132,38 +116,27 @@ namespace AgoraNavigator.GoogleMap
 
         public GoogleMapPage(double latitude, double longitude)
         {
+            Title = "Map";
             activeMapType = (MapType)CrossSettings.Current.GetValueOrDefault("activeMapType", (int)MapType.Street);
             activePinsType = (PinsType)CrossSettings.Current.GetValueOrDefault("activePinsType", (int)PinsType.AgoraSpots);
 
-            ToolbarItem item1 = new ToolbarItem("Agora Spots", "", () =>
+            ToolbarItem item1 = new ToolbarItem("AGORA SPOTS", "", () =>
             {
-                Title = "Map (Agora Spots)";
                 this.showPins(pins_agoraSpots);
                 CrossSettings.Current.AddOrUpdateValue("activePinsType", (int)PinsType.AgoraSpots);
             });
             item1.Order = ToolbarItemOrder.Secondary;
 
-            ToolbarItem item2 = new ToolbarItem("Discover Kraków", "", () =>
+            ToolbarItem item2 = new ToolbarItem("DISCOVER KRAKÓW", "", () =>
             {
-                Title = "Map (Discover Kraków)";
                 this.showPins(pins_discover);
                 CrossSettings.Current.AddOrUpdateValue("activePinsType", (int)PinsType.DiscoverKrakow);
             });
             item2.Order = ToolbarItemOrder.Secondary;
 
-            ToolbarItem item3 = new ToolbarItem("Hide pins", "", () =>
-            {
-                Title = "Map";
-                this.showPins(null);
-                CrossSettings.Current.AddOrUpdateValue("activePinsType", (int)PinsType.HidePins);
-            });
-            item3.Order = ToolbarItemOrder.Secondary;
-
-#if __ANDROID__
             ToolbarItems.Add(item1);
             ToolbarItems.Add(item2);
-            ToolbarItems.Add(item3);
-#endif
+
             map = new Map()
             {
                 IsIndoorEnabled = true,
@@ -172,23 +145,16 @@ namespace AgoraNavigator.GoogleMap
 
             map.MapClicked += Map_MapClicked;
             map.PinClicked += Map_PinClicked;
-#if __ANDROID__
+
             switch(activePinsType)
             {
                 case PinsType.AgoraSpots:
-                    Title = "Map (Agora Spots)";
                     this.showPins(pins_agoraSpots);
                     break;
                 case PinsType.DiscoverKrakow:
-                    Title = "Map (Discover Kraków)";
                     this.showPins(pins_discover);
                     break;
-                case PinsType.HidePins:
-                    Title = "Map";
-                    this.showPins(null);
-                    break;
             }
-#endif
 
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(latitude, longitude), Distance.FromMiles(0.05)));
             map.UiSettings.MyLocationButtonEnabled = true;
