@@ -23,15 +23,17 @@ namespace AgoraNavigator.iOS
                     {
                         item.SetTitleTextAttributes(new UITextAttributes
                         {
-                            Font = UIFont.FromName("ChalkboardSE-Light", 28.0F)
+                            Font = UIFont.FromName("Helvetica-Light", 16.0F)
                         }, UIControlState.Normal);
+                        item.TitlePositionAdjustment = new UIOffset(0, -10);
                     }
                     else
                     {
                         item.SetTitleTextAttributes(new UITextAttributes
                         {
-                            Font = UIFont.FromName("ChalkboardSE-Bold", 32.0F)
+                            Font = UIFont.FromName("Helvetica-Bold", 18.0F)
                         }, UIControlState.Normal);
+                        item.TitlePositionAdjustment = new UIOffset(0, -10);
                     }
                 }
             }
@@ -45,7 +47,7 @@ namespace AgoraNavigator.iOS
 
             // Set Text Font for unselected tab states
             UITextAttributes normalTextAttributes = new UITextAttributes();
-            normalTextAttributes.Font = UIFont.FromName("ChalkboardSE-Light", 28.0F); // unselected
+            normalTextAttributes.Font = UIFont.FromName("Helvetica-Light", 16.0F); // unselected
 
             UITabBarItem.Appearance.SetTitleTextAttributes(normalTextAttributes, UIControlState.Normal);
         }
@@ -55,7 +57,7 @@ namespace AgoraNavigator.iOS
             get
             {
                 UITextAttributes selectedTextAttributes = new UITextAttributes();
-                selectedTextAttributes.Font = UIFont.FromName("ChalkboardSE-Bold", 32.0F); // SELECTED
+                selectedTextAttributes.Font = UIFont.FromName("Helvetica-Bold", 18.0F); // SELECTED
                 if (base.SelectedViewController != null)
                 {
                     base.SelectedViewController.TabBarItem.SetTitleTextAttributes(selectedTextAttributes, UIControlState.Normal);
@@ -69,7 +71,7 @@ namespace AgoraNavigator.iOS
                 foreach (UIViewController viewController in base.ViewControllers)
                 {
                     UITextAttributes normalTextAttributes = new UITextAttributes();
-                    normalTextAttributes.Font = UIFont.FromName("ChalkboardSE-Light", 28.0F); // unselected
+                    normalTextAttributes.Font = UIFont.FromName("Helvetica-Light", 16.0F); // unselected
 
                     viewController.TabBarItem.SetTitleTextAttributes(normalTextAttributes, UIControlState.Normal);
                 }
