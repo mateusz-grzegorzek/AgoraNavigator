@@ -193,7 +193,10 @@ namespace AgoraNavigator.Tasks
 
             Appearing += OnPageAppearing;
             BackgroundColor = AgoraColor.DarkBlue;
-            Content = layout;
+            Content = new ScrollView
+            {
+                Content = layout
+            };
         }
 
         private async void OnPageAppearing(object sender, EventArgs e)
