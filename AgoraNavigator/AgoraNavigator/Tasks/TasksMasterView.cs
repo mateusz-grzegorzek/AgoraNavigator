@@ -99,5 +99,11 @@ namespace AgoraNavigator.Tasks
             }
             ((ListView)sender).SelectedItem = null;
         }
+
+        public void RecreateSource(ObservableCollection<GameTask> tasks)
+        {
+            this.tasksListView.ItemsSource = null;
+            this.tasksListView.ItemsSource = tasks;
+        }
     }
 }
